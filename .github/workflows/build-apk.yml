@@ -64,6 +64,7 @@ jobs:
 
       - name: Commit APK into releases folder
         run: |
+          git checkout -B "${GITHUB_REF_NAME}" "origin/${GITHUB_REF_NAME}" 2>/dev/null || git checkout -B "${GITHUB_REF_NAME}"
           mkdir -p releases
           cp MeelanoPanel.apk releases/MeelanoPanel.apk
           git config user.name "github-actions[bot]"
@@ -71,8 +72,21 @@ jobs:
           git add releases/MeelanoPanel.apk
           if git diff --cached --quiet; then
             echo "APK unchanged, nothing to commit."
+            exit 0
+          fi
+          git commit -m "انتشار خودکار MeelanoPanel.apk (ساخت شماره $GITHUB_RUN_NUMBER)"
+          git push origin "HEAD:${GITHUB_REF_NAME}" && echo "PUSH_OK" || echo "PUSH_SKIPPED_ARTIFACT_STILL_AVAILABLE"
+
+      - name: Publish APK to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="apk-v${GITHUB_RUN_NUMBER}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists."
           else
-            git commit -m "انتشار خودکار MeelanoPanel.apk (ساخت شماره $GITHUB_RUN_NUMBER)"
-            git pull --rebase origin "${GITHUB_REF_NAME}" || true
-            git push origin "HEAD:${GITHUB_REF_NAME}"
+            gh release create "$TAG" MeelanoPanel.apk \
+              --title "MeelanoPanel APK — ساخت $GITHUB_RUN_NUMBER" \
+              --notes "فایل نصب اندروید پنل هوشمند میلانو (ساخته‌شده خودکار از کامیت ${GITHUB_SHA})." \
+              --target "${GITHUB_REF_NAME}" && echo "RELEASE_OK" || echo "RELEASE_SKIPPED_ARTIFACT_STILL_AVAILABLE"
           fi
