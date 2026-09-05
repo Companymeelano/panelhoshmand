@@ -184,6 +184,13 @@
 
         #wizard_nav{ transform:translateZ(0); }
 
+        /* ===== تاریخچه قیمت ===== */
+        #hist_chart{ width:100%; height:230px; display:block; }
+        @keyframes sheetUp{ from{ opacity:0; transform:translateY(34px);} to{ opacity:1; transform:none;} }
+        .sheet-anim{ animation:sheetUp .32s cubic-bezier(.2,.9,.3,1); }
+        .hist-row{ transition:background .25s; }
+        .hist-row:hover{ background:rgba(245,197,66,.06); }
+
         /* ===== بهینه‌سازی موبایل: رفع هنگ اسکرول ===== */
         @media (max-width:768px){
             .glass, .card{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
@@ -268,6 +275,10 @@
                     <div class="flex items-center justify-center gap-2 flex-wrap">
                         <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25"><i class="fa-solid fa-database text-[11px]"></i> meelanoi_shops</span>
                         <span class="chip bg-teal-500/10 text-teal-300 border-teal-500/25"><i class="fa-solid fa-bolt text-[11px]"></i> ویزارد مرحله‌ای</span>
+                        <button type="button" onclick="openHistory()" class="chip bg-indigo-500/10 text-indigo-300 border-indigo-500/30 hover:bg-indigo-500/20 transition relative">
+                            <i class="fa-solid fa-chart-line text-[11px]"></i> تاریخچه قیمت
+                            <span id="hist_count" class="absolute -top-1.5 -left-1.5 min-w-5 h-5 px-1 rounded-full bg-gradient-to-l from-amber-300 to-amber-500 text-[#03142a] text-[10px] font-black items-center justify-center" style="display:none;font-variant-numeric:tabular-nums">۰</span>
+                        </button>
                     </div>
                 </header>
 
@@ -536,6 +547,28 @@
         </div>
     </div>
 
+    <!-- مودال تاریخچه روند قیمت -->
+    <div id="history_modal" class="fixed inset-0 z-[70] hidden items-end md:items-center justify-center">
+        <div class="absolute inset-0 bg-black/70" onclick="closeHistory()"></div>
+        <div class="sheet-anim relative w-full md:max-w-lg bg-[#04122a] border border-white/15 rounded-t-3xl md:rounded-3xl p-5 max-h-[88vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-extrabold text-sm text-amber-200"><i class="fa-solid fa-chart-line ml-1.5"></i>تاریخچه روند قیمت‌ها</h3>
+                <button type="button" onclick="closeHistory()" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white transition" aria-label="بستن"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="hist_summary" class="flex items-center gap-2 text-[11px] text-slate-300 bg-white/[.04] border border-white/10 rounded-xl px-3.5 py-2.5 mb-3 leading-relaxed"></div>
+            <div class="flex items-center gap-4 text-[10px] text-slate-400 mb-1.5 px-1">
+                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#f87171"></span>دیجی‌کالا</span>
+                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#fb923c"></span>ترب (کف بازار)</span>
+            </div>
+            <div class="bg-[#010b18]/70 border border-white/10 rounded-2xl p-2 mb-3"><canvas id="hist_chart"></canvas></div>
+            <div class="flex gap-2 mb-3">
+                <button type="button" id="hist_filter_btn" onclick="histFilterMine=!histFilterMine;renderHistory()" class="btn btn-ghost flex-1 py-2.5 rounded-xl text-[11px]"></button>
+                <button type="button" onclick="clearHist()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-[11px] !text-red-300">پاک‌سازی</button>
+            </div>
+            <div id="hist_list" class="space-y-2"></div>
+        </div>
+    </div>
+
     <script>
         const $ = (id) => document.getElementById(id);
         const FA_D = '۰۱۲۳۴۵۶۷۸۹';
@@ -663,6 +696,8 @@
 
         buildDots();
         showStep(0);
+        loadHist();
+        updateHistBadge();
 
         /* ---------- قیمت ---------- */
         function formatPrice(input) {
@@ -777,6 +812,7 @@
             animatePrice($('torob_price_text'), rawTorobPrice);
             selectMarketPrice('torob', true);
             $('short_description').value = $('product_title').value + ' برند ' + finalBrand + ' با پالت رنگی (' + detectedColors + ') و تضمین بهترین قیمت بازار.';
+            recordAnalysis();
             updateMargins();
         }
 
@@ -790,6 +826,7 @@
             $('card-digi').classList.toggle('picked', source === 'digikala');
             $('card-torob').classList.toggle('picked', source === 'torob');
             updateMargins();
+            updateLastChosen();
             if (!silent) toast(source === 'digikala' ? 'قیمت دیجی‌کالا به جدول منتقل شد.' : 'کف قیمت ترب به جدول منتقل شد.', 'success');
         }
 
@@ -874,6 +911,220 @@
             if (ns) { ns.disabled = true; }
             toast('در حال ثبت نهایی در دیتابیس میلانو...', 'info');
         });
+
+        /* ---------- سرویس‌ورکر (آفلاین، نامرئی) ---------- */
+        if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js').catch(() => {});
+            });
+        }
+    </script>
+</body>
+</html>
+).value) || rawTorobPrice,
+                retail: parseNum($('sale_price_retail').value),
+                whole: parseNum($('sale_price_wholesale').value)
+            });
+        }
+        /* ═════════ تاریخچه روند قیمت‌ها ═════════ */
+        const HIST_KEY = 'meelano_price_history_v1';
+        let histMem = [];
+        let histFilterMine = false;
+
+        function loadHist() {
+            try { histMem = JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch (e) { /* حافظه موقت */ }
+            if (!Array.isArray(histMem)) histMem = [];
+        }
+        function saveHist() {
+            histMem = histMem.slice(0, 60);
+            try { localStorage.setItem(HIST_KEY, JSON.stringify(histMem)); } catch (e) { /* ignore */ }
+            updateHistBadge();
+        }
+        function updateHistBadge() {
+            const b = $('hist_count');
+            if (!b) return;
+            if (histMem.length) {
+                b.textContent = toFa(histMem.length > 99 ? '99+' : histMem.length);
+                b.style.display = 'inline-flex';
+            } else b.style.display = 'none';
+        }
+        function currentTitle() { return $('product_title').value.trim(); }
+        function addHist(entry) {
+            histMem.unshift(Object.assign({ t: Date.now() }, entry));
+            saveHist();
+        }
+        function recordAnalysis() {
+            const t = currentTitle();
+            if (!t || (!rawDigiPrice && !rawTorobPrice)) return;
+            addHist({
+                title: t, brand: $('brand_name').value.trim(),
+                digi: rawDigiPrice, torob: rawTorobPrice,
+                chosen: parseNum($('min_sale_price').value) || rawTorobPrice,
+                retail: parseNum($('sale_price_retail').value),
+                whole: parseNum($('sale_price_wholesale').value)
+            });
+        }
+        function updateLastChosen() {
+            const t = currentTitle();
+            if (!t) return;
+            const chosen = parseNum($('min_sale_price').value);
+            const retail = parseNum($('sale_price_retail').value);
+            const whole = parseNum($('sale_price_wholesale').value);
+            if (histMem.length && histMem[0].title === t) {
+                histMem[0].chosen = chosen;
+                histMem[0].retail = retail;
+                histMem[0].whole = whole;
+                saveHist();
+            } else if (rawDigiPrice || rawTorobPrice) {
+                addHist({ title: t, brand: $('brand_name').value.trim(), digi: rawDigiPrice, torob: rawTorobPrice, chosen: chosen || rawTorobPrice, retail, whole });
+            }
+        }
+        function fmtCompact(n) {
+            n = +n || 0;
+            if (n >= 1e9) return toFa((n / 1e9).toFixed(2).replace(/\.?0+$/, '')) + ' میلیارد';
+            if (n >= 1e6) return toFa((n / 1e6).toFixed(n % 1e6 === 0 ? 0 : 1)) + ' م';
+            if (n >= 1e3) return toFa(Math.round(n / 1e3)) + ' هـ';
+            return toFa(n);
+        }
+        function filteredHist() {
+            const t = currentTitle();
+            let l = histMem.slice();
+            if (histFilterMine && t) l = l.filter(e => e.title === t);
+            return l;
+        }
+        function drawHistChart(list) {
+            const cv = $('hist_chart');
+            const dpr = window.devicePixelRatio || 1;
+            const W = cv.clientWidth || 300, H = 230;
+            cv.width = W * dpr; cv.height = H * dpr;
+            cv.style.height = H + 'px';
+            const x = cv.getContext('2d');
+            x.scale(dpr, dpr);
+            x.clearRect(0, 0, W, H);
+            const vals = [];
+            list.forEach(e => { if (e.digi) vals.push(e.digi); if (e.torob) vals.push(e.torob); });
+            if (!vals.length) {
+                x.fillStyle = '#64748b'; x.font = '12px Vazirmatn, Tahoma'; x.textAlign = 'center';
+                x.fillText('هنوز رکوردی ثبت نشده است', W / 2, H / 2);
+                return;
+            }
+            let mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+            if (mn === mx) { mn *= 0.95; mx *= 1.05; }
+            const pad = (mx - mn) * 0.15; mn -= pad; mx += pad;
+            const n = list.length;
+            const padL = 8, padR = 56, padT = 14, padB = 26;
+            const plotW = W - padL - padR, plotH = H - padT - padB;
+            const X = (i) => padL + plotW - (n === 1 ? plotW / 2 : i * (plotW / (n - 1)));
+            const Y = (v) => padT + plotH - ((v - mn) / (mx - mn)) * plotH;
+            x.strokeStyle = 'rgba(148,163,184,.15)'; x.fillStyle = '#7d8aa0'; x.font = '10px Vazirmatn, Tahoma'; x.lineWidth = 1;
+            for (let g = 0; g <= 3; g++) {
+                const v = mn + (mx - mn) * g / 3, y = Y(v);
+                x.beginPath(); x.moveTo(padL, y); x.lineTo(W - padR + 6, y); x.stroke();
+                x.textAlign = 'left'; x.fillText(fmtCompact(v), W - padR + 10, y + 3);
+            }
+            [{ k: 'digi', c: '#f87171' }, { k: 'torob', c: '#fb923c' }].forEach(s => {
+                x.strokeStyle = s.c; x.lineWidth = 2.5; x.lineJoin = 'round'; x.beginPath();
+                let started = false;
+                list.forEach((e, i) => {
+                    const v = e[s.k]; if (!v) return;
+                    const px = X(i), py = Y(v);
+                    if (!started) { x.moveTo(px, py); started = true; } else x.lineTo(px, py);
+                });
+                x.stroke();
+                list.forEach((e, i) => {
+                    const v = e[s.k]; if (!v) return;
+                    x.fillStyle = s.c; x.beginPath(); x.arc(X(i), Y(v), 3.2, 0, 7); x.fill();
+                });
+            });
+            x.fillStyle = '#7d8aa0'; x.textAlign = 'center';
+            const step = Math.max(1, Math.ceil(n / 5));
+            list.forEach((e, i) => {
+                if (i % step !== 0 && i !== n - 1) return;
+                x.fillText(new Date(e.t).toLocaleDateString('fa-IR', { day: 'numeric', month: 'numeric' }), X(i), H - 8);
+            });
+        }
+        function renderHistory() {
+            updateHistBadge();
+            const all = filteredHist();
+            const box = $('hist_summary');
+            if (all.length >= 2) {
+                const ch = all.slice().reverse();
+                const a = ch[0].torob || ch[0].digi || 0, b = ch[ch.length - 1].torob || ch[ch.length - 1].digi || 0;
+                if (a && b) {
+                    const p = (b - a) / a * 100, down = p < 0;
+                    const cls = down ? 'text-emerald-300' : 'text-red-300';
+                    const arrow = down ? 'fa-arrow-trend-down' : 'fa-arrow-trend-up';
+                    box.innerHTML = `<i class="fa-solid ${arrow} ${cls}"></i><span>تغییر کف بازار از اول دوره: <b class="${cls}">${toFa(Math.abs(p).toFixed(1))}٪ ${down ? 'کاهش' : 'افزایش'}</b> • ${toFa(all.length)} رکورد</span>`;
+                } else box.innerHTML = `<i class="fa-solid fa-chart-line text-teal-300"></i><span>${toFa(all.length)} رکورد ثبت شده است.</span>`;
+            } else if (all.length === 1) {
+                box.innerHTML = '<i class="fa-solid fa-chart-line text-teal-300"></i><span>اولین رکورد ثبت شد؛ با تحلیل‌های بعدی نمودار کامل می‌شود.</span>';
+            } else {
+                box.innerHTML = '<i class="fa-solid fa-circle-info text-amber-300"></i><span>هنوز رکوردی نیست — از گام ۱ «تحلیل هوشمند» بگیرید تا تاریخچه ساخته شود.</span>';
+            }
+            drawHistChart(all.slice(0, 20).reverse());
+            $('hist_filter_btn').innerHTML = histFilterMine
+                ? '<i class="fa-solid fa-filter"></i> فقط همین کالا ✓'
+                : '<i class="fa-solid fa-filter"></i> فقط همین کالا';
+            const list = $('hist_list');
+            if (!all.length) { list.innerHTML = '<p class="text-center text-[11px] text-slate-500 py-4">رکوردی برای نمایش وجود ندارد.</p>'; return; }
+            list.innerHTML = all.slice(0, 30).map(e => {
+                const d = new Date(e.t);
+                const dt = d.toLocaleDateString('fa-IR', { day: 'numeric', month: 'numeric' }) + ' • ' + d.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+                return `<div class="hist-row flex items-center justify-between gap-2 border border-white/10 rounded-xl px-3 py-2.5 bg-white/[.03]">
+                    <div class="min-w-0">
+                        <div class="text-[11px] font-bold text-slate-200 truncate">${escapeHtml(e.title)} <span class="text-slate-500 font-normal">• ${escapeHtml(e.brand || '')}</span></div>
+                        <div class="text-[10px] text-slate-500 mt-0.5" style="font-variant-numeric:tabular-nums">${dt} • ترب ${fmtCompact(e.torob)} • دیجی ${fmtCompact(e.digi)}</div>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button type="button" onclick="applyHistEntry(${e.t})" class="btn btn-ghost text-[10px] px-2.5 py-1.5 rounded-lg">اعمال</button>
+                        <button type="button" onclick="delHistEntry(${e.t})" class="text-slate-600 hover:text-red-400 transition px-1" aria-label="حذف رکورد"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        function applyHistEntry(ts) {
+            const e = histMem.find(x => x.t === ts);
+            if (!e) return;
+            rawDigiPrice = e.digi || 0; rawTorobPrice = e.torob || 0;
+            animatePrice($('digikala_price_text'), rawDigiPrice);
+            animatePrice($('torob_price_text'), rawTorobPrice);
+            $('min_sale_price').value = fmtEN(e.chosen || e.torob || e.digi || 0);
+            $('sale_price_retail').value = fmtEN(e.retail || Math.round((e.chosen || 0) * 1.08));
+            $('sale_price_wholesale').value = fmtEN(e.whole || Math.round((e.chosen || 0) * 0.96));
+            $('card-digi').classList.toggle('picked', !!e.digi && e.chosen === e.digi);
+            $('card-torob').classList.toggle('picked', !!e.torob && e.chosen === e.torob);
+            const badge = $('market_status_badge');
+            badge.textContent = '✓ بازیابی از تاریخچه';
+            badge.className = 'chip bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
+            updateMargins();
+            closeHistory();
+            toast('قیمت‌های تاریخچه به فرم منتقل شد.', 'success');
+        }
+        function delHistEntry(ts) {
+            histMem = histMem.filter(e => e.t !== ts);
+            saveHist(); renderHistory();
+            toast('رکورد حذف شد.', 'info');
+        }
+        function clearHist() {
+            if (!histMem.length) return;
+            histMem = [];
+            saveHist(); renderHistory();
+            toast('تاریخچه قیمت پاک شد.', 'info');
+        }
+        function openHistory() {
+            renderHistory();
+            const m = $('history_modal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeHistory() {
+            const m = $('history_modal');
+            m.classList.add('hidden'); m.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        /* ---------- ثبت فرم ---------- */
+        
 
         /* ---------- سرویس‌ورکر (آفلاین، نامرئی) ---------- */
         if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
