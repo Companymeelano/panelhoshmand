@@ -23,6 +23,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root{ --gold-1:#fde68a; --gold-2:#f5c542; --gold-3:#b8860b; --ink:#021a33; --teal:#2dd4bf; }
         *{ -webkit-tap-highlight-color:transparent; }
@@ -200,6 +201,43 @@
         .safe-bottom{ padding-bottom:calc(7rem + env(safe-area-inset-bottom)); }
         #wizard_nav{ transform:translateZ(0); }
 
+        /* ===== امضای سه‌بعدی استودیو ===== */
+        .credit-plaque{ position:relative; border-radius:1.2rem; padding:1.3rem 1rem 1rem; overflow:hidden;
+            background:linear-gradient(160deg,rgba(245,197,66,.09),rgba(4,18,38,.65) 60%);
+            border:1px solid rgba(245,197,66,.32);
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.09), 0 18px 40px -18px rgba(0,0,0,.85); }
+        .credit-plaque::before{ content:""; position:absolute; top:0; right:12%; left:12%; height:2px; border-radius:99px;
+            background:linear-gradient(90deg,transparent,#f5c542,#2dd4bf,transparent); box-shadow:0 0 16px 2px rgba(245,197,66,.45); }
+        .credit-kicker{ font-size:.62rem; letter-spacing:.4em; color:#8fa0b8; font-weight:700; }
+        .shine-wrap{ position:relative; display:inline-block; }
+        .shine-wrap::after{ content:""; position:absolute; top:-10%; bottom:-10%; width:38%; left:115%;
+            background:linear-gradient(105deg,transparent,rgba(255,255,255,.55),transparent);
+            transform:skewX(-20deg); animation:sweep 4.5s ease-in-out infinite; pointer-events:none; }
+        @keyframes sweep{ 0%{ left:115%; } 55%,100%{ left:-55%; } }
+        .credit-3d{ font-family:'Cinzel',Tahoma,serif; font-weight:900; font-size:clamp(1.25rem,6vw,1.9rem); letter-spacing:.05em; line-height:1.4;
+            background:linear-gradient(180deg,#fffbe8 0%,#fde68a 32%,#e9b10c 52%,#8a5b06 72%,#f5c542 100%);
+            -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+            filter:drop-shadow(0 1px 0 #5c3d05) drop-shadow(0 2px 0 #4a3004) drop-shadow(0 3px 0 #382403) drop-shadow(0 8px 14px rgba(0,0,0,.65)); }
+        .credit-div{ display:flex; align-items:center; gap:.6rem; color:#f5c542; margin:.45rem auto; max-width:15rem; font-size:.7rem; }
+        .credit-div::before,.credit-div::after{ content:""; flex:1; height:1px;
+            background:linear-gradient(90deg,transparent,rgba(245,197,66,.65),transparent); }
+        .credit-name{ font-family:'Cinzel',Tahoma,serif; font-weight:700; font-size:.92rem; letter-spacing:.3em; color:#eef2f7;
+            text-shadow:0 1px 0 #000, 0 2px 0 rgba(0,0,0,.7), 0 4px 12px rgba(0,0,0,.8); }
+        .tw{ display:inline-block; animation:tw 2.6s ease-in-out infinite; }
+        @keyframes tw{ 50%{ opacity:.25; transform:scale(.75) rotate(20deg); } }
+
+        /* ===== داشبورد قیمت سه‌بعدی ===== */
+        .bar3d{ position:relative; height:9rem; background:rgba(255,255,255,.05); border:1px solid rgba(148,163,184,.14);
+            border-radius:.7rem .7rem .35rem .35rem; }
+        .bar-fill{ position:absolute; bottom:0; right:0; left:0; border-radius:.6rem .6rem .3rem .3rem;
+            transition:height .9s cubic-bezier(.2,.7,.3,1); }
+        .bar-fill::before{ content:""; position:absolute; top:-7px; right:4%; left:4%; height:14px; border-radius:50%;
+            background:rgba(255,255,255,.35); box-shadow:0 -1px 2px rgba(255,255,255,.25); }
+        .bar-gold .bar-fill{ background:linear-gradient(180deg,#fde68a,#b8860b); box-shadow:0 0 18px -2px rgba(245,197,66,.65); }
+        .bar-teal .bar-fill{ background:linear-gradient(180deg,#5eead4,#0f766e); box-shadow:0 0 18px -2px rgba(45,212,191,.65); }
+        .bar-indigo .bar-fill{ background:linear-gradient(180deg,#a5b4fc,#6d28d9); box-shadow:0 0 18px -2px rgba(129,140,248,.65); }
+        .bar-slate .bar-fill{ background:linear-gradient(180deg,#94a3b8,#334155); }
+
         @media (max-width:768px){
             .glass, .card{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
                 background:linear-gradient(160deg,#0d2547 0%,#04122a 100%); }
@@ -213,6 +251,7 @@
             .float-slow{ animation:none; }
             .market-card:hover{ transform:none; }
             .wstep.active{ animation:none; }
+            .shine-wrap::after{ display:none; }
         }
         @media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation:none !important; transition:none !important; } }
     </style>
@@ -264,7 +303,7 @@
                         </div>
                         <div>
                             <h1 class="text-lg sm:text-xl md:text-2xl font-black leading-snug text-transparent bg-clip-text bg-gradient-to-l from-amber-200 via-yellow-400 to-amber-500">پنل هوشمند میلانو</h1>
-                            <p class="text-slate-400 text-[11px] md:text-xs mt-1">مدیریت انبار • استعلام بازار • استودیو تصویر سه‌بعدی</p>
+                            
                             <div class="flex items-center justify-center sm:justify-start gap-1.5 mt-1.5 text-[11px] text-slate-400">
                                 <i class="fa-regular fa-clock text-amber-400"></i><span id="clock">—</span>
                             </div>
@@ -403,6 +442,18 @@
                             </div>
                             <div id="price_source_note" class="text-[10px] text-slate-500 mt-1">منبع قیمت پس از تحلیل نمایش داده می‌شود.</div>
                         </div>
+                        <div class="rounded-2xl border border-amber-500/25 bg-[#010b18]/60 p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-extrabold text-amber-200"><i class="fa-solid fa-gauge-high ml-1.5"></i>داشبورد قیمت محصول</h3>
+                                <span id="dash_count" class="text-[10px] text-slate-500"></span>
+                            </div>
+                            <div id="dash_bars" class="flex items-end justify-around gap-2 pt-1"></div>
+                            <div>
+                                <div class="text-[10px] text-slate-500 mb-1 font-bold">روند کف بازار (ترب)</div>
+                                <svg id="dash_spark" viewBox="0 0 300 64" class="w-full h-16" preserveAspectRatio="none"></svg>
+                            </div>
+                            <div id="dash_latest" class="space-y-1.5"></div>
+                        </div>
                         <div class="flex gap-2.5">
                             <button type="button" onclick="runPreciseAiAnalysis()" class="btn btn-ghost flex-1 py-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
                                 <i class="fa-solid fa-rotate-right"></i> تحلیل مجدد
@@ -489,7 +540,7 @@
                             <button type="button" onclick="generateWebpAiImage()" class="btn btn-indigo w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-wand-magic-sparkles"></i> ساخت موکاپ تبلیغاتی با AI و تبدیل WebP
                             </button>
-                            <p class="text-[11px] text-slate-500 leading-relaxed flex items-start gap-1.5"><i class="fa-solid fa-circle-info mt-0.5 text-indigo-400"></i>موتورها در بخش تنظیمات قابل انتخاب و تست هستند؛ در صورت توقف یکی، جایگزین خودکار وارد عمل می‌شود.</p>
+                            <p class="text-[11px] text-slate-500 leading-relaxed flex items-start gap-1.5"><i class="fa-solid fa-circle-info mt-0.5 text-indigo-400"></i>هوش مصنوعی ابتدا با ترکیب نام، برند، رنگ و قیمت‌های بازار، نام واقعی محصول را حدس می‌زند و سپس موکاپ تبلیغاتی اختصاصی همان محصول را می‌سازد.</p>
                         </div>
                         <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
                             تأیید تصویر و ادامه به ثبت نهایی <i class="fa-solid fa-arrow-left"></i>
@@ -524,9 +575,13 @@
                 </form>
 
                 <footer class="text-center pt-5 pb-1">
-                    <div class="flex items-center justify-center gap-2 text-[11px] text-slate-500">
-                        <img src="icons/icon-192.png" alt="" class="w-5 h-5 rounded-md" loading="lazy" decoding="async">
-                        <span>پنل هوشمند میلانو • <span id="year">۱۴۰۵</span></span>
+                    <div class="credit-plaque">
+                        <img src="icons/icon-192.png" alt="میلانو" class="w-9 h-9 rounded-xl logo-glow mx-auto mb-2 object-cover" loading="lazy" decoding="async">
+                        <div class="credit-kicker">طراحی و توسعه اختصاصی</div>
+                        <div class="shine-wrap"><div class="credit-3d">Meelano Studio Design</div></div>
+                        <div class="credit-div"><span class="tw">✦</span>✦<span class="tw" style="animation-delay:-1.3s">✦</span></div>
+                        <div class="credit-name">Milad Yaghoobi</div>
+                        <div class="mt-2.5 text-[10px] text-slate-500">پنل هوشمند میلانو • <span id="year">۱۴۰۵</span></div>
                     </div>
                 </footer>
             </div>
@@ -762,6 +817,7 @@
             curStep = n; maxStep = Math.max(maxStep, n);
             panels.forEach((p, i) => { p.classList.toggle('hidden-step', i !== n); p.classList.toggle('active', i === n); });
             if (n === panels.length - 1) renderSummary();
+            if (n === 1) renderDashboard();
             renderWizard();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -927,7 +983,7 @@
         /* ═════════ زیرساخت AI: مراحل، انصراف، جایگزین خودکار ═════════ */
         const AIC = { cancelled: false, done: false, applying: false, ctrls: new Set(), timers: new Set(), watchdog: null };
         const STAGES_ANALYSIS = ['ترکیب ۴ سیگنال و شناسایی دقیق محصول', 'استعلام قیمت دیجی‌کالا', 'استعلام کف بازار ترب', 'نهایی‌سازی رنگ، بارکد و جدول قیمت'];
-        const STAGES_IMAGE = ['ساخت پرامپت تبلیغاتی هوشمند', 'تولید تصویر با موتور AI', 'برش 768 و تبدیل WebP'];
+        const STAGES_IMAGE = ['ترکیب اطلاعات و حدس نام نهایی محصول', 'طراحی صحنه تبلیغاتی اختصاصی', 'تولید تصویر با موتور AI', 'برش 768 و تبدیل WebP'];
         function aiReset() {
             AIC.cancelled = false; AIC.done = false; AIC.applying = false;
             AIC.ctrls.forEach(c => { try { c.abort(); } catch (e) {} }); AIC.ctrls.clear();
@@ -982,18 +1038,18 @@
 
         /* ═════════ فراخوانی موتورهای متنی ═════════ */
         const SYS_ANALYSIS = 'You are a precise Iranian e-commerce product analyst. Respond with ONLY a JSON object, no markdown, no explanation. Schema: {"product_fa":"exact full product name in Persian","brand_fa":"brand in Persian and English","colors_fa":"common market colors in Persian, comma separated","barcode":"real GTIN barcode ONLY if you are sure, otherwise empty string","category":1,"unit":"string","digikala_price":0,"torob_price":0,"purchase_price":0,"retail_price":0,"wholesale_price":0,"confidence":0}. Rules: category 1=digital,2=food,3=beauty-health,4=organic. All prices are integers in Iranian Rial (Toman x 10). torob_price<=digikala_price. purchase_price<torob_price. retail_price slightly above digikala_price. wholesale between purchase and torob. confidence 0-100. Use all provided signals: title, brand, barcode hint, color hint. Keep a valid-looking barcode hint, never invent a random one.';
-        async function callOpenAI(prompt) {
-            const r = await aiFetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + SET.keys.openai }, body: JSON.stringify({ model: SET.models.openai || 'gpt-4o-mini', messages: [{ role: 'system', content: SYS_ANALYSIS }, { role: 'user', content: prompt }], temperature: 0.2, max_tokens: 900, response_format: { type: 'json_object' } }) });
+        async function callOpenAI(prompt, sys) {
+            const r = await aiFetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + SET.keys.openai }, body: JSON.stringify({ model: SET.models.openai || 'gpt-4o-mini', messages: [{ role: 'system', content: (sys || SYS_ANALYSIS) }, { role: 'user', content: prompt }], temperature: 0.2, max_tokens: 900, response_format: { type: 'json_object' } }) });
             if (!r.ok) throw new Error('openai ' + r.status);
             const j = await r.json(); return j.choices[0].message.content;
         }
-        async function callGemini(prompt) {
+        async function callGemini(prompt, sys) {
             const m = SET.models.gemini || 'gemini-2.5-flash';
-            const r = await aiFetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(m) + ':generateContent?key=' + encodeURIComponent(SET.keys.gemini), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ systemInstruction: { parts: [{ text: SYS_ANALYSIS }] }, contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 1000, temperature: 0.2 } }) });
+            const r = await aiFetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(m) + ':generateContent?key=' + encodeURIComponent(SET.keys.gemini), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ systemInstruction: { parts: [{ text: (sys || SYS_ANALYSIS) }] }, contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 1000, temperature: 0.2 } }) });
             if (!r.ok) throw new Error('gemini ' + r.status);
             const j = await r.json(); return j.candidates[0].content.parts.map(p => p.text || '').join('');
         }
-        async function callOpenAICompat(base, key, model, prompt) {
+        async function callOpenAICompat(base, key, model, prompt, sys) {
             const r = await aiFetch(base.replace(/\/$/, '') + '/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + key }, body: JSON.stringify({ model, messages: [{ role: 'system', content: SYS_ANALYSIS }, { role: 'user', content: prompt }], temperature: 0.2, max_tokens: 900 }) });
             if (!r.ok) throw new Error('compat ' + r.status);
             const j = await r.json();
@@ -1001,7 +1057,7 @@
             if (!content) throw new Error('empty');
             return content;
         }
-        async function callCloudflare(prompt) {
+        async function callCloudflare(prompt, sys) {
             const r = await aiFetch('https://api.cloudflare.com/client/v4/accounts/' + SET.keys.cf_account + '/ai/run/@cf/meta/llama-3.1-8b-instruct', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + SET.keys.cf_token }, body: JSON.stringify({ messages: [{ role: 'system', content: SYS_ANALYSIS }, { role: 'user', content: prompt }] }) }, 45000);
             if (!r.ok) throw new Error('cloudflare ' + r.status);
             const j = await r.json();
@@ -1117,6 +1173,7 @@
             $('market_tip').style.display = 'none';
             updateMargins();
             recordAnalysis();
+            renderDashboard();
         }
         function selectMarketPrice(source, silent = false) {
             let chosenPrice = (source === 'digikala') ? rawDigiPrice : rawTorobPrice;
@@ -1129,6 +1186,7 @@
             $('card-torob').classList.toggle('picked', source === 'torob');
             updateMargins();
             updateLastChosen();
+            renderDashboard();
             if (!silent) toast(source === 'digikala' ? 'قیمت دیجی‌کالا به جدول منتقل شد.' : 'کف قیمت ترب به جدول منتقل شد.', 'success');
         }
         function readSettingsSilent() { try { const s = JSON.parse(localStorage.getItem(SET_KEY)); if (s) { SET.db = Object.assign(SET.db, s.db || {}); SET.keys = Object.assign(SET.keys, s.keys || {}); SET.models = Object.assign(SET.models, s.models || {}); SET.routing = Object.assign(SET.routing, s.routing || {}); } } catch (e) {} }
@@ -1170,13 +1228,16 @@
             aiReset();
             showAiModal('استودیو تصویر تبلیغاتی', STAGES_IMAGE);
             try {
-                aiStage(0, 'active'); setProgress(12, 'ساخت پرامپت تبلیغاتی هوشمند از نام و برند...');
-                const styleEN = 'premium e-commerce advertising mockup photograph, luxurious 3D product render, dramatic studio lighting, dark navy and gold background, floating golden particles, ultra detailed, centered composition, no text, no watermark';
-                const subjectEN = customPrompt ? `advertising scene: ${customPrompt}, featuring product "${productTitle}" by brand "${brandName}"` : `product "${productTitle}" by brand "${brandName}"`;
+                aiStage(0, 'active'); setProgress(8, 'ترکیب نام، برند، رنگ و قیمت‌ها برای حدس نام نهایی محصول...');
+                const brief = await craftImageBrief(productTitle, brandName, $('color').value.trim(), rawDigiPrice, rawTorobPrice, (m) => setProgress(16, m));
+                aiThrowIfCancelled(); aiStage(0, 'done');
+                aiStage(1, 'active'); setProgress(32, 'طراحی صحنه تبلیغاتی اختصاصی...');
+                const styleEN = 'ultra detailed advertising photograph, luxurious 3D product render, dramatic studio lighting, floating golden particles, centered composition, no text, no watermark';
+                const subjectEN = customPrompt ? `advertising scene: ${customPrompt}, featuring "${brief.product_en}"` : brief.scene_en + `, featuring "${brief.product_en}"`;
                 const promptEN = subjectEN + ', ' + styleEN;
-                await new Promise(r => setTimeout(r, 300)); aiThrowIfCancelled();
-                aiStage(0, 'done');
-                aiStage(1, 'active');
+                await new Promise(r => setTimeout(r, 250)); aiThrowIfCancelled();
+                aiStage(1, 'done');
+                aiStage(2, 'active');
                 const pref = ($('ai_image_provider').value === 'flux' || $('ai_image_provider').value === 'turbo') ? $('ai_image_provider').value : SET.routing.image;
                 const attempts = pref === 'stability' ? ['stability'] : pref === 'flux' || pref === 'turbo' ? ['poll:' + pref] : ['stability', 'poll:flux'];
                 let objUrl = null, usedPoll = null, ok = false;
@@ -1203,8 +1264,8 @@
                 }
                 if (!ok) throw new Error('img-failed');
                 aiThrowIfCancelled();
-                aiStage(1, 'done');
-                aiStage(2, 'active'); setProgress(74, 'برش به 768×768 و تبدیل به WebP...');
+                aiStage(2, 'done');
+                aiStage(3, 'active'); setProgress(82, 'برش به 768×768 و تبدیل به WebP...');
                 await new Promise(r => setTimeout(r, 150)); aiThrowIfCancelled();
                 try {
                     const webp = imageToWebP(objUrl.img || objUrl, 768, 0.9);
@@ -1214,7 +1275,7 @@
                     $('product_image_preview').src = objUrl.src || objUrl;
                     $('product_image_webp').value = '';
                 }
-                aiStage(2, 'done'); setProgress(100, 'تکمیل شد.');
+                aiStage(3, 'done'); setProgress(100, 'تکمیل شد.');
                 aiFinish();
                 setTimeout(() => { hideAiModal(); toast('موکاپ تبلیغاتی ساخته و به WebP تبدیل شد.', 'success'); }, 400);
             } catch (e) {
@@ -1222,6 +1283,67 @@
                 if (e.isCancel) return;
                 toast('تولید تصویر ناموفق بود؛ اینترنت و تنظیمات AI را بررسی کنید.', 'error');
             }
+        }
+
+        /* ═════════ حدس نام نهایی + داشبورد قیمت ═════════ */
+        const FA2EN_COLORS = [['مشکی','black'],['سفید','white'],['نقره‌ای','silver'],['نقره ای','silver'],['طلایی مات','matte gold'],['طلایی','gold'],['سرمه‌ای','navy blue'],['آبی','blue'],['قرمز','red'],['قهوه‌ای','brown'],['سبز','green'],['نعنایی','mint'],['بنفش','purple'],['صورتی','pink'],['خاکستری','gray'],['گرافیتی','graphite'],['پلاتینیوم','platinum'],['زرد','yellow'],['نارنجی','orange'],['بژ','beige'],['کرم','cream'],['متالیک','metallic'],['تیره','dark'],['روشن','light']];
+        function colorsToEN(fa) { let s = ' ' + (fa || '') + ' '; FA2EN_COLORS.forEach(([f, e]) => { s = s.split(f).join(' ' + e + ' '); }); return s.replace(/\s+/g, ' ').trim() || 'elegant neutral tones'; }
+        const SYS_BRIEF = 'You are an expert advertising art director for e-commerce. Respond with ONLY a JSON object, no markdown: {"product_en":"exact product name in English","scene_en":"one rich English sentence describing a luxurious advertising hero scene for this product, including its colors and setting, no text in image"}.';
+        function parseBriefJSON(txt) {
+            const s = String(txt).trim().replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
+            const j = JSON.parse(s);
+            return { product_en: String(j.product_en || '').trim(), scene_en: String(j.scene_en || '').trim() };
+        }
+        async function craftImageBrief(title, brand, colors, digi, torob, log) {
+            const tier = Math.max(digi || 0, torob || 0);
+            const tierEN = tier >= 100000000 ? 'ultra-premium flagship luxury' : tier >= 10000000 ? 'premium high-end' : 'clean modern affordable';
+            const up = 'Product title: ' + title + '\nBrand: ' + brand + '\nColors: ' + (colors || 'unknown') + '\nMarket prices IRR - digikala: ' + (digi || '?') + ', torob: ' + (torob || '?') + '.\nFirst infer the EXACT real product name, then design its advertising scene.';
+            const chain = analysisChain().filter(id => id !== 'local');
+            for (const id of chain) {
+                aiThrowIfCancelled();
+                if (log) log('طراحی صحنه با ' + PROV_LABEL[id] + '...');
+                try {
+                    let raw;
+                    if (id === 'openai') raw = await callOpenAI(up, SYS_BRIEF);
+                    else if (id === 'gemini') raw = await callGemini(up, SYS_BRIEF);
+                    else if (id === 'groq') raw = await callOpenAICompat('https://api.groq.com/openai/v1', SET.keys.groq, SET.models.groq || 'llama-3.3-70b-versatile', up, SYS_BRIEF);
+                    else if (id === 'gapgpt') raw = await callOpenAICompat(SET.keys.gapgpt_base || 'https://api.gapgpt.app/v1', SET.keys.gapgpt, SET.models.gapgpt || 'gpt-4o-mini', up, SYS_BRIEF);
+                    else if (id === 'cloudflare') raw = await callCloudflare(up, SYS_BRIEF);
+                    else continue;
+                    const b = parseBriefJSON(raw);
+                    if (b.product_en && b.scene_en) return b;
+                    throw new Error('bad-brief');
+                } catch (e) { if (e.isCancel) throw e; }
+            }
+            let brandEn = brand; const m = /\(([^)]+)\)/.exec(brand); if (m) brandEn = m[1];
+            return { product_en: (title + ' ' + brandEn).trim(), scene_en: tierEN + ' e-commerce hero shot of ' + title + ' (' + brandEn + ') in ' + colorsToEN(colors) + ', dramatic studio lighting, dark navy and gold premium background' };
+        }
+        function renderDashboard() {
+            const bars = $('dash_bars'); if (!bars) return;
+            const buy = parseNum($('purchase_price').value), floorV = parseNum($('min_sale_price').value);
+            const ret = parseNum($('sale_price_retail').value), who = parseNum($('sale_price_wholesale').value);
+            const items = [{ l: 'خرید', v: buy, c: 'slate' }, { l: 'کف بازار', v: floorV, c: 'teal' }, { l: 'خرده', v: ret, c: 'gold' }, { l: 'عمده', v: who, c: 'indigo' }];
+            const mx = Math.max(buy, floorV, ret, who, 1);
+            bars.innerHTML = items.map(it => {
+                const h = Math.max(4, Math.round(it.v / mx * 100));
+                return `<div class="flex flex-col items-center gap-1.5 flex-1 min-w-0"><span class="text-[10px] font-bold text-slate-300" style="font-variant-numeric:tabular-nums">${fmtCompact(it.v)}</span><div class="bar3d bar-${it.c} w-full max-w-[3.2rem]"><div class="bar-fill" style="height:${h}%"></div></div><span class="text-[10px] text-slate-500 font-bold">${it.l}</span></div>`;
+            }).join('');
+            const t = currentTitle();
+            const recs = histMem.filter(e => t ? e.title === t : true).slice(0, 12).reverse();
+            const svg = $('dash_spark');
+            if (recs.length >= 2) {
+                const vals = recs.map(e => e.torob || e.digi || 0);
+                const mn = Math.min.apply(null, vals), mx2 = Math.max.apply(null, vals), rg = (mx2 - mn) || 1;
+                const pts = vals.map((v, i) => ((i / (vals.length - 1) * 296 + 2).toFixed(1)) + ',' + ((58 - ((v - mn) / rg) * 52).toFixed(1))).join(' ');
+                const last = pts.split(' ').pop().split(',');
+                svg.innerHTML = `<defs><linearGradient id="dsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f5c542" stop-opacity=".55"/><stop offset="1" stop-color="#f5c542" stop-opacity="0"/></linearGradient></defs><polygon points="2,62 ${pts} 298,62" fill="url(#dsg)"/><polyline points="${pts}" fill="none" stroke="#f5c542" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${last[0]}" cy="${last[1]}" r="3.5" fill="#2dd4bf"/>`;
+            } else svg.innerHTML = '';
+            $('dash_count').textContent = recs.length ? toFa(recs.length) + ' رکورد' : '';
+            const rows = (t ? histMem.filter(e => e.title === t) : histMem).slice(0, 3);
+            $('dash_latest').innerHTML = rows.length ? rows.map(e => {
+                const d = new Date(e.t);
+                return `<div class="flex items-center justify-between text-[10px] bg-white/[.03] border border-white/10 rounded-lg px-2.5 py-1.5"><span class="text-slate-400 truncate ml-2">${escapeHtml(e.title)}</span><span class="text-slate-500 shrink-0" style="font-variant-numeric:tabular-nums">${d.toLocaleDateString('fa-IR', { day: 'numeric', month: 'numeric' })} • ${fmtCompact(e.torob || e.digi)}</span></div>`;
+            }).join('') : '<p class="text-[10px] text-slate-600 text-center py-1">با اولین تحلیل، داشبورد جان می‌گیرد ✨</p>';
         }
 
         /* ═════════ تاریخچه روند قیمت ═════════ */
@@ -1326,7 +1448,7 @@
             $('card-torob').classList.toggle('picked', !!e.torob && e.chosen === e.torob);
             const badge = $('market_status_badge');
             badge.textContent = '✓ بازیابی از تاریخچه'; badge.className = 'chip bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
-            updateMargins(); closeHistory();
+            updateMargins(); renderDashboard(); closeHistory();
             toast('قیمت‌های تاریخچه به فرم منتقل شد.', 'success');
         }
         function delHistEntry(ts) { histMem = histMem.filter(e => e.t !== ts); saveHist(); renderHistory(); toast('رکورد حذف شد.', 'info'); }
@@ -1354,7 +1476,7 @@
             toast('در حال ثبت نهایی در دیتابیس میلانو...', 'info');
         });
 
-        loadSet(); loadHist(); updateHistBadge();
+        loadSet(); loadHist(); updateHistBadge(); renderDashboard();
         document.querySelectorAll('#settings_modal input, #settings_modal select').forEach(el => {
             el.addEventListener('input', readSettings);
             el.addEventListener('change', readSettings);
