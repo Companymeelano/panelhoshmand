@@ -214,6 +214,17 @@
         .settings-crown .fa-gear{ color:#f5c542; font-size:.95rem; animation:gearspin 7s linear infinite;
             filter:drop-shadow(0 0 6px rgba(245,197,66,.8)); }
         @keyframes gearspin{ to{ transform:rotate(360deg); } }
+        .settings-crown{ position:relative; }
+        .db-dot-head{ position:absolute; top:.3rem; left:.8rem; width:.55rem; height:.55rem; border-radius:99px; background:#64748b; box-shadow:0 0 0 3px rgba(0,0,0,.35); }
+        .db-dot-head.on{ background:#34d399; box-shadow:0 0 10px 2px rgba(52,211,153,.85); }
+        .db-dot-head.off{ background:#f87171; box-shadow:0 0 10px 2px rgba(248,113,113,.7); }
+        .db-pct{ font-size:2.4rem; font-weight:900; line-height:1.2; color:transparent; background:linear-gradient(135deg,#5eead4,#f5c542); -webkit-background-clip:text; background-clip:text; }
+        .db-bar{ height:.85rem; border-radius:99px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); overflow:hidden; }
+        .db-bar > div{ height:100%; width:0%; border-radius:99px; background:linear-gradient(90deg,#2dd4bf,#f5c542); box-shadow:0 0 18px rgba(45,212,191,.7); transition:width .45s ease; }
+        .db-log{ max-height:11rem; overflow-y:auto; }
+        .db-log .ok{ color:#6ee7b7; }
+        .db-log .bad{ color:#fca5a5; }
+        .db-log .run{ color:#fcd34d; }
         .settings-crown .crown-dot{ width:.45rem; height:.45rem; border-radius:99px; background:#f5c542;
             box-shadow:0 0 8px 2px rgba(245,197,66,.7); }
 
@@ -328,7 +339,7 @@
                         </div>
                     </div>
                     <div class="flex items-center justify-center">
-                        <button type="button" onclick="openSettings()" class="btn settings-crown" aria-label="تنظیمات هوشمند">
+                        <button type="button" onclick="openSettings()" class="btn settings-crown" aria-label="تنظیمات هوشمند"><span id="db_dot_head" class="db-dot-head"></span>
                             <span class="crown-dot"></span>
                             <i class="fa-solid fa-gear"></i>
                             <span>تنظیمات هوشمند</span>
@@ -519,6 +530,10 @@
                         <div id="profit_hint" class="flex items-center gap-2 text-[11px] md:text-xs text-slate-300 bg-white/[.04] border border-white/10 rounded-xl px-4 py-3">
                             <i class="fa-solid fa-chart-line text-teal-300"></i><span>حاشیه سود پس از ورود قیمت‌ها محاسبه می‌شود.</span>
                         </div>
+                        <button type="button" onclick="advisePrice()" class="btn btn-teal w-full py-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-user-tie"></i> پیشنهاد مشاور قیمت
+                        </button>
+                        <div id="advisor_line" class="hidden text-[11px] md:text-xs text-slate-300 bg-teal-500/[.07] border border-teal-500/25 rounded-xl px-4 py-3 leading-relaxed"></div>
                         <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
                             تأیید قیمت‌ها و ادامه به استودیو تصویر <i class="fa-solid fa-arrow-left"></i>
                         </button>
@@ -626,6 +641,10 @@
                                 <label class="lbl" for="brief_extra"><i class="fa-solid fa-pen-ruler text-violet-300 ml-1"></i>دستور ویژه (اختیاری)</label>
                                 <input type="text" id="brief_extra" class="inp !text-xs" placeholder="جزئیات اضافه برای صحنه...">
                             </div>
+                            <div class="sm:col-span-2">
+                                <label class="lbl" for="brief_style_lock"><i class="fa-solid fa-lock text-amber-300 ml-1"></i>قفل سبک فروشگاه (همیشه به تصویر اضافه می‌شود)</label>
+                                <input type="text" id="brief_style_lock" class="inp !text-xs" placeholder="مثلاً: تم طلایی و سرمه‌ای، ذرات نور شناور">
+                            </div>
                         </div>
                         <button type="button" onclick="resetFusion()" class="w-full text-center text-[11px] text-slate-500 hover:text-amber-300 transition py-1"><i class="fa-solid fa-rotate-left ml-1"></i>بازگردانی حدس‌های هوش مصنوعی</button>
                         <div class="flex flex-col items-center border-2 border-dashed border-white/15 rounded-2xl p-5 bg-[#010b18]/60">
@@ -708,6 +727,19 @@
     </div>
 
     <!-- مودال تاریخچه -->
+    <div id="db_init_modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80"></div>
+        <div class="relative w-full max-w-md bg-[#04122a] border border-teal-500/30 rounded-3xl p-6 text-center" style="box-shadow:0 0 60px -12px rgba(45,212,191,.45)">
+            <div class="w-14 h-14 mx-auto mb-2 rounded-2xl flex items-center justify-center bg-gradient-to-br from-teal-500/25 to-amber-500/20 border border-teal-500/40">
+                <i class="fa-solid fa-database text-2xl text-teal-300"></i>
+            </div>
+            <h3 class="font-extrabold text-sm text-slate-100 mb-1">ساخت جداول دیتابیس</h3>
+            <div id="db_init_pct" class="db-pct" style="font-variant-numeric:tabular-nums">۰٪</div>
+            <div class="db-bar my-3"><div id="db_init_bar"></div></div>
+            <div id="db_init_log" class="db-log text-right text-[11px] leading-loose bg-black/30 border border-white/10 rounded-2xl px-3.5 py-3 space-y-1"></div>
+            <button type="button" id="db_init_close" onclick="closeDbInit()" class="hidden btn btn-emerald w-full py-3 rounded-xl text-xs mt-4"><i class="fa-solid fa-check ml-1"></i> تمام شد — بستن</button>
+        </div>
+    </div>
     <div id="history_modal" class="fixed inset-0 z-[70] hidden items-end md:items-center justify-center">
         <div class="absolute inset-0 bg-black/70" onclick="closeHistory()"></div>
         <div class="sheet-anim relative w-full md:max-w-lg bg-[#04122a] border border-white/15 rounded-t-3xl md:rounded-3xl p-5 max-h-[88vh] overflow-y-auto">
@@ -731,6 +763,7 @@
                 <button type="button" id="hist_filter_btn" onclick="histFilterMine=!histFilterMine;renderHistory()" class="btn btn-ghost flex-1 py-2.5 rounded-xl text-[11px]"></button>
                 <button type="button" onclick="clearHist()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-[11px] !text-red-300">پاک‌سازی</button>
                 <button type="button" onclick="exportHistCSV()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-[11px] !text-emerald-300"><i class="fa-solid fa-file-excel ml-1"></i>اکسل</button>
+                <button type="button" onclick="syncMysql()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-[11px] !text-teal-300"><i class="fa-solid fa-cloud-arrow-down ml-1"></i>همگام‌سازی</button>
 
             </div>
             <div id="hist_list" class="space-y-2"></div>
@@ -767,6 +800,40 @@
                 </div>
             </div>
 
+            <div class="card rounded-2xl p-4 mb-3">
+                <div class="flex items-center justify-between mb-1 flex-wrap gap-2">
+                    <h4 class="font-extrabold text-xs text-slate-200"><i class="fa-solid fa-database text-amber-300 ml-1.5"></i>دیتابیس MySQL هاست</h4>
+                    <span class="flex items-center gap-1.5 text-[10px] text-slate-400"><span id="dot_mysql" class="sdot"></span><span id="dot_mysql_txt">تست نشده</span></span>
+                </div>
+                <p class="text-[10px] text-slate-500 mb-3 leading-relaxed">فایل <span dir="ltr" class="text-teal-300">api.php</span> را کنار همین پنل روی هاست آپلود کنید؛ بعد مشخصات زیر را وارد و «ساخت جداول» را بزنید. رمز فقط در همین دستگاه می‌ماند.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="sm:col-span-2">
+                        <label class="lbl" for="my_api">آدرس فایل api.php روی هاست</label>
+                        <input type="url" id="my_api" dir="ltr" class="inp !text-xs text-left" placeholder="https://ainetmee.ir/universal/api.php">
+                    </div>
+                    <div>
+                        <label class="lbl" for="my_host">هاست دیتابیس</label>
+                        <input type="text" id="my_host" dir="ltr" class="inp !text-xs text-left" placeholder="localhost">
+                    </div>
+                    <div>
+                        <label class="lbl" for="my_name">نام دیتابیس</label>
+                        <input type="text" id="my_name" dir="ltr" class="inp !text-xs text-left" placeholder="dbname">
+                    </div>
+                    <div>
+                        <label class="lbl" for="my_user">نام کاربری</label>
+                        <input type="text" id="my_user" dir="ltr" class="inp !text-xs text-left" placeholder="dbuser">
+                    </div>
+                    <div>
+                        <label class="lbl" for="my_pass">رمز دیتابیس</label>
+                        <input type="password" id="my_pass" dir="ltr" class="inp !text-xs text-left" placeholder="••••••••" autocomplete="off">
+                    </div>
+                </div>
+                <div id="mysql_status_line" class="text-[10px] text-slate-500 mt-2.5 leading-relaxed">وضعیت: هنوز بررسی نشده است.</div>
+                <div class="flex gap-2 mt-3">
+                    <button type="button" onclick="testMysql()" class="btn btn-ghost flex-1 py-3 rounded-xl text-xs flex items-center justify-center gap-1.5"><i class="fa-solid fa-stethoscope"></i> تست اتصال</button>
+                    <button type="button" onclick="buildMysqlTables()" class="btn btn-emerald flex-[1.4] py-3 rounded-xl text-xs flex items-center justify-center gap-1.5"><i class="fa-solid fa-table-columns"></i> ساخت جداول</button>
+                </div>
+            </div>
             <div class="card rounded-2xl p-4 mb-3">
                 <h4 class="font-extrabold text-xs text-slate-200 mb-1"><i class="fa-solid fa-brain text-amber-300 ml-1.5"></i>کلیدهای هوش مصنوعی + تست سلامت</h4>
                 <p class="text-[10px] text-slate-500 mb-3">هر کدام را دارید وارد کنید؛ در صورت توقف یکی، جایگزین خودکار فعال می‌شود.</p>
@@ -855,7 +922,8 @@
                 <p class="text-[10px] text-slate-500 mt-2.5 leading-relaxed">حالت خودکار: قوی‌ترین کلید موجود انتخاب می‌شود و در صورت خطا، جایگزین بعدی خودکار وارد می‌شود.</p>
             </div>
 
-            <div class="flex gap-2">
+                        <div class="text-center text-[10px] text-slate-600 mb-2" style="font-variant-numeric:tabular-nums">Meelano Panel v2.2.0 • MySQL ready</div>
+<div class="flex gap-2">
                 <button type="button" onclick="resetSettings()" class="btn btn-ghost flex-1 py-3 rounded-xl text-xs"><i class="fa-solid fa-trash-can ml-1"></i> بازنشانی تنظیمات</button>
                 <button type="button" onclick="closeSettings()" class="btn btn-emerald flex-[1.6] py-3 rounded-xl text-xs"><i class="fa-solid fa-check ml-1"></i> ذخیره و بستن</button>
             </div>
@@ -1043,9 +1111,9 @@
             SET.routing.analysis = $('routing_analysis').value; SET.routing.image = $('routing_image').value;
             saveSet();
         }
-        function openSettings() { renderSettings(); const m = $('settings_modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden'; }
-        function closeSettings() { readSettings(); const m = $('settings_modal'); m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = ''; toast('تنظیمات ذخیره شد.', 'success'); }
-        function resetSettings() { try { localStorage.removeItem(SET_KEY); } catch (e) {} location.reload(); }
+        function openSettings() { renderSettings(); renderMysqlForm(); const m = $('settings_modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+        function closeSettings() { readSettings(); readMysqlForm(); const m = $('settings_modal'); m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = ''; toast('تنظیمات ذخیره شد.', 'success'); }
+        function resetSettings() { try { localStorage.removeItem(SET_KEY); try { localStorage.removeItem(MYSQL_KEY); } catch (e) {} } catch (e) {} location.reload(); }
         function setDot(id, state, txt) {
             const d = $(id); if (!d) return;
             d.classList.remove('ok', 'bad', 'wait');
@@ -1345,9 +1413,11 @@
                 const prof = $('brief_profession').value.trim() || 'مصرف عمومی';
                 const mockKey = $('brief_mockup').value, lightKey = $('brief_lighting').value, angleKey = $('brief_angle').value;
                 const palette = $('brief_palette').value.trim(), extra = $('brief_extra').value.trim();
+                let stylock = '';
+                try { const sli = $('brief_style_lock'); stylock = (sli.value || '').trim(); localStorage.setItem('meelano_stylelock', stylock); } catch (e) {}
                 const tier = Math.max(rawDigiPrice, rawTorobPrice);
                 const tierEN = tier >= 100000000 ? 'ultra-premium flagship luxury' : tier >= 10000000 ? 'premium high-end' : 'clean modern affordable';
-                const promptEN = '"' + bp + '" — ' + group + ' for ' + prof + ', ' + (MOCKUP_EN[mockKey] || MOCKUP_EN['studio-lux']) + ', ' + (LIGHTING_EN[lightKey] || LIGHTING_EN.dramatic) + ', palette of ' + (colorsToEN(palette) || 'gold and navy') + ', ' + (ANGLE_EN[angleKey] || ANGLE_EN['three-quarter']) + (extra ? ', ' + extra : '') + ', featuring the exact product "' + bp + '", ultra detailed advertising photograph, luxurious 3D render, floating golden particles, centered composition, no text, no watermark, ' + tierEN;
+                const promptEN = '"' + bp + '" — ' + group + ' for ' + prof + ', ' + (MOCKUP_EN[mockKey] || MOCKUP_EN['studio-lux']) + ', ' + (LIGHTING_EN[lightKey] || LIGHTING_EN.dramatic) + ', palette of ' + (colorsToEN(palette) || 'gold and navy') + ', ' + (ANGLE_EN[angleKey] || ANGLE_EN['three-quarter']) + (extra ? ', ' + extra : '') + (stylock ? ', signature style: ' + stylock : '') + ', featuring the exact product "' + bp + '", ultra detailed advertising photograph, luxurious 3D render, floating golden particles, centered composition, no text, no watermark, ' + tierEN;
                 await new Promise(r => setTimeout(r, 250)); aiThrowIfCancelled();
                 aiStage(0, 'done');
                 aiStage(1, 'active');
@@ -1586,6 +1656,176 @@
         }
 
         /* ═════════ تاریخچه روند قیمت ═════════ */
+        /* ═════════ دیتابیس MySQL هاست (api.php) ═════════ */
+        const MYSQL_KEY = 'meelano_mysql_v1';
+        let MYSQL = { api: 'https://ainetmee.ir/universal/api.php', host: 'localhost', name: 'ainetmee_univer', user: 'ainetmee_univeruser', pass: '', ready: false, lastSync: 0 };
+        function loadMysql() { try { const s = JSON.parse(localStorage.getItem(MYSQL_KEY)); if (s) MYSQL = Object.assign(MYSQL, s); } catch (e) {} }
+        function saveMysql() { try { const c = Object.assign({}, MYSQL); localStorage.setItem(MYSQL_KEY, JSON.stringify(c)); } catch (e) {} }
+        function readMysqlForm() {
+            const g = (id) => { const el = $(id); return el ? el.value.trim() : ''; };
+            MYSQL.api = g('my_api') || MYSQL.api; MYSQL.host = g('my_host') || 'localhost';
+            MYSQL.name = g('my_name'); MYSQL.user = g('my_user'); MYSQL.pass = g('my_pass');
+            saveMysql();
+        }
+        function renderMysqlForm() {
+            const s = (id, v) => { const el = $(id); if (el) el.value = v || ''; };
+            s('my_api', MYSQL.api); s('my_host', MYSQL.host); s('my_name', MYSQL.name); s('my_user', MYSQL.user); s('my_pass', MYSQL.pass);
+        }
+        async function mysqlPost(action, extra, ms) {
+            const payload = Object.assign({ action: action, host: MYSQL.host, name: MYSQL.name, user: MYSQL.user, pass: MYSQL.pass }, extra || {});
+            const r = await fetchTimeout(MYSQL.api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }, ms || 15000);
+            return await r.json();
+        }
+        function setHeadDot(st) {
+            const d = $('db_dot_head'); if (!d) return;
+            d.classList.remove('on', 'off');
+            if (st === 'on' || st === 'off') d.classList.add(st);
+        }
+        async function testMysql(silent) {
+            readMysqlForm();
+            if (!MYSQL.api) { if (!silent) toast('اول آدرس api.php را وارد کنید.', 'error'); return false; }
+            setDot('dot_mysql', 'wait', 'در حال تست...');
+            const t0 = Date.now();
+            try {
+                const j = await mysqlPost('status', {}, 12000);
+                if (j && j.ok) {
+                    MYSQL.ready = true; saveMysql();
+                    const ms = Date.now() - t0;
+                    setDot('dot_mysql', 'ok', 'متصل ✓');
+                    const sl = $('mysql_status_line');
+                    if (sl) sl.innerHTML = 'وضعیت: <b class="text-emerald-300">متصل و سالم ✓</b> • MySQL <span dir="ltr">' + escapeHtml(String(j.mysql || '?')).split('-')[0] + '</span> • ' + toFa((j.tables || []).length) + ' جدول • ' + toFa(ms) + 'ms' + (j.source === 'server' ? ' • کانفیگ سرور' : '');
+                    setHeadDot('on');
+                    if (!silent) toast('اتصال به دیتابیس برقرار و سالم است.', 'success');
+                    return j;
+                }
+                throw new Error((j && j.error) || 'bad');
+            } catch (e) {
+                MYSQL.ready = false;
+                setDot('dot_mysql', 'bad', 'ناموفق');
+                const sl = $('mysql_status_line');
+                if (sl) sl.innerHTML = 'وضعیت: <b class="text-red-300">ناموفق ✗</b> • ' + escapeHtml(e && e.message && e.message !== 'bad' ? e.message : 'آدرس api.php یا مشخصات دیتابیس را بررسی کنید.');
+                setHeadDot('off');
+                if (!silent) toast('اتصال به دیتابیس ناموفق بود.', 'error');
+                return false;
+            }
+        }
+        const MYSQL_TABLES = [{ k: 'products', label: 'محصولات' }, { k: 'price_history', label: 'تاریخچه قیمت' }, { k: 'app_meta', label: 'تنظیمات ابری' }];
+        function dbLog(html, cls) {
+            const box = $('db_init_log'); if (!box) return;
+            const d = document.createElement('div');
+            if (cls) d.className = cls;
+            d.innerHTML = html;
+            box.appendChild(d); box.scrollTop = box.scrollHeight;
+        }
+        function dbBar(pct) {
+            const b = $('db_init_bar'), p = $('db_init_pct');
+            if (b) b.style.width = Math.round(pct * 100) + '%';
+            if (p) p.textContent = toFa(Math.round(pct * 100)) + '٪';
+        }
+        function openDbInit() {
+            const m = $('db_init_modal'); if (!m) return;
+            $('db_init_log').innerHTML = ''; dbBar(0);
+            $('db_init_close').classList.add('hidden');
+            m.classList.remove('hidden'); m.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeDbInit() {
+            const m = $('db_init_modal'); if (!m) return;
+            m.classList.add('hidden'); m.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+        async function buildMysqlTables() {
+            readMysqlForm();
+            if (!MYSQL.api) { toast('اول آدرس api.php را وارد کنید.', 'error'); return; }
+            openDbInit();
+            dbLog('... شروع بررسی اتصال به هاست', 'run');
+            const st = await testMysql(true);
+            if (!st) { dbBar(0.05); dbLog('✗ اتصال برقرار نشد؛ مشخصات را اصلاح و دوباره تلاش کنید.', 'bad'); $('db_init_close').classList.remove('hidden'); return; }
+            dbLog('✓ اتصال به MySQL برقرار شد', 'ok'); dbBar(0.12);
+            let okCount = 0;
+            for (let i = 0; i < MYSQL_TABLES.length; i++) {
+                const tb = MYSQL_TABLES[i];
+                dbLog('... ساخت جدول «' + tb.label + '»', 'run');
+                try {
+                    const j = await mysqlPost('init', { table: tb.k }, 20000);
+                    if (j && j.ok) { okCount++; dbLog('✓ جدول «' + tb.label + '» آماده شد', 'ok'); }
+                    else dbLog('✗ خطا در ساخت «' + tb.label + '»', 'bad');
+                } catch (e) { dbLog('✗ خطا در ساخت «' + tb.label + '»', 'bad'); }
+                dbBar(0.12 + 0.76 * (i + 1) / MYSQL_TABLES.length);
+                await new Promise(r => setTimeout(r, 200));
+            }
+            try {
+                const v = await mysqlPost('status', {}, 12000);
+                if (v && v.ok) dbLog('راستی‌آزمایی: ' + toFa(v.tables.length) + ' جدول روی سرور فعال است', 'ok');
+            } catch (e) {}
+            dbBar(1);
+            if (okCount === MYSQL_TABLES.length) {
+                MYSQL.ready = true; saveMysql();
+                dbLog('🎉 همه جداول بدون خطا ساخته شدند؛ برنامه آماده ذخیره ابری است', 'ok');
+                toast('جداول دیتابیس با موفقیت ساخته شدند.', 'success');
+            } else {
+                dbLog('⚠ برخی جداول ساخته نشدند؛ لاگ هاست را بررسی کنید', 'bad');
+                toast('ساخت کامل نشد؛ دوباره تلاش کنید.', 'error');
+            }
+            $('db_init_close').classList.remove('hidden');
+        }
+        async function syncMysql() {
+            readMysqlForm();
+            if (!MYSQL.ready) { const ok = await testMysql(true); if (!ok) { toast('اول اتصال دیتابیس را برقرار کنید.', 'error'); return; } }
+            toast('در حال همگام‌سازی ابری...', 'info');
+            try {
+                const unsynced = histMem.filter(e => e.t > (MYSQL.lastSync || 0)).slice(0, 200);
+                if (unsynced.length) await mysqlPost('push_history', { rows: unsynced }, 20000);
+                const j = await mysqlPost('pull_history', { since: 0 }, 20000);
+                if (j && j.ok && Array.isArray(j.rows)) {
+                    const map = {};
+                    histMem.concat(j.rows).forEach(e => { if (e && e.t && e.title) map[e.t + '|' + e.title] = e; });
+                    histMem = Object.values(map).sort((a, b) => b.t - a.t).slice(0, 200);
+                    saveHist(); renderDashboard();
+                    if (!$('history_modal').classList.contains('hidden')) renderHistory();
+                }
+                MYSQL.lastSync = Date.now(); saveMysql();
+                toast('همگام‌سازی ابری انجام شد.', 'success');
+            } catch (e) { toast('همگام‌سازی ناموفق بود؛ اینترنت و api را بررسی کنید.', 'error'); }
+        }
+        function saveProductRemote() {
+            try {
+                if (!MYSQL.ready || !MYSQL.api) return;
+                const v = (id) => { const el = $(id); return el ? el.value : ''; };
+                const brief = { product: v('brief_product'), group: v('brief_group'), profession: v('brief_profession'), mockup: v('brief_mockup'), lighting: v('brief_lighting'), palette: v('brief_palette'), angle: v('brief_angle'), extra: v('brief_extra') };
+                mysqlPost('save_product', { product: {
+                    title: v('product_title'), brand: v('brand_name'), barcode: v('barcode'), color: v('color'),
+                    category: ($('category_id') && $('category_id').selectedOptions[0].textContent) || '',
+                    purchase: parseNum(v('purchase_price')), floor: parseNum(v('min_sale_price')),
+                    retail: parseNum(v('sale_price_retail')), whole: parseNum(v('sale_price_wholesale')),
+                    stock: parseInt(v('stock_quantity'), 10) || 0, weight: v('weight'), length: v('length'),
+                    width: v('width'), height: v('height'), tax: v('tax_percent'),
+                    desc: v('short_description'), brief: JSON.stringify(brief), image_webp: v('product_image_webp')
+                } }, 20000).catch(() => {});
+            } catch (e) {}
+        }
+        async function autoMysqlCheck() {
+            renderMysqlForm();
+            if (!MYSQL.api) { setHeadDot(''); return; }
+            try {
+                const j = await mysqlPost('status', {}, 9000);
+                if (j && j.ok) {
+                    MYSQL.ready = true; setHeadDot('on');
+                    setDot('dot_mysql', 'ok', 'متصل ✓ (خودکار)');
+                    try {
+                        const p = await mysqlPost('pull_history', { since: MYSQL.lastSync || 0 }, 15000);
+                        if (p && p.ok && Array.isArray(p.rows) && p.rows.length) {
+                            const map = {};
+                            histMem.concat(p.rows).forEach(e => { if (e && e.t && e.title) map[e.t + '|' + e.title] = e; });
+                            histMem = Object.values(map).sort((a, b) => b.t - a.t).slice(0, 200);
+                            saveHist(); renderDashboard();
+                        }
+                        MYSQL.lastSync = Date.now();
+                    } catch (e) {}
+                } else setHeadDot('off');
+            } catch (e) { setHeadDot('off'); }
+            saveMysql();
+        }
         const HIST_KEY = 'meelano_price_history_v1';
         let histMem = [];
         let histFilterMine = false;
@@ -1728,7 +1968,33 @@
         function closeHistory() { const m = $('history_modal'); m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = ''; }
 
         /* ═════════ ثبت فرم ═════════ */
+        /* ═════════ مشاور قیمت (قانون حاشیه + مالیات) ═════════ */
+        function advisePrice() {
+            const buy = parseNum($('purchase_price').value) || 0;
+            let floor = parseNum($('min_sale_price').value) || rawTorobPrice || rawDigiPrice || 0;
+            const taxEl = $('tax_percent');
+            const tax = taxEl ? (parseFloat(taxEl.value) || 0) : 0;
+            if (!floor && !buy) { toast('اول کف بازار یا قیمت خرید را وارد کنید.', 'error'); return; }
+            if (!floor) floor = Math.round(buy * (1 + tax / 100) * 1.12);
+            const withTax = Math.round(floor * (1 + tax / 100));
+            let retail = Math.round(withTax * 1.18 / 1000) * 1000;
+            const minRetail = Math.round(buy * (1 + tax / 100) * 1.10);
+            if (buy && retail < minRetail) retail = Math.round(minRetail / 1000) * 1000;
+            const whole = Math.round(floor * 1.04 / 1000) * 1000;
+            if (!parseNum($('min_sale_price').value)) $('min_sale_price').value = fmtEN(floor);
+            $('sale_price_retail').value = fmtEN(retail);
+            $('sale_price_wholesale').value = fmtEN(whole);
+            updateMargins(); renderDashboard();
+            const box = $('advisor_line');
+            if (box) {
+                box.classList.remove('hidden');
+                const pc = buy ? toFa(Math.abs(Math.round((retail - buy) / buy * 100))) + '٪' : '—';
+                box.innerHTML = '<i class="fa-solid fa-lightbulb text-amber-300 ml-1"></i>منطق مشاور: کف ' + fmtCompact(floor) + ' + مالیات ' + toFa(tax) + '٪ + حاشیه امن ۱۸٪ → خرده <b class="text-amber-200">' + fmtCompact(retail) + '</b> (سود ' + pc + ') • عمده <b class="text-indigo-200">' + fmtCompact(whole) + '</b>';
+            }
+            toast('پیشنهاد مشاور قیمت اعمال شد.', 'success');
+        }
         $('productForm').addEventListener('submit', function (e) {
+            saveProductRemote();
             if (!this.checkValidity()) {
                 e.preventDefault();
                 const bad = this.querySelector(':invalid');
@@ -1748,6 +2014,8 @@
         });
 
         loadSet(); loadHist(); updateHistBadge(); renderDashboard();
+        loadMysql(); renderMysqlForm(); autoMysqlCheck();
+        try { const sl2 = localStorage.getItem('meelano_stylelock'); if (sl2 && $('brief_style_lock')) $('brief_style_lock').value = sl2; } catch (e) {}
         document.querySelectorAll('#settings_modal input, #settings_modal select').forEach(el => {
             el.addEventListener('input', readSettings);
             el.addEventListener('change', readSettings);

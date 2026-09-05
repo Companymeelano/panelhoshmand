@@ -1,0 +1,7 @@
+# Local server secrets — NEVER commit
+db_config.php
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
