@@ -19,36 +19,38 @@
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://image.pollinations.ai" crossorigin>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root{
             --gold-1:#fde68a; --gold-2:#f5c542; --gold-3:#b8860b;
-            --ink:#021a33; --ink-2:#03142a;
+            --ink:#021a33;
             --teal:#2dd4bf;
         }
         *{ -webkit-tap-highlight-color: transparent; }
-        html{ scroll-behavior:smooth; }
+        html{ scroll-behavior:smooth; -webkit-overflow-scrolling:touch; }
         body{
             font-family:'Vazirmatn',system-ui,sans-serif;
             background:#010b18;
             color:#f8fafc;
             min-height:100vh;
+            overscroll-behavior-y:contain;
         }
         ::-webkit-scrollbar{ width:10px; height:10px; }
         ::-webkit-scrollbar-track{ background:#03142a; }
         ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,#b8860b,#f5c542); border-radius:99px; border:2px solid #03142a; }
         ::selection{ background:rgba(245,197,66,.35); }
 
-        /* ===== پس‌زمینه زنده ===== */
+        /* ===== پس‌زمینه ===== */
         .bg-stage{ position:fixed; inset:0; z-index:-2; overflow:hidden; background:
             radial-gradient(1100px 500px at 85% -5%, rgba(245,197,66,.12), transparent 60%),
             radial-gradient(900px 500px at 10% 110%, rgba(45,212,191,.10), transparent 60%),
             radial-gradient(700px 420px at 50% 45%, rgba(56,89,199,.14), transparent 65%),
             linear-gradient(180deg,#021a33 0%, #010b18 70%);
         }
-        .orb{ position:absolute; border-radius:50%; filter:blur(90px); opacity:.5; animation:drift 14s ease-in-out infinite alternate; }
+        .orb{ position:absolute; border-radius:50%; filter:blur(90px); opacity:.5; animation:drift 14s ease-in-out infinite alternate; will-change:transform; }
         .orb-gold{ width:420px; height:420px; top:-140px; left:-120px; background:radial-gradient(circle,rgba(245,197,66,.35),transparent 70%); }
         .orb-teal{ width:380px; height:380px; bottom:-140px; right:-100px; background:radial-gradient(circle,rgba(45,212,191,.28),transparent 70%); animation-delay:-6s; }
         .orb-indigo{ width:300px; height:300px; top:40%; right:30%; background:radial-gradient(circle,rgba(99,102,241,.30),transparent 70%); animation-delay:-3s; }
@@ -57,6 +59,7 @@
             background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
             background-size:44px 44px;
             mask-image:radial-gradient(ellipse 90% 70% at 50% 20%, black 30%, transparent 75%);
+            -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 20%, black 30%, transparent 75%);
         }
         .noise{ position:absolute; inset:0; opacity:.05; mix-blend-mode:overlay;
             background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
@@ -84,11 +87,30 @@
         }
         .card:hover{ transform:translateY(-3px); border-color:rgba(245,197,66,.35); box-shadow:0 24px 44px -14px rgba(0,0,0,.7), 0 0 0 1px rgba(245,197,66,.12), 0 0 34px -8px rgba(245,197,66,.25); }
         .sec-num{
-            font-family:'Vazirmatn'; font-weight:900; font-size:.72rem; line-height:1;
+            font-weight:900; font-size:.72rem; line-height:1;
             background:linear-gradient(135deg,#f5c542,#b8860b);
             color:#03142a; border-radius:.7rem; padding:.45rem .6rem;
             box-shadow:0 6px 16px -4px rgba(245,197,66,.55), inset 0 1px 0 rgba(255,255,255,.5);
+            white-space:nowrap;
         }
+
+        /* ===== ویزارد مرحله‌ای ===== */
+        .wstep{ content-visibility:auto; contain-intrinsic-size:auto 620px; }
+        .wstep.hidden-step{ display:none; content-visibility:hidden; }
+        .wstep.active{ animation:stepIn .38s cubic-bezier(.2,.7,.3,1); }
+        @keyframes stepIn{ from{ opacity:0; transform:translateY(12px);} to{ opacity:1; transform:none;} }
+        .wdot{ display:flex; flex-direction:column; align-items:center; gap:.3rem; min-width:3.2rem; background:none; border:0; cursor:pointer; padding:0; }
+        .wdot .bub{ width:2.3rem; height:2.3rem; border-radius:.9rem; display:flex; align-items:center; justify-content:center;
+            font-weight:900; font-size:.8rem; background:rgba(148,163,184,.1); border:1px solid rgba(148,163,184,.25); color:#94a3b8;
+            transition:all .3s; }
+        .wdot .cap{ font-size:.62rem; font-weight:700; color:#64748b; white-space:nowrap; }
+        .wdot.done .bub{ background:rgba(16,185,129,.18); border-color:rgba(52,211,153,.5); color:#6ee7b7; }
+        .wdot.done .cap{ color:#6ee7b7; }
+        .wdot.now .bub{ background:linear-gradient(135deg,#fde68a,#d99a16); border-color:transparent; color:#03142a;
+            box-shadow:0 0 0 4px rgba(245,197,66,.18), 0 8px 20px -6px rgba(245,197,66,.6); }
+        .wdot.now .cap{ color:#f5c542; }
+        .wline{ flex:1; height:2px; min-width:.6rem; border-radius:99px; background:rgba(148,163,184,.2); margin-bottom:1.15rem; overflow:hidden; }
+        .wline > span{ display:block; height:100%; width:0; background:linear-gradient(90deg,#f5c542,#2dd4bf); border-radius:99px; transition:width .4s ease; }
 
         /* ===== ورودی‌ها ===== */
         .lbl{ display:block; font-size:.8rem; font-weight:600; color:#cbd5e1; margin-bottom:.45rem; }
@@ -99,8 +121,8 @@
         }
         .inp::placeholder{ color:#475569; }
         .inp:focus{ border-color:var(--gold-2); box-shadow:0 0 0 3px rgba(245,197,66,.18), 0 0 26px -4px rgba(245,197,66,.45); background:rgba(1,10,24,.95); }
+        .inp.err{ border-color:#f87171 !important; box-shadow:0 0 0 3px rgba(248,113,113,.18) !important; }
         select.inp option{ background:#03142a; }
-        input[type=number].inp{ font-family:'Vazirmatn'; }
 
         /* ===== دکمه‌ها ===== */
         .btn{ position:relative; overflow:hidden; isolation:isolate; transition:transform .2s, filter .25s, box-shadow .25s; cursor:pointer; }
@@ -127,7 +149,6 @@
             font-variant-numeric:tabular-nums; font-weight:900; letter-spacing:-.02em;
             background:linear-gradient(180deg,#fff 20%,#f5c542 90%);
             -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-            text-shadow:0 8px 24px rgba(0,0,0,.45);
         }
         .market-card{ transition:transform .3s, box-shadow .3s, border-color .3s; }
         .market-card:hover{ transform:translateY(-3px); }
@@ -140,28 +161,18 @@
         .float-slow{ animation:floaty 5s ease-in-out infinite; }
         @keyframes floaty{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-8px);} }
 
-        /* ===== لودر سه‌بعدی ===== */
+        /* ===== لودر ===== */
         @keyframes rotate3dSphere{ 0%{ transform:rotateX(0) rotateY(0);} 50%{ transform:rotateX(180deg) rotateY(180deg);} 100%{ transform:rotateX(360deg) rotateY(360deg);} }
         .sphere-3d-loader{ animation:rotate3dSphere 2.6s infinite linear; transform-style:preserve-3d; }
         .shimmer{ position:relative; overflow:hidden; }
         .shimmer::after{ content:""; position:absolute; inset:0; background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%); animation:shim 1.8s infinite; }
         @keyframes shim{ from{ transform:translateX(100%);} to{ transform:translateX(-100%);} }
 
-        /* ===== ظاهرشونده اسکرولی ===== */
-        .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
-        .reveal.visible{ opacity:1; transform:none; }
-
-        /* ===== مراحل ===== */
-        .step-dot{ width:2.4rem; height:2.4rem; border-radius:1rem; display:flex; align-items:center; justify-content:center;
-            background:rgba(245,197,66,.1); border:1px solid rgba(245,197,66,.3); color:#f5c542; font-weight:900;
-            box-shadow:inset 0 1px 0 rgba(255,255,255,.08); }
-        .step-line{ flex:1; height:2px; border-radius:99px; background:linear-gradient(90deg,rgba(245,197,66,.5),rgba(45,212,191,.4)); opacity:.6; }
-
         /* ===== تست‌ها ===== */
-        #toast_box{ position:fixed; bottom:5.5rem; right:50%; transform:translateX(50%); z-index:80; display:flex; flex-direction:column; gap:.6rem; width:min(92vw,26rem); }
+        #toast_box{ position:fixed; bottom:6.5rem; right:50%; transform:translateX(50%); z-index:80; display:flex; flex-direction:column; gap:.6rem; width:min(92vw,26rem); }
         @media(min-width:768px){ #toast_box{ bottom:2rem; } }
         .toast{ display:flex; align-items:center; gap:.7rem; padding:.85rem 1rem; border-radius:1rem; font-size:.82rem; font-weight:600;
-            background:rgba(3,18,38,.92); border:1px solid rgba(148,163,184,.25); backdrop-filter:blur(12px);
+            background:rgba(3,18,38,.94); border:1px solid rgba(148,163,184,.25);
             box-shadow:0 18px 40px -12px rgba(0,0,0,.7); animation:toastIn .35s cubic-bezier(.2,.9,.3,1.2); }
         .toast.out{ animation:toastOut .3s forwards; }
         @keyframes toastIn{ from{ opacity:0; transform:translateY(14px) scale(.96);} }
@@ -169,8 +180,31 @@
 
         .logo-glow{ box-shadow:0 0 0 2px rgba(245,197,66,.4), 0 0 30px -2px rgba(245,197,66,.65), 0 14px 30px -10px rgba(0,0,0,.8); }
         .chip{ display:inline-flex; align-items:center; gap:.4rem; padding:.4rem .8rem; border-radius:99px; font-size:.7rem; font-weight:700; border:1px solid; }
-        .safe-bottom{ padding-bottom:calc(5.2rem + env(safe-area-inset-bottom)); }
-        @media(min-width:768px){ .safe-bottom{ padding-bottom:2rem; } }
+        .safe-bottom{ padding-bottom:calc(7rem + env(safe-area-inset-bottom)); }
+
+        #wizard_nav{ transform:translateZ(0); }
+
+        /* ===== بهینه‌سازی موبایل: رفع هنگ اسکرول ===== */
+        @media (max-width:768px){
+            .glass, .card{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+                background:linear-gradient(160deg,#0d2547 0%,#04122a 100%); }
+            .card{ box-shadow:0 8px 18px -10px rgba(0,0,0,.7); }
+            .card:hover{ transform:none; box-shadow:0 8px 18px -10px rgba(0,0,0,.7); }
+            .orb{ animation:none !important; filter:blur(60px); opacity:.32; }
+            .orb-indigo{ display:none; }
+            .noise{ display:none; }
+            .grid-bg{ mask-image:none; -webkit-mask-image:none; background-size:56px 56px; opacity:.55; }
+            .btn::after{ display:none; }
+            .float-slow{ animation:none; }
+            .shimmer::after{ display:none; }
+            .market-card:hover{ transform:none; }
+            .wstep.active{ animation:none; }
+            #toast_box{ backdrop-filter:none; }
+            .toast{ backdrop-filter:none; }
+        }
+        @media (prefers-reduced-motion:reduce){
+            *, *::before, *::after{ animation:none !important; transition:none !important; }
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -188,7 +222,7 @@
     <div id="toast_box" aria-live="polite"></div>
 
     <!-- مودال لودینگ هوش مصنوعی -->
-    <div id="ai_loading_modal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-[#010b18]/85 backdrop-blur-xl p-4">
+    <div id="ai_loading_modal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-[#010b18]/85 p-4" style="backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
         <div class="card rounded-3xl max-w-md w-full text-center p-6 md:p-8 shimmer" style="border-color:rgba(245,197,66,.4)">
             <div class="relative w-28 h-28 mx-auto mb-6 flex items-center justify-center sphere-3d-loader">
                 <div class="absolute inset-0 rounded-2xl ring-conic opacity-80 blur-[1px]"></div>
@@ -197,36 +231,35 @@
                 <div class="absolute inset-3 border-4 border-teal-400/30 rounded-full border-b-teal-300 animate-spin" style="animation-direction:reverse"></div>
                 <i class="fa-solid fa-cube text-4xl text-amber-300 relative drop-shadow-[0_0_15px_rgba(245,197,66,.9)]"></i>
             </div>
-            <h3 class="text-lg md:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-amber-200 via-yellow-400 to-teal-300 mb-2">آنالیز سخت‌گیرانه هوش مصنوعی</h3>
+            <h3 class="text-lg md:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-amber-200 via-yellow-400 to-teal-300 mb-2">آنالیز هوش مصنوعی</h3>
             <p id="ai_loading_status_text" class="text-xs text-slate-300 mb-6 leading-relaxed min-h-8">استعلام دقیق قیمت از ترب و دیجی‌کالا و ساخت پالت رنگی...</p>
             <div class="w-full bg-slate-950/80 rounded-full h-3 overflow-hidden border border-amber-500/25 p-[3px]">
-                <div id="ai_progress_bar" class="bg-gradient-to-l from-amber-300 via-yellow-400 to-teal-400 h-full rounded-full transition-all duration-300 shadow-[0_0_12px_rgba(245,197,66,.8)]" style="width:0%"></div>
+                <div id="ai_progress_bar" class="bg-gradient-to-l from-amber-300 via-yellow-400 to-teal-400 h-full rounded-full transition-all duration-300" style="width:0%"></div>
             </div>
             <span id="ai_progress_percent" class="block text-xs font-bold text-amber-300 mt-2" style="font-variant-numeric:tabular-nums">۰٪</span>
         </div>
     </div>
 
     <!-- کانتینر اصلی -->
-    <div class="max-w-6xl mx-auto px-3 sm:px-5 md:px-8 pt-5 md:pt-8 safe-bottom">
+    <div class="max-w-3xl mx-auto px-3 sm:px-5 pt-4 md:pt-8 safe-bottom">
 
         <div class="glass rounded-[1.6rem] overflow-hidden">
-            <!-- نوار طلایی بالا -->
             <div class="h-1.5 bg-gradient-to-l from-amber-300 via-yellow-500 to-teal-400"></div>
 
-            <div class="p-5 sm:p-7 md:p-10">
+            <div class="p-4 sm:p-6 md:p-8">
                 <!-- هدر -->
-                <header class="reveal flex flex-col xl:flex-row items-center justify-between gap-5 border-b border-white/10 pb-6 mb-6 text-center xl:text-right">
-                    <div class="flex items-center gap-4 flex-col sm:flex-row">
+                <header class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/10 pb-5 mb-5 text-center sm:text-right">
+                    <div class="flex items-center gap-3.5 flex-col sm:flex-row">
                         <div class="relative float-slow">
-                            <img src="icons/icon-192.png" alt="لوگوی میلانو" class="w-16 h-16 md:w-20 md:h-20 rounded-2xl logo-glow object-cover">
+                            <img src="icons/icon-192.png" alt="لوگوی میلانو" class="w-16 h-16 md:w-[4.5rem] md:h-[4.5rem] rounded-2xl logo-glow object-cover" loading="eager" decoding="async">
                             <span class="absolute -bottom-1.5 -left-1.5 text-[10px] font-black bg-gradient-to-l from-emerald-400 to-teal-500 text-emerald-950 px-2 py-0.5 rounded-lg shadow">AI</span>
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-2xl md:text-[1.7rem] font-black leading-snug text-transparent bg-clip-text bg-gradient-to-l from-amber-200 via-yellow-400 to-amber-500">
-                                پنل هوشمند مدیریت و استعلام بازار میلانو
+                            <h1 class="text-lg sm:text-xl md:text-2xl font-black leading-snug text-transparent bg-clip-text bg-gradient-to-l from-amber-200 via-yellow-400 to-amber-500">
+                                پنل هوشمند میلانو
                             </h1>
-                            <p class="text-slate-400 text-xs md:text-sm mt-1.5">انبارداری یکپارچه • تحلیل سخت‌گیرانه قیمت بازار • استودیو تصویرسازی سه‌بعدی</p>
-                            <div class="flex items-center justify-center xl:justify-start gap-2 mt-2 text-[11px] text-slate-400">
+                            <p class="text-slate-400 text-[11px] md:text-xs mt-1">مدیریت انبار • استعلام بازار • استودیو تصویر سه‌بعدی</p>
+                            <div class="flex items-center justify-center sm:justify-start gap-1.5 mt-1.5 text-[11px] text-slate-400">
                                 <i class="fa-regular fa-clock text-amber-400"></i>
                                 <span id="clock">—</span>
                             </div>
@@ -234,143 +267,147 @@
                     </div>
                     <div class="flex items-center justify-center gap-2 flex-wrap">
                         <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25"><i class="fa-solid fa-database text-[11px]"></i> meelanoi_shops</span>
-                        <span class="chip bg-teal-500/10 text-teal-300 border-teal-500/25"><i class="fa-solid fa-mobile-screen text-[11px]"></i> دسکتاپ و موبایل</span>
-                        <button type="button" id="installBtn" onclick="installApp()" class="btn btn-gold text-xs px-4 py-2.5 rounded-full flex items-center gap-2">
-                            <i class="fa-solid fa-download"></i> نصب اپ اندروید
-                        </button>
+                        <span class="chip bg-teal-500/10 text-teal-300 border-teal-500/25"><i class="fa-solid fa-bolt text-[11px]"></i> ویزارد مرحله‌ای</span>
                     </div>
                 </header>
 
-                <!-- نوار مراحل -->
-                <div class="reveal flex items-center gap-2 md:gap-3 mb-7 px-1" aria-hidden="true">
-                    <div class="flex items-center gap-2"><span class="step-dot text-xs">۱</span><span class="hidden sm:block text-[11px] font-bold text-slate-300">اطلاعات کالا</span></div>
-                    <div class="step-line"></div>
-                    <div class="flex items-center gap-2"><span class="step-dot text-xs">۲</span><span class="hidden sm:block text-[11px] font-bold text-slate-300">قیمت بازار</span></div>
-                    <div class="step-line"></div>
-                    <div class="flex items-center gap-2"><span class="step-dot text-xs">۳</span><span class="hidden sm:block text-[11px] font-bold text-slate-300">استودیو تصویر</span></div>
-                    <div class="step-line"></div>
-                    <div class="flex items-center gap-2"><span class="step-dot text-xs">۴</span><span class="hidden sm:block text-[11px] font-bold text-slate-300">ثبت نهایی</span></div>
-                </div>
+                <form id="productForm" action="save_product.php" method="POST" enctype="multipart/form-data">
 
-                <form id="productForm" action="save_product.php" method="POST" enctype="multipart/form-data" class="space-y-5 md:space-y-6">
-
-                    <!-- ۰۱ نام و برند -->
-                    <section class="reveal card p-5 md:p-6 rounded-2xl">
-                        <div class="flex items-center gap-2.5 mb-4">
-                            <span class="sec-num">۰۱</span>
-                            <h2 class="font-extrabold text-sm md:text-base text-slate-100">نام محصول و برند سازنده</h2>
+                    <!-- نوار پیشرفت ویزارد -->
+                    <div class="mb-5">
+                        <div id="wizard_dots" class="flex items-start justify-between gap-1"></div>
+                        <div class="flex items-center justify-between mt-3 text-[11px] text-slate-400">
+                            <span id="wizard_label" class="font-bold text-amber-200">مرحله ۱: اطلاعات پایه کالا</span>
+                            <span id="wizard_counter" style="font-variant-numeric:tabular-nums">۱ از ۵</span>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                        <div class="w-full bg-white/10 rounded-full h-1.5 mt-2 overflow-hidden">
+                            <div id="wizard_fill" class="bg-gradient-to-l from-amber-300 to-teal-400 h-full rounded-full transition-all duration-500" style="width:10%"></div>
+                        </div>
+                    </div>
+
+                    <!-- ═══ مرحله ۱: اطلاعات پایه ═══ -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl" data-step="0">
+                        <div class="flex items-center gap-2.5 mb-4">
+                            <span class="sec-num">گام ۱</span>
+                            <h2 class="font-extrabold text-sm md:text-base text-slate-100">اطلاعات پایه کالا</h2>
+                        </div>
+                        <div class="space-y-4">
                             <div>
                                 <label class="lbl" for="product_title">نام محصول / مدل دقیق <span class="text-red-400">*</span></label>
-                                <input type="text" id="product_title" name="title" required class="inp" placeholder="مثلاً: سرفیس پرو 9 مایکروسافت...">
+                                <input type="text" id="product_title" name="title" required class="inp" placeholder="مثلاً: سرفیس پرو 9 مایکروسافت..." autocomplete="off">
                             </div>
                             <div>
                                 <label class="lbl" for="brand_name">برند سازنده <span class="text-red-400">*</span></label>
-                                <div class="relative">
-                                    <input type="text" id="brand_name" name="brand_name" required class="inp font-bold !text-amber-200 !pl-32" placeholder="مثلاً: مایکروسافت...">
-                                    <button type="button" onclick="runPreciseAiAnalysis()" class="btn btn-gold absolute left-1.5 top-1/2 -translate-y-1/2 text-[11px] px-3.5 py-2.5 rounded-xl flex items-center gap-1.5">
-                                        <i class="fa-solid fa-wand-magic-sparkles"></i> تحلیل هوشمند AI
-                                    </button>
-                                </div>
+                                <input type="text" id="brand_name" name="brand_name" required class="inp font-bold !text-amber-200" placeholder="مثلاً: مایکروسافت..." autocomplete="off">
+                                <button type="button" onclick="runPreciseAiAnalysis()" class="btn btn-gold w-full mt-2.5 py-3 rounded-xl text-xs flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> تحلیل هوشمند AI (قیمت + رنگ + بارکد)
+                                </button>
                             </div>
-                        </div>
-                    </section>
-
-                    <!-- ۰۲ موجودی و مشخصات پایه -->
-                    <section class="reveal card p-5 md:p-6 rounded-2xl">
-                        <div class="flex items-center gap-2.5 mb-4">
-                            <span class="sec-num">۰۲</span>
-                            <h2 class="font-extrabold text-sm md:text-base text-slate-100">موجودی، بارکد و دسته‌بندی</h2>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div>
-                                <label class="lbl" for="stock_quantity">موجودی انبار <span class="text-emerald-400">*</span></label>
-                                <div class="relative">
-                                    <input type="number" id="stock_quantity" name="stock_quantity" value="15" min="0" class="inp !text-emerald-300 font-bold !pl-12" style="font-variant-numeric:tabular-nums">
-                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[11px] text-slate-500">عدد</span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="lbl" for="barcode">بارکد جهانی (GTIN)</label>
-                                <input type="text" id="barcode" name="barcode" class="inp font-mono !text-xs" style="direction:ltr;text-align:right" placeholder="Barcode...">
-                            </div>
-                            <div>
-                                <label class="lbl" for="unit">واحد شمارش</label>
-                                <input type="text" id="unit" name="unit" value="عدد" class="inp">
-                            </div>
-                            <div>
-                                <label class="lbl" for="category_id">دسته‌بندی</label>
-                                <select id="category_id" name="category_id" class="inp">
-                                    <option value="1">کالای دیجیتال و لوازم جانبی</option>
-                                    <option value="2">مواد غذایی (پارسا پخش)</option>
-                                    <option value="3">آرایشی و سلامت (دیبا طب)</option>
-                                    <option value="4">ارگانیک (ایستگاه سلامت)</option>
-                                </select>
-                            </div>
-                            <div class="sm:col-span-2 lg:col-span-4">
-                                <label class="lbl" for="color"><i class="fa-solid fa-palette text-amber-400 ml-1"></i>پالت رنگ‌بندی استخراج‌شده توسط هوش مصنوعی</label>
-                                <input type="text" id="color" name="color" class="inp font-bold !text-amber-200" placeholder="پس از تحلیل هوشمند، رنگ‌های کالا اینجا نمایش داده می‌شود...">
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- ۰۳ استعلام بازار -->
-                    <section class="reveal card p-5 md:p-6 rounded-2xl space-y-4" style="border-color:rgba(129,140,248,.3)">
-                        <div class="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
-                            <div class="flex items-center gap-2.5">
-                                <span class="sec-num">۰۳</span>
-                                <h2 class="font-extrabold text-sm md:text-base text-indigo-200"><i class="fa-solid fa-store text-indigo-400 ml-1"></i>استعلام زنده قیمت بازار</h2>
-                            </div>
-                            <span id="market_status_badge" class="chip bg-white/5 text-slate-300 border-white/15">آماده برای تحلیل هوشمند</span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div id="card-digi" class="market-card relative overflow-hidden bg-[#050f22]/90 p-5 rounded-2xl border border-red-500/30 flex items-center justify-between gap-3 shadow-lg">
-                                <div class="absolute -left-8 -top-8 w-28 h-28 bg-red-500/15 rounded-full blur-2xl"></div>
-                                <div class="flex items-center gap-3.5">
-                                    <div class="w-13 h-13 min-w-13 p-3.5 rounded-2xl badge-digi flex items-center justify-center text-white text-2xl"><i class="fa-solid fa-bag-shopping"></i></div>
-                                    <div>
-                                        <span class="block text-[11px] text-slate-400 font-medium mb-0.5">فروشگاه دیجی‌کالا</span>
-                                        <span id="digikala_price_text" class="price-num text-lg md:text-xl">۰ ریال</span>
+                            <div class="grid grid-cols-2 gap-3.5">
+                                <div>
+                                    <label class="lbl" for="stock_quantity">موجودی <span class="text-emerald-400">*</span></label>
+                                    <div class="relative">
+                                        <input type="number" id="stock_quantity" name="stock_quantity" value="15" min="0" inputmode="numeric" class="inp !text-emerald-300 font-bold !pl-11" style="font-variant-numeric:tabular-nums">
+                                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] text-slate-500">عدد</span>
                                     </div>
                                 </div>
-                                <button type="button" onclick="selectMarketPrice('digikala')" class="pick-btn btn bg-red-500/15 hover:bg-red-500/25 text-red-200 border border-red-500/40 text-[11px] font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 shrink-0">
+                                <div>
+                                    <label class="lbl" for="unit">واحد شمارش</label>
+                                    <input type="text" id="unit" name="unit" value="عدد" class="inp">
+                                </div>
+                                <div>
+                                    <label class="lbl" for="barcode">بارکد جهانی (GTIN)</label>
+                                    <input type="text" id="barcode" name="barcode" inputmode="numeric" class="inp !text-xs" style="direction:ltr;text-align:right" placeholder="Barcode...">
+                                </div>
+                                <div>
+                                    <label class="lbl" for="category_id">دسته‌بندی</label>
+                                    <select id="category_id" name="category_id" class="inp !text-xs">
+                                        <option value="1">دیجیتال و لوازم جانبی</option>
+                                        <option value="2">مواد غذایی (پارسا پخش)</option>
+                                        <option value="3">آرایشی و سلامت (دیبا طب)</option>
+                                        <option value="4">ارگانیک (ایستگاه سلامت)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="lbl" for="color"><i class="fa-solid fa-palette text-amber-400 ml-1"></i>پالت رنگ‌بندی (خودکار با AI)</label>
+                                <input type="text" id="color" name="color" class="inp font-bold !text-amber-200 !text-xs" placeholder="پس از تحلیل هوشمند پر می‌شود...">
+                            </div>
+                            <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                                تأیید و ادامه به استعلام بازار <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- ═══ مرحله ۲: استعلام بازار ═══ -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="1" style="border-color:rgba(129,140,248,.3)">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="sec-num">گام ۲</span>
+                                <h2 class="font-extrabold text-sm md:text-base text-indigo-200">استعلام هوشمند بازار</h2>
+                            </div>
+                            <span id="market_status_badge" class="chip bg-white/5 text-slate-300 border-white/15">در انتظار تحلیل</span>
+                        </div>
+
+                        <div id="market_tip" class="flex items-start gap-2 text-[11px] md:text-xs text-slate-300 bg-indigo-500/[.08] border border-indigo-500/25 rounded-xl px-3.5 py-3 leading-relaxed">
+                            <i class="fa-solid fa-circle-info mt-0.5 text-indigo-300 shrink-0"></i>
+                            <span>اگر هنوز تحلیل اجرا نشده، از گام ۱ دکمه «تحلیل هوشمند» را بزنید یا همین‌جا تحلیل مجدد بگیرید.</span>
+                        </div>
+
+                        <div class="space-y-3.5">
+                            <div id="card-digi" class="market-card relative overflow-hidden bg-[#050f22]/90 p-4 rounded-2xl border border-red-500/30 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-3 rounded-2xl badge-digi flex items-center justify-center text-white text-xl shrink-0"><i class="fa-solid fa-bag-shopping"></i></div>
+                                    <div>
+                                        <span class="block text-[11px] text-slate-400 font-medium mb-0.5">دیجی‌کالا</span>
+                                        <span id="digikala_price_text" class="price-num text-base md:text-lg">۰ ریال</span>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="selectMarketPrice('digikala')" class="pick-btn btn bg-red-500/15 hover:bg-red-500/25 text-red-200 border border-red-500/40 text-[11px] font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 shrink-0">
                                     <i class="fa-solid fa-check"></i> انتخاب
                                 </button>
                             </div>
 
-                            <div id="card-torob" class="market-card relative overflow-hidden bg-[#050f22]/90 p-5 rounded-2xl border border-orange-500/30 flex items-center justify-between gap-3 shadow-lg">
-                                <div class="absolute -left-8 -top-8 w-28 h-28 bg-orange-500/15 rounded-full blur-2xl"></div>
-                                <div class="flex items-center gap-3.5">
-                                    <div class="w-13 h-13 min-w-13 p-3.5 rounded-2xl badge-torob flex items-center justify-center text-white text-2xl"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
+                            <div id="card-torob" class="market-card relative overflow-hidden bg-[#050f22]/90 p-4 rounded-2xl border border-orange-500/30 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-3 rounded-2xl badge-torob flex items-center justify-center text-white text-xl shrink-0"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
                                     <div>
-                                        <span class="block text-[11px] text-slate-400 font-medium mb-0.5">ترب • کف قیمت بازار</span>
-                                        <span id="torob_price_text" class="price-num text-lg md:text-xl">۰ ریال</span>
+                                        <span class="block text-[11px] text-slate-400 font-medium mb-0.5">ترب • کف بازار</span>
+                                        <span id="torob_price_text" class="price-num text-base md:text-lg">۰ ریال</span>
                                     </div>
                                 </div>
-                                <button type="button" onclick="selectMarketPrice('torob')" class="pick-btn btn bg-orange-500/15 hover:bg-orange-500/25 text-orange-200 border border-orange-500/40 text-[11px] font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 shrink-0">
+                                <button type="button" onclick="selectMarketPrice('torob')" class="pick-btn btn bg-orange-500/15 hover:bg-orange-500/25 text-orange-200 border border-orange-500/40 text-[11px] font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 shrink-0">
                                     <i class="fa-solid fa-check"></i> انتخاب
                                 </button>
                             </div>
                         </div>
 
-                        <div class="bg-emerald-500/[.07] p-4 rounded-xl border border-emerald-500/30 flex items-center justify-between gap-2 text-sm flex-wrap">
-                            <span class="text-emerald-300 font-bold flex items-center gap-2 text-xs md:text-sm"><i class="fa-solid fa-shield-halved text-emerald-400"></i> قیمت انتخاب‌شده نهایی (انتقال خودکار به جدول)</span>
-                            <span id="selected_active_price_display" class="price-num !bg-none !text-emerald-300 text-lg" style="-webkit-text-fill-color:#6ee7b7">۰ ریال</span>
+                        <div class="bg-emerald-500/[.07] p-3.5 rounded-xl border border-emerald-500/30 flex items-center justify-between gap-2 flex-wrap">
+                            <span class="text-emerald-300 font-bold flex items-center gap-2 text-[11px] md:text-xs"><i class="fa-solid fa-shield-halved text-emerald-400"></i> قیمت نهایی منتخب</span>
+                            <span id="selected_active_price_display" class="text-emerald-300 font-black text-base" style="-webkit-text-fill-color:#6ee7b7;font-variant-numeric:tabular-nums">۰ ریال</span>
                         </div>
+
+                        <div class="flex gap-2.5">
+                            <button type="button" onclick="runPreciseAiAnalysis()" class="btn btn-ghost flex-1 py-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-rotate-right"></i> تحلیل مجدد
+                            </button>
+                            <button type="button" onclick="nextStep()" class="btn btn-gold flex-[1.6] py-3 rounded-xl text-xs flex items-center justify-center gap-2">
+                                تأیید قیمت و ادامه <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                        </div>
+                        <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
-                    <!-- ۰۴ جدول قیمت‌گذاری -->
-                    <section class="reveal card p-5 md:p-6 rounded-2xl space-y-4">
-                        <div class="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
+                    <!-- ═══ مرحله ۳: قیمت‌گذاری ═══ -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="2">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
                             <div class="flex items-center gap-2.5">
-                                <span class="sec-num">۰۴</span>
-                                <h2 class="font-extrabold text-sm md:text-base text-amber-300"><i class="fa-solid fa-calculator ml-1"></i>جدول قیمت‌گذاری ریالی انبار</h2>
+                                <span class="sec-num">گام ۳</span>
+                                <h2 class="font-extrabold text-sm md:text-base text-amber-300">قیمت‌گذاری انبار</h2>
                             </div>
-                            <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25"><i class="fa-solid fa-robot text-[11px]"></i> محاسبه AI</span>
+                            <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25"><i class="fa-solid fa-robot text-[11px]"></i> محاسبه خودکار سود</span>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
                                 <label class="lbl" for="purchase_price">قیمت خرید پایه (ریال)</label>
                                 <input type="text" id="purchase_price" name="purchase_price_unit" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold" style="font-variant-numeric:tabular-nums">
@@ -392,97 +429,109 @@
                             <i class="fa-solid fa-chart-line text-teal-300"></i>
                             <span>حاشیه سود پس از ورود قیمت‌ها محاسبه می‌شود.</span>
                         </div>
+                        <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                            تأیید قیمت‌ها و ادامه به استودیو تصویر <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
-                    <!-- ۰۵ استودیو تصویر -->
-                    <section class="reveal card p-5 md:p-6 rounded-2xl space-y-5">
-                        <div class="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
+                    <!-- ═══ مرحله ۴: استودیو تصویر ═══ -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
                             <div class="flex items-center gap-2.5">
-                                <span class="sec-num">۰۵</span>
-                                <h2 class="font-extrabold text-sm md:text-base text-amber-300"><i class="fa-solid fa-wand-magic-sparkles ml-1"></i>استودیو تصویرساز سه‌بعدی</h2>
+                                <span class="sec-num">گام ۴</span>
+                                <h2 class="font-extrabold text-sm md:text-base text-amber-300">استودیو تصویر تبلیغاتی</h2>
                             </div>
-                            <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25">WebP • 768×768</span>
+                            <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25">AI واقعی • WebP • 768×768</span>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 items-center">
-                            <div class="space-y-4 order-2 md:order-1">
-                                <div>
-                                    <label class="lbl" for="ai_image_provider">موتور رندر هوش مصنوعی</label>
-                                    <select id="ai_image_provider" class="inp">
-                                        <option value="sdxl_768">Stability AI SDXL • رزولوشن 768×768 سه‌بعدی</option>
-                                        <option value="dall_e_3">DALL-E 3 • موتور تخصصی استودیویی</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="lbl" for="custom_image_prompt_text">پرامپت اختصاصی رندر (اختیاری)</label>
-                                    <input type="text" id="custom_image_prompt_text" class="inp" placeholder="خالی باشد: AI بر اساس نام و برند می‌سازد">
-                                </div>
-                                <button type="button" onclick="generateWebpAiImage()" class="btn btn-indigo w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i> ساخت تصویر و تبدیل خودکار WebP
-                                </button>
-                                <p class="text-[11px] text-slate-500 leading-relaxed flex items-start gap-1.5"><i class="fa-solid fa-circle-info mt-0.5 text-indigo-400"></i>تصویر نهایی با فرمت WebP و ابعاد 768×768 برای سرعت بالای سایت بهینه می‌شود.</p>
+
+                        <div class="flex flex-col items-center border-2 border-dashed border-white/15 rounded-2xl p-5 bg-[#010b18]/60">
+                            <div class="w-48 h-48 md:w-56 md:h-56 flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900 border border-white/10 relative logo-glow">
+                                <img id="product_image_preview" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600" class="object-cover h-full w-full" alt="پیش‌نمایش موکاپ تبلیغاتی محصول" loading="lazy" decoding="async">
+                                <span class="absolute bottom-1.5 left-1.5 bg-black/80 text-amber-300 text-[10px] px-2 py-0.5 rounded-md border border-white/10" style="font-variant-numeric:tabular-nums">768×768 | WebP</span>
                             </div>
-                            <div class="order-1 md:order-2 flex flex-col items-center justify-center border-2 border-dashed border-white/15 rounded-2xl p-5 bg-[#010b18]/60">
-                                <div class="w-44 h-44 md:w-52 md:h-52 flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900 border border-white/10 relative logo-glow">
-                                    <img id="product_image_preview" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600" class="object-cover h-full w-full" alt="پیش‌نمایش تصویر محصول">
-                                    <span class="absolute bottom-1.5 left-1.5 bg-black/80 text-amber-300 text-[10px] px-2 py-0.5 rounded-md border border-white/10" style="font-variant-numeric:tabular-nums">768×768 | WebP</span>
-                                </div>
-                                <label class="mt-4 w-full cursor-pointer">
-                                    <span class="btn btn-ghost w-full py-2.5 rounded-xl text-xs flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> انتخاب تصویر از گالری / دوربین</span>
-                                    <input type="file" name="product_image_file" accept=".webp,.jpg,.jpeg,.png" capture="environment" class="hidden" onchange="previewLocalImage(this)">
-                                </label>
-                            </div>
+                            <input type="hidden" id="product_image_webp" name="product_image_webp" value="">
+                            <label class="mt-4 w-full cursor-pointer">
+                                <span class="btn btn-ghost w-full py-2.5 rounded-xl text-xs flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> یا انتخاب تصویر از گالری / دوربین</span>
+                                <input type="file" name="product_image_file" accept=".webp,.jpg,.jpeg,.png" capture="environment" class="hidden" onchange="previewLocalImage(this)">
+                            </label>
                         </div>
+
+                        <div class="space-y-3.5">
+                            <div>
+                                <label class="lbl" for="ai_image_provider">موتور تولید تصویر هوش مصنوعی</label>
+                                <select id="ai_image_provider" class="inp !text-xs">
+                                    <option value="flux">Flux • کیفیت استودیویی (رایگان و واقعی)</option>
+                                    <option value="turbo">Turbo • سرعت بالا (رایگان و واقعی)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="lbl" for="custom_image_prompt_text">توصیف صحنه تبلیغاتی (اختیاری)</label>
+                                <input type="text" id="custom_image_prompt_text" class="inp !text-xs" placeholder="خالی باشد: بر اساس نام و برند، صحنه لوکس ساخته می‌شود">
+                            </div>
+                            <button type="button" onclick="generateWebpAiImage()" class="btn btn-indigo w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> ساخت موکاپ تبلیغاتی با AI و تبدیل WebP
+                            </button>
+                            <p class="text-[11px] text-slate-500 leading-relaxed flex items-start gap-1.5"><i class="fa-solid fa-circle-info mt-0.5 text-indigo-400"></i>تصویر واقعاً توسط موتور هوش مصنوعی تولید، به ابعاد 768×768 برش و به فرمت WebP تبدیل می‌شود.</p>
+                        </div>
+
+                        <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                            تأیید تصویر و ادامه به ثبت نهایی <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
-                    <!-- ۰۶ مشخصات فیزیکی -->
-                    <section class="reveal card p-5 md:p-6 rounded-2xl">
-                        <div class="flex items-center gap-2.5 mb-4">
-                            <span class="sec-num">۰۶</span>
-                            <h2 class="font-extrabold text-sm md:text-base text-slate-100"><i class="fa-solid fa-ruler-combined text-amber-400 ml-1"></i>مشخصات فیزیکی و مالیاتی</h2>
+                    <!-- ═══ مرحله ۵: مشخصات و ثبت ═══ -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="4">
+                        <div class="flex items-center gap-2.5">
+                            <span class="sec-num">گام ۵</span>
+                            <h2 class="font-extrabold text-sm md:text-base text-slate-100">مشخصات و ثبت نهایی</h2>
                         </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                            <div><label class="lbl" for="weight">وزن (کیلوگرم)</label><input type="number" step="0.01" id="weight" name="weight" value="0.85" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                            <div><label class="lbl" for="length">طول (سانتی‌متر)</label><input type="number" step="0.1" id="length" name="length" value="28.7" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                            <div><label class="lbl" for="width">عرض (سانتی‌متر)</label><input type="number" step="0.1" id="width" name="width" value="20.8" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                            <div><label class="lbl" for="height">ارتفاع (سانتی‌متر)</label><input type="number" step="0.1" id="height" name="height" value="0.9" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                            <div><label class="lbl" for="tax_percent">مالیات ارزش افزوده (٪)</label><input type="number" step="0.1" id="tax_percent" name="tax_percent" value="9.0" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                        </div>
-                    </section>
 
-                    <!-- توضیحات و ثبت -->
-                    <section class="reveal card p-5 md:p-6 rounded-2xl space-y-4">
+                        <div id="order_summary" class="text-[11px] md:text-xs leading-loose bg-amber-500/[.06] border border-amber-500/25 rounded-xl px-4 py-3 text-slate-300"></div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+                            <div><label class="lbl" for="weight">وزن (kg)</label><input type="number" step="0.01" id="weight" name="weight" value="0.85" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                            <div><label class="lbl" for="length">طول (cm)</label><input type="number" step="0.1" id="length" name="length" value="28.7" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                            <div><label class="lbl" for="width">عرض (cm)</label><input type="number" step="0.1" id="width" name="width" value="20.8" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                            <div><label class="lbl" for="height">ارتفاع (cm)</label><input type="number" step="0.1" id="height" name="height" value="0.9" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                            <div><label class="lbl" for="tax_percent">مالیات (٪)</label><input type="number" step="0.1" id="tax_percent" name="tax_percent" value="9.0" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                        </div>
                         <div>
                             <label class="lbl" for="short_description"><i class="fa-solid fa-pen-nib text-amber-400 ml-1"></i>توضیحات کوتاه سئو</label>
-                            <textarea id="short_description" name="short_description" rows="2" class="inp resize-none" placeholder="توضیح کوتاه فارسی برای موتورهای جستجو..."></textarea>
+                            <textarea id="short_description" name="short_description" rows="2" class="inp resize-none !text-xs" placeholder="توضیح کوتاه فارسی برای موتورهای جستجو..."></textarea>
                         </div>
-                        <div class="hidden md:flex justify-end pt-1">
-                            <button type="submit" id="submitBtn" class="btn btn-emerald px-10 py-4 rounded-2xl text-base flex items-center gap-3">
-                                <i class="fa-solid fa-floppy-disk text-lg"></i> ثبت نهایی در دیتابیس میلانو
-                            </button>
-                        </div>
+                        <button type="submit" id="submitBtn" class="btn btn-emerald w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2.5">
+                            <i class="fa-solid fa-floppy-disk text-lg"></i> تأیید و ثبت نهایی در دیتابیس میلانو
+                        </button>
+                        <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
                 </form>
 
                 <!-- فوتر -->
-                <footer class="reveal text-center pt-6 pb-2">
+                <footer class="text-center pt-5 pb-1">
                     <div class="flex items-center justify-center gap-2 text-[11px] text-slate-500">
-                        <img src="icons/icon-192.png" alt="" class="w-5 h-5 rounded-md">
-                        <span>پنل هوشمند میلانو • نسخه PWA و اندروید • <span id="year">۱۴۰۵</span></span>
+                        <img src="icons/icon-192.png" alt="" class="w-5 h-5 rounded-md" loading="lazy" decoding="async">
+                        <span>پنل هوشمند میلانو • <span id="year">۱۴۰۵</span></span>
                     </div>
                 </footer>
             </div>
         </div>
     </div>
 
-    <!-- نوار چسبان موبایل -->
-    <div class="md:hidden fixed bottom-0 inset-x-0 z-[60] px-3 pb-[calc(.7rem+env(safe-area-inset-bottom))] pt-2 bg-gradient-to-t from-[#010b18] via-[#010b18]/95 to-transparent">
-        <div class="glass rounded-2xl p-2 flex gap-2">
-            <button type="button" onclick="runPreciseAiAnalysis()" class="btn btn-gold flex-1 py-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> تحلیل AI
+    <!-- ناوبری چسبان ویزارد -->
+    <div class="fixed bottom-0 inset-x-0 z-[60] px-3 pb-[calc(.7rem+env(safe-area-inset-bottom))] pt-2 bg-gradient-to-t from-[#010b18] via-[#010b18]/95 to-transparent">
+        <div class="max-w-3xl mx-auto rounded-2xl border border-white/10 bg-[#04122a]/95 px-2.5 py-2 flex items-center gap-2" style="box-shadow:0 -8px 30px -10px rgba(0,0,0,.8)">
+            <button type="button" id="nav_prev" onclick="prevStep()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-xs items-center justify-center gap-1.5 min-w-[5.2rem]" style="display:none">
+                <i class="fa-solid fa-arrow-right"></i> قبلی
             </button>
-            <button type="button" onclick="document.getElementById('productForm').requestSubmit()" class="btn btn-emerald flex-[1.4] py-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-floppy-disk"></i> ثبت نهایی
+            <span id="nav_counter" class="flex-1 text-center text-[11px] font-bold text-slate-400" style="font-variant-numeric:tabular-nums">۱ از ۵</span>
+            <button type="button" id="nav_next" onclick="nextStep()" class="btn btn-gold px-5 py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 min-w-[7rem]">
+                بعدی <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <button type="button" id="nav_submit" onclick="document.getElementById('productForm').requestSubmit()" class="btn btn-emerald px-5 py-2.5 rounded-xl text-xs items-center justify-center gap-1.5 min-w-[7rem]" style="display:none">
+                <i class="fa-solid fa-check"></i> ثبت نهایی
             </button>
         </div>
     </div>
@@ -518,11 +567,102 @@
         }
         updateClock(); setInterval(updateClock, 30000);
 
-        /* ---------- ظاهرشدن اسکرولی ---------- */
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach((en, i) => { if (en.isIntersecting) { en.target.style.transitionDelay = (i * 60) + 'ms'; en.target.classList.add('visible'); io.unobserve(en.target); } });
-        }, { threshold: 0.08 });
-        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+        /* ═════════ ویزارد مرحله‌ای ═════════ */
+        const STEP_NAMES = ['اطلاعات پایه کالا', 'استعلام هوشمند بازار', 'قیمت‌گذاری انبار', 'استودیو تصویر تبلیغاتی', 'مشخصات و ثبت نهایی'];
+        const STEP_SHORT = ['اطلاعات', 'بازار', 'قیمت', 'تصویر', 'ثبت'];
+        const panels = Array.from(document.querySelectorAll('.wstep'));
+        let curStep = 0, maxStep = 0;
+
+        function buildDots() {
+            const box = $('wizard_dots');
+            box.innerHTML = '';
+            panels.forEach((_, i) => {
+                if (i > 0) {
+                    const line = document.createElement('div');
+                    line.className = 'wline';
+                    line.innerHTML = '<span></span>';
+                    line.id = 'wline_' + i;
+                    box.appendChild(line);
+                }
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'wdot';
+                b.id = 'wdot_' + i;
+                b.setAttribute('aria-label', 'گام ' + toFa(i + 1) + ': ' + STEP_NAMES[i]);
+                b.innerHTML = `<span class="bub">${toFa(i + 1)}</span><span class="cap">${STEP_SHORT[i]}</span>`;
+                b.onclick = () => { if (i <= maxStep) goStep(i, true); else toast('اول گام‌های قبلی را تأیید کنید.', 'info'); };
+                box.appendChild(b);
+            });
+        }
+
+        function renderWizard() {
+            panels.forEach((_, i) => {
+                const d = $('wdot_' + i);
+                d.classList.toggle('now', i === curStep);
+                d.classList.toggle('done', i < curStep || (i <= maxStep && i !== curStep && false));
+                d.querySelector('.bub').innerHTML = (i < curStep) ? '<i class="fa-solid fa-check text-xs"></i>' : toFa(i + 1);
+                if (i > 0) {
+                    const fill = $('wline_' + i).firstChild;
+                    fill.style.width = (i <= curStep) ? '100%' : '0%';
+                }
+            });
+            $('wizard_label').textContent = 'مرحله ' + toFa(curStep + 1) + ': ' + STEP_NAMES[curStep];
+            $('wizard_counter').textContent = toFa(curStep + 1) + ' از ' + toFa(panels.length);
+            $('nav_counter').textContent = toFa(curStep + 1) + ' از ' + toFa(panels.length);
+            $('wizard_fill').style.width = ((curStep + 1) / panels.length * 100) + '%';
+            const last = curStep === panels.length - 1;
+            $('nav_prev').style.display = curStep === 0 ? 'none' : 'inline-flex';
+            $('nav_next').style.display = last ? 'none' : 'inline-flex';
+            $('nav_submit').style.display = last ? 'inline-flex' : 'none';
+        }
+
+        function showStep(n) {
+            curStep = n;
+            maxStep = Math.max(maxStep, n);
+            panels.forEach((p, i) => {
+                p.classList.toggle('hidden-step', i !== n);
+                p.classList.toggle('active', i === n);
+            });
+            if (n === panels.length - 1) renderSummary();
+            renderWizard();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function validateStep(i) {
+            const reqs = panels[i].querySelectorAll('[required]');
+            for (const el of reqs) {
+                el.classList.remove('err');
+                if (!String(el.value).trim()) {
+                    el.classList.add('err');
+                    el.focus({ preventScroll: false });
+                    toast('لطفاً «' + (el.closest('div').querySelector('.lbl')?.textContent.replace('*', '').trim() || 'فیلد اجباری') + '» را تکمیل کنید.', 'error');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function nextStep() { if (validateStep(curStep)) showStep(Math.min(panels.length - 1, curStep + 1)); }
+        function prevStep() { showStep(Math.max(0, curStep - 1)); }
+        function goStep(n, fromDot = false) {
+            if (n > curStep && !validateStep(curStep)) return;
+            showStep(n);
+            if (!fromDot) toast('وارد «' + STEP_NAMES[n] + '» شدید.', 'info');
+        }
+
+        function renderSummary() {
+            const t = $('product_title').value.trim() || '—';
+            const b = $('brand_name').value.trim() || '—';
+            const p = $('selected_active_price_display').textContent || '—';
+            const s = $('stock_quantity').value || '۰';
+            $('order_summary').innerHTML =
+                '<b class="text-amber-200">خلاصه ثبت:</b> ' + escapeHtml(t) + ' • برند ' + escapeHtml(b) +
+                ' • موجودی <b>' + toFa(s) + '</b> عدد • قیمت منتخب بازار <b class="text-emerald-300">' + escapeHtml(p) + '</b>';
+        }
+        function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+        buildDots();
+        showStep(0);
 
         /* ---------- قیمت ---------- */
         function formatPrice(input) {
@@ -557,6 +697,7 @@
             if (input.files && input.files[0]) {
                 const url = URL.createObjectURL(input.files[0]);
                 $('product_image_preview').src = url;
+                $('product_image_webp').value = '';
                 toast('تصویر انتخاب شد و پیش‌نمایش به‌روز شد.', 'success');
             }
         }
@@ -604,6 +745,7 @@
                         const badge = $('market_status_badge');
                         badge.textContent = '✓ استعلام موفق از بازار';
                         badge.className = 'chip bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
+                        $('market_tip').style.display = 'none';
                         toast('تحلیل هوشمند با موفقیت انجام شد.', 'success');
                     }, 400);
                 }
@@ -651,53 +793,89 @@
             if (!silent) toast(source === 'digikala' ? 'قیمت دیجی‌کالا به جدول منتقل شد.' : 'کف قیمت ترب به جدول منتقل شد.', 'success');
         }
 
-        function generateWebpAiImage() {
-            const productTitle = $('product_title').value.trim();
-            const brandName = $('brand_name').value.trim();
-            if (!productTitle || !brandName) { toast('لطفاً ابتدا نام محصول و برند را وارد کنید.', 'error'); return; }
-            showAiModal('شروع رندرینگ سه‌بعدی تصویر محصول در استودیو هوش مصنوعی...');
-            let progress = 0;
-            const timer = setInterval(() => {
-                progress = Math.min(100, progress + 25);
-                setProgress(progress, progress === 50 ? 'تبدیل خودکار به WebP با رزولوشن 768×768...' : (progress === 100 ? 'نهایی‌سازی رندر استودیویی...' : null));
-                if (progress >= 100) {
-                    clearInterval(timer);
-                    setTimeout(() => {
-                        hideAiModal();
-                        $('product_image_preview').src = 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=768&h=768&fit=crop&fm=webp';
-                        toast('تصویر استودیویی ساخته و به WebP تبدیل شد.', 'success');
-                    }, 300);
-                }
-            }, 250);
+        /* ═════════ تولید واقعی موکاپ تبلیغاتی با هوش مصنوعی ═════════ */
+        function loadImageAsync(src, timeoutMs = 90000) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                const timer = setTimeout(() => reject(new Error('timeout')), timeoutMs);
+                img.onload = () => { clearTimeout(timer); resolve(img); };
+                img.onerror = () => { clearTimeout(timer); reject(new Error('load-error')); };
+                img.src = src;
+            });
+        }
+        function imageToWebP(img, size = 768, quality = 0.9) {
+            const c = document.createElement('canvas');
+            c.width = size; c.height = size;
+            const x = c.getContext('2d');
+            const s = Math.max(size / img.naturalWidth, size / img.naturalHeight);
+            const w = img.naturalWidth * s, h = img.naturalHeight * s;
+            x.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+            return c.toDataURL('image/webp', quality);
         }
 
-        /* ---------- ثبت فرم ---------- */
-        $('productForm').addEventListener('submit', function () {
-            const btn = $('submitBtn');
-            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> در حال ذخیره‌سازی...'; }
-            toast('در حال ثبت نهایی در دیتابیس میلانو...', 'info');
-        });
+        async function generateWebpAiImage() {
+            const productTitle = $('product_title').value.trim();
+            const brandName = $('brand_name').value.trim();
+            const customPrompt = $('custom_image_prompt_text').value.trim();
+            if (!productTitle || !brandName) { toast('لطفاً ابتدا در گام ۱ نام محصول و برند را وارد کنید.', 'error'); return; }
 
-        /* ---------- نصب اپ (PWA) ---------- */
-        let deferredPrompt = null;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            $('installBtn').classList.add('animate-pulse');
-        });
-        window.addEventListener('appinstalled', () => { deferredPrompt = null; toast('اپ میلانو با موفقیت نصب شد.', 'success'); });
-        async function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const choice = await deferredPrompt.userChoice;
-                if (choice.outcome === 'accepted') toast('در حال نصب اپ میلانو...', 'success');
-                deferredPrompt = null;
-            } else {
-                toast('در مرورگر کروم اندروید: منوی ⋮ ← «نصب برنامه / Add to Home screen» را بزنید. آیکن طلایی میلانو روی گوشی نصب می‌شود.', 'info');
+            const provider = $('ai_image_provider').value === 'turbo' ? 'turbo' : 'flux';
+            const styleEN = 'premium e-commerce advertising mockup photograph, luxurious 3D product render, dramatic studio lighting, dark navy and gold background, floating golden particles, ultra detailed, centered composition, no text, no watermark';
+            const subjectEN = customPrompt
+                ? `advertising scene: ${customPrompt}, featuring product "${productTitle}" by brand "${brandName}"`
+                : `product "${productTitle}" by brand "${brandName}"`;
+            const seed = Math.floor(Math.random() * 999999);
+            const url = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(subjectEN + ', ' + styleEN) +
+                '?width=768&height=768&seed=' + seed + '&nologo=true&model=' + provider;
+
+            showAiModal('اتصال به موتور هوش مصنوعی...');
+            setProgress(12, 'ارسال درخواست تولید تصویر به موتور ' + (provider === 'turbo' ? 'Turbo' : 'Flux') + '...');
+            try {
+                const img = await loadImageAsync(url);
+                setProgress(72, 'تصویر ساخته شد؛ برش به 768×768 و تبدیل به WebP...');
+                await new Promise(r => setTimeout(r, 150));
+                try {
+                    const webp = imageToWebP(img, 768, 0.9);
+                    $('product_image_preview').src = webp;
+                    $('product_image_webp').value = webp;
+                    setProgress(100, 'تکمیل شد.');
+                    setTimeout(() => { hideAiModal(); toast('موکاپ تبلیغاتی با هوش مصنوعی ساخته و به WebP تبدیل شد.', 'success'); }, 350);
+                } catch (convErr) {
+                    $('product_image_preview').src = url;
+                    $('product_image_webp').value = '';
+                    setProgress(100, 'تکمیل شد.');
+                    setTimeout(() => { hideAiModal(); toast('تصویر ساخته شد (نمایش مستقیم بدون تبدیل WebP).', 'info'); }, 350);
+                }
+            } catch (err) {
+                hideAiModal();
+                toast('ارتباط با موتور هوش مصنوعی برقرار نشد. اینترنت را بررسی کنید و دوباره تلاش کنید.', 'error');
             }
         }
 
-        /* ---------- سرویس‌ورکر (آفلاین) ---------- */
+        /* ---------- ثبت فرم ---------- */
+        $('productForm').addEventListener('submit', function (e) {
+            if (!this.checkValidity()) {
+                e.preventDefault();
+                const bad = this.querySelector(':invalid');
+                if (bad) {
+                    const panel = bad.closest('.wstep');
+                    const idx = panels.indexOf(panel);
+                    if (idx > -1 && idx !== curStep) showStep(idx);
+                    bad.classList.add('err');
+                    setTimeout(() => this.reportValidity(), 60);
+                    toast('یک فیلد اجباری ناقص است؛ به همان گام منتقل شدید.', 'error');
+                }
+                return;
+            }
+            const btn = $('submitBtn');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> در حال ذخیره‌سازی...'; }
+            const ns = $('nav_submit');
+            if (ns) { ns.disabled = true; }
+            toast('در حال ثبت نهایی در دیتابیس میلانو...', 'info');
+        });
+
+        /* ---------- سرویس‌ورکر (آفلاین، نامرئی) ---------- */
         if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('service-worker.js').catch(() => {});
