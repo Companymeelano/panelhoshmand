@@ -10,8 +10,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="میلانو">
-    <meta name="msapplication-TileColor" content="#021a33">
-    <meta name="msapplication-TileImage" content="icons/icon-192.png">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
@@ -24,33 +22,22 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root{
-            --gold-1:#fde68a; --gold-2:#f5c542; --gold-3:#b8860b;
-            --ink:#021a33;
-            --teal:#2dd4bf;
-        }
-        *{ -webkit-tap-highlight-color: transparent; }
+        :root{ --gold-2:#f5c542; --teal:#2dd4bf; }
+        *{ -webkit-tap-highlight-color:transparent; }
         html{ scroll-behavior:smooth; -webkit-overflow-scrolling:touch; }
-        body{
-            font-family:'Vazirmatn',system-ui,sans-serif;
-            background:#010b18;
-            color:#f8fafc;
-            min-height:100vh;
-            overscroll-behavior-y:contain;
-        }
+        body{ font-family:'Vazirmatn',Tahoma,system-ui,sans-serif; background:#010b18; color:#f8fafc; min-height:100vh; overscroll-behavior-y:contain; }
+        .hidden{ display:none !important; }
         ::-webkit-scrollbar{ width:10px; height:10px; }
         ::-webkit-scrollbar-track{ background:#03142a; }
         ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,#b8860b,#f5c542); border-radius:99px; border:2px solid #03142a; }
         ::selection{ background:rgba(245,197,66,.35); }
 
-        /* ===== پس‌زمینه ===== */
         .bg-stage{ position:fixed; inset:0; z-index:-2; overflow:hidden; background:
             radial-gradient(1100px 500px at 85% -5%, rgba(245,197,66,.12), transparent 60%),
             radial-gradient(900px 500px at 10% 110%, rgba(45,212,191,.10), transparent 60%),
             radial-gradient(700px 420px at 50% 45%, rgba(56,89,199,.14), transparent 65%),
-            linear-gradient(180deg,#021a33 0%, #010b18 70%);
-        }
-        .orb{ position:absolute; border-radius:50%; filter:blur(90px); opacity:.5; animation:drift 14s ease-in-out infinite alternate; will-change:transform; }
+            linear-gradient(180deg,#021a33 0%, #010b18 70%); }
+        .orb{ position:absolute; border-radius:50%; filter:blur(90px); opacity:.5; animation:drift 14s ease-in-out infinite alternate; }
         .orb-gold{ width:420px; height:420px; top:-140px; left:-120px; background:radial-gradient(circle,rgba(245,197,66,.35),transparent 70%); }
         .orb-teal{ width:380px; height:380px; bottom:-140px; right:-100px; background:radial-gradient(circle,rgba(45,212,191,.28),transparent 70%); animation-delay:-6s; }
         .orb-indigo{ width:300px; height:300px; top:40%; right:30%; background:radial-gradient(circle,rgba(99,102,241,.30),transparent 70%); animation-delay:-3s; }
@@ -59,50 +46,33 @@
             background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
             background-size:44px 44px;
             mask-image:radial-gradient(ellipse 90% 70% at 50% 20%, black 30%, transparent 75%);
-            -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 20%, black 30%, transparent 75%);
-        }
+            -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 20%, black 30%, transparent 75%); }
         .noise{ position:absolute; inset:0; opacity:.05; mix-blend-mode:overlay;
-            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
-        }
+            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E"); }
 
-        /* ===== کارت‌ها ===== */
-        .glass{
-            background:linear-gradient(150deg, rgba(13,34,64,.82) 0%, rgba(3,16,34,.92) 100%);
+        .glass{ background:linear-gradient(150deg, rgba(13,34,64,.82) 0%, rgba(3,16,34,.92) 100%);
             backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px);
             border:1px solid rgba(245,197,66,.16);
-            box-shadow:0 30px 60px -20px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.09);
-        }
-        .card{
-            position:relative;
-            background:linear-gradient(160deg, rgba(16,40,76,.55), rgba(4,18,38,.75));
+            box-shadow:0 30px 60px -20px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.09); }
+        .card{ position:relative; background:linear-gradient(160deg, rgba(16,40,76,.55), rgba(4,18,38,.75));
             border:1px solid rgba(148,163,184,.16);
             box-shadow:0 16px 34px -14px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.06);
-            transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s, border-color .35s;
-            overflow:hidden;
-        }
-        .card::before{
-            content:""; position:absolute; top:0; right:8%; left:8%; height:2px; border-radius:99px;
-            background:linear-gradient(90deg,transparent, var(--gold-2), var(--teal), transparent);
-            opacity:.85;
-        }
-        .card:hover{ transform:translateY(-3px); border-color:rgba(245,197,66,.35); box-shadow:0 24px 44px -14px rgba(0,0,0,.7), 0 0 0 1px rgba(245,197,66,.12), 0 0 34px -8px rgba(245,197,66,.25); }
-        .sec-num{
-            font-weight:900; font-size:.72rem; line-height:1;
-            background:linear-gradient(135deg,#f5c542,#b8860b);
-            color:#03142a; border-radius:.7rem; padding:.45rem .6rem;
-            box-shadow:0 6px 16px -4px rgba(245,197,66,.55), inset 0 1px 0 rgba(255,255,255,.5);
-            white-space:nowrap;
-        }
+            transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s, border-color .35s; overflow:hidden; }
+        .card::before{ content:""; position:absolute; top:0; right:8%; left:8%; height:2px; border-radius:99px;
+            background:linear-gradient(90deg,transparent, var(--gold-2), var(--teal), transparent); opacity:.85; }
+        .card:hover{ transform:translateY(-3px); border-color:rgba(245,197,66,.35);
+            box-shadow:0 24px 44px -14px rgba(0,0,0,.7), 0 0 0 1px rgba(245,197,66,.12), 0 0 34px -8px rgba(245,197,66,.25); }
+        .sec-num{ font-weight:900; font-size:.72rem; line-height:1; background:linear-gradient(135deg,#f5c542,#b8860b);
+            color:#03142a; border-radius:.7rem; padding:.45rem .6rem; white-space:nowrap;
+            box-shadow:0 6px 16px -4px rgba(245,197,66,.55), inset 0 1px 0 rgba(255,255,255,.5); }
 
-        /* ===== ویزارد مرحله‌ای ===== */
         .wstep{ content-visibility:auto; contain-intrinsic-size:auto 620px; }
         .wstep.hidden-step{ display:none; content-visibility:hidden; }
         .wstep.active{ animation:stepIn .38s cubic-bezier(.2,.7,.3,1); }
         @keyframes stepIn{ from{ opacity:0; transform:translateY(12px);} to{ opacity:1; transform:none;} }
         .wdot{ display:flex; flex-direction:column; align-items:center; gap:.3rem; min-width:3.2rem; background:none; border:0; cursor:pointer; padding:0; }
         .wdot .bub{ width:2.3rem; height:2.3rem; border-radius:.9rem; display:flex; align-items:center; justify-content:center;
-            font-weight:900; font-size:.8rem; background:rgba(148,163,184,.1); border:1px solid rgba(148,163,184,.25); color:#94a3b8;
-            transition:all .3s; }
+            font-weight:900; font-size:.8rem; background:rgba(148,163,184,.1); border:1px solid rgba(148,163,184,.25); color:#94a3b8; transition:all .3s; }
         .wdot .cap{ font-size:.62rem; font-weight:700; color:#64748b; white-space:nowrap; }
         .wdot.done .bub{ background:rgba(16,185,129,.18); border-color:rgba(52,211,153,.5); color:#6ee7b7; }
         .wdot.done .cap{ color:#6ee7b7; }
@@ -112,20 +82,17 @@
         .wline{ flex:1; height:2px; min-width:.6rem; border-radius:99px; background:rgba(148,163,184,.2); margin-bottom:1.15rem; overflow:hidden; }
         .wline > span{ display:block; height:100%; width:0; background:linear-gradient(90deg,#f5c542,#2dd4bf); border-radius:99px; transition:width .4s ease; }
 
-        /* ===== ورودی‌ها ===== */
         .lbl{ display:block; font-size:.8rem; font-weight:600; color:#cbd5e1; margin-bottom:.45rem; }
-        .inp{
-            width:100%; background:rgba(1,10,24,.75); border:1px solid rgba(148,163,184,.25);
+        .inp{ width:100%; background:rgba(1,10,24,.75); border:1px solid rgba(148,163,184,.25);
             border-radius:.9rem; padding:.8rem 1rem; color:#fff; font-size:.86rem; outline:none;
-            transition:border-color .25s, box-shadow .25s, background .25s;
-        }
+            transition:border-color .25s, box-shadow .25s, background .25s; font-family:inherit; }
         .inp::placeholder{ color:#475569; }
         .inp:focus{ border-color:var(--gold-2); box-shadow:0 0 0 3px rgba(245,197,66,.18), 0 0 26px -4px rgba(245,197,66,.45); background:rgba(1,10,24,.95); }
         .inp.err{ border-color:#f87171 !important; box-shadow:0 0 0 3px rgba(248,113,113,.18) !important; }
         select.inp option{ background:#03142a; }
+        textarea.inp{ resize:none; }
 
-        /* ===== دکمه‌ها ===== */
-        .btn{ position:relative; overflow:hidden; isolation:isolate; transition:transform .2s, filter .25s, box-shadow .25s; cursor:pointer; }
+        .btn{ position:relative; overflow:hidden; isolation:isolate; transition:transform .2s, filter .25s, box-shadow .25s; cursor:pointer; font-family:inherit; }
         .btn:active{ transform:scale(.97); }
         .btn::after{ content:""; position:absolute; top:0; bottom:0; width:45%; left:-60%; z-index:1;
             background:linear-gradient(105deg,transparent,rgba(255,255,255,.45),transparent);
@@ -133,7 +100,7 @@
         .btn:hover::after{ left:130%; }
         .btn-gold{ background:linear-gradient(135deg,#fde68a 0%,#f5c542 45%,#d99a16 100%); color:#03142a;
             box-shadow:0 12px 26px -8px rgba(245,197,66,.6), inset 0 1px 0 rgba(255,255,255,.6); font-weight:800; }
-        .btn-gold:hover{ filter:brightness(1.07); box-shadow:0 16px 32px -8px rgba(245,197,66,.7), 0 0 26px -4px rgba(245,197,66,.5); }
+        .btn-gold:hover{ filter:brightness(1.07); }
         .btn-emerald{ background:linear-gradient(135deg,#6ee7b7,#10b981 55%,#0d9488); color:#022c22;
             box-shadow:0 14px 30px -8px rgba(16,185,129,.55), inset 0 1px 0 rgba(255,255,255,.5); font-weight:800; }
         .btn-emerald:hover{ filter:brightness(1.07); }
@@ -144,33 +111,44 @@
         .btn-ghost:hover{ background:rgba(148,163,184,.16); }
         .btn:disabled{ opacity:.6; cursor:wait; filter:saturate(.6); }
 
-        /* ===== قیمت‌ها ===== */
-        .price-num{
-            font-variant-numeric:tabular-nums; font-weight:900; letter-spacing:-.02em;
+        .price-num{ font-variant-numeric:tabular-nums; font-weight:900; letter-spacing:-.02em;
             background:linear-gradient(180deg,#fff 20%,#f5c542 90%);
-            -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-        }
+            -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
         .market-card{ transition:transform .3s, box-shadow .3s, border-color .3s; }
         .market-card:hover{ transform:translateY(-3px); }
-        .market-card.picked{ border-color:rgba(52,211,153,.7)!important; box-shadow:0 0 0 2px rgba(52,211,153,.35), 0 0 34px -6px rgba(52,211,153,.5)!important; }
+        .market-card.picked{ border-color:rgba(52,211,153,.7) !important;
+            box-shadow:0 0 0 2px rgba(52,211,153,.35), 0 0 34px -6px rgba(52,211,153,.5) !important; }
         .market-card.picked .pick-btn{ background:rgba(16,185,129,.25); color:#a7f3d0; border-color:rgba(52,211,153,.5); }
-        .badge-digi{ background:linear-gradient(135deg,#f87171,#dc2626 60%,#7f1d1d); box-shadow:0 10px 22px -6px rgba(239,68,68,.6), inset 0 1px 0 rgba(255,255,255,.35); }
-        .badge-torob{ background:linear-gradient(135deg,#fdba74,#f97316 55%,#9a3412); box-shadow:0 10px 22px -6px rgba(249,115,22,.6), inset 0 1px 0 rgba(255,255,255,.35); }
+        .badge-digi{ background:linear-gradient(135deg,#f87171,#dc2626 60%,#7f1d1d);
+            box-shadow:0 10px 22px -6px rgba(239,68,68,.6), inset 0 1px 0 rgba(255,255,255,.35); }
+        .badge-torob{ background:linear-gradient(135deg,#fdba74,#f97316 55%,#9a3412);
+            box-shadow:0 10px 22px -6px rgba(249,115,22,.6), inset 0 1px 0 rgba(255,255,255,.35); }
+
+        .ai-result{ border:1px solid rgba(245,197,66,.35); background:linear-gradient(160deg, rgba(245,197,66,.09), rgba(45,212,191,.05));
+            border-radius:1rem; padding:.9rem 1rem; font-size:.74rem; line-height:2.1; color:#e2e8f0; }
+        .ai-result .src{ font-size:.62rem; font-weight:800; padding:.1rem .55rem; border-radius:99px; }
+        .src-db{ background:rgba(245,197,66,.15); color:#f5c542; border:1px solid rgba(245,197,66,.35); }
+        .src-web{ background:rgba(45,212,191,.12); color:#5eead4; border:1px solid rgba(45,212,191,.35); }
+        .chain-note{ font-size:.66rem; color:#7d8aa0; display:flex; align-items:center; gap:.35rem; margin-top:.5rem; }
+
         .ring-conic{ background:conic-gradient(from 0deg,#f5c542,#2dd4bf,#818cf8,#f5c542); animation:spin 3.2s linear infinite; }
         @keyframes spin{ to{ transform:rotate(360deg);} }
         .float-slow{ animation:floaty 5s ease-in-out infinite; }
         @keyframes floaty{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-8px);} }
-
-        /* ===== لودر ===== */
         @keyframes rotate3dSphere{ 0%{ transform:rotateX(0) rotateY(0);} 50%{ transform:rotateX(180deg) rotateY(180deg);} 100%{ transform:rotateX(360deg) rotateY(360deg);} }
         .sphere-3d-loader{ animation:rotate3dSphere 2.6s infinite linear; transform-style:preserve-3d; }
         .shimmer{ position:relative; overflow:hidden; }
         .shimmer::after{ content:""; position:absolute; inset:0; background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%); animation:shim 1.8s infinite; }
         @keyframes shim{ from{ transform:translateX(100%);} to{ transform:translateX(-100%);} }
+        @keyframes sheetUp{ from{ opacity:0; transform:translateY(34px);} to{ opacity:1; transform:none;} }
+        .sheet-anim{ animation:sheetUp .32s cubic-bezier(.2,.9,.3,1); }
 
-        /* ===== تست‌ها ===== */
-        #toast_box{ position:fixed; bottom:6.5rem; right:50%; transform:translateX(50%); z-index:80; display:flex; flex-direction:column; gap:.6rem; width:min(92vw,26rem); }
-        @media(min-width:768px){ #toast_box{ bottom:2rem; } }
+        #hist_chart{ width:100%; height:230px; display:block; }
+        .hist-row{ transition:background .25s; }
+        .hist-row:hover{ background:rgba(245,197,66,.06); }
+
+        #toast_box{ position:fixed; bottom:1.4rem; right:50%; transform:translateX(50%); z-index:90;
+            display:flex; flex-direction:column; gap:.6rem; width:min(92vw,26rem); }
         .toast{ display:flex; align-items:center; gap:.7rem; padding:.85rem 1rem; border-radius:1rem; font-size:.82rem; font-weight:600;
             background:rgba(3,18,38,.94); border:1px solid rgba(148,163,184,.25);
             box-shadow:0 18px 40px -12px rgba(0,0,0,.7); animation:toastIn .35s cubic-bezier(.2,.9,.3,1.2); }
@@ -179,19 +157,14 @@
         @keyframes toastOut{ to{ opacity:0; transform:translateY(10px) scale(.96);} }
 
         .logo-glow{ box-shadow:0 0 0 2px rgba(245,197,66,.4), 0 0 30px -2px rgba(245,197,66,.65), 0 14px 30px -10px rgba(0,0,0,.8); }
-        .chip{ display:inline-flex; align-items:center; gap:.4rem; padding:.4rem .8rem; border-radius:99px; font-size:.7rem; font-weight:700; border:1px solid; }
-        .safe-bottom{ padding-bottom:calc(7rem + env(safe-area-inset-bottom)); }
+        .chip{ display:inline-flex; align-items:center; gap:.4rem; padding:.4rem .8rem; border-radius:99px; font-size:.7rem; font-weight:700; border:1px solid; font-family:inherit; }
+        .icon-btn{ position:relative; width:2.9rem; height:2.9rem; border-radius:1rem; display:flex; align-items:center; justify-content:center;
+            background:rgba(245,197,66,.1); border:1px solid rgba(245,197,66,.3); color:#f5c542; transition:all .25s; cursor:pointer; flex-shrink:0; }
+        .icon-btn:hover{ background:rgba(245,197,66,.2); }
+        .count-badge{ position:absolute; top:-.45rem; left:-.45rem; min-width:1.25rem; height:1.25rem; padding:0 .3rem; border-radius:99px;
+            background:linear-gradient(135deg,#fde68a,#d99a16); color:#03142a; font-size:.62rem; font-weight:900;
+            display:flex; align-items:center; justify-content:center; font-variant-numeric:tabular-nums; }
 
-        #wizard_nav{ transform:translateZ(0); }
-
-        /* ===== تاریخچه قیمت ===== */
-        #hist_chart{ width:100%; height:230px; display:block; }
-        @keyframes sheetUp{ from{ opacity:0; transform:translateY(34px);} to{ opacity:1; transform:none;} }
-        .sheet-anim{ animation:sheetUp .32s cubic-bezier(.2,.9,.3,1); }
-        .hist-row{ transition:background .25s; }
-        .hist-row:hover{ background:rgba(245,197,66,.06); }
-
-        /* ===== بهینه‌سازی موبایل: رفع هنگ اسکرول ===== */
         @media (max-width:768px){
             .glass, .card{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
                 background:linear-gradient(160deg,#0d2547 0%,#04122a 100%); }
@@ -206,17 +179,12 @@
             .shimmer::after{ display:none; }
             .market-card:hover{ transform:none; }
             .wstep.active{ animation:none; }
-            #toast_box{ backdrop-filter:none; }
-            .toast{ backdrop-filter:none; }
         }
-        @media (prefers-reduced-motion:reduce){
-            *, *::before, *::after{ animation:none !important; transition:none !important; }
-        }
+        @media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation:none !important; transition:none !important; } }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <!-- پس‌زمینه -->
     <div class="bg-stage" aria-hidden="true">
         <div class="orb orb-gold"></div>
         <div class="orb orb-teal"></div>
@@ -225,7 +193,6 @@
         <div class="noise"></div>
     </div>
 
-    <!-- تست‌ها -->
     <div id="toast_box" aria-live="polite"></div>
 
     <!-- مودال لودینگ هوش مصنوعی -->
@@ -239,7 +206,7 @@
                 <i class="fa-solid fa-cube text-4xl text-amber-300 relative drop-shadow-[0_0_15px_rgba(245,197,66,.9)]"></i>
             </div>
             <h3 class="text-lg md:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-amber-200 via-yellow-400 to-teal-300 mb-2">آنالیز هوش مصنوعی</h3>
-            <p id="ai_loading_status_text" class="text-xs text-slate-300 mb-6 leading-relaxed min-h-8">استعلام دقیق قیمت از ترب و دیجی‌کالا و ساخت پالت رنگی...</p>
+            <p id="ai_loading_status_text" class="text-xs text-slate-300 mb-6 leading-relaxed min-h-8">در حال تحلیل...</p>
             <div class="w-full bg-slate-950/80 rounded-full h-3 overflow-hidden border border-amber-500/25 p-[3px]">
                 <div id="ai_progress_bar" class="bg-gradient-to-l from-amber-300 via-yellow-400 to-teal-400 h-full rounded-full transition-all duration-300" style="width:0%"></div>
             </div>
@@ -247,44 +214,28 @@
         </div>
     </div>
 
-    <!-- کانتینر اصلی -->
-    <div class="max-w-3xl mx-auto px-3 sm:px-5 pt-4 md:pt-8 safe-bottom">
-
+    <div class="max-w-3xl mx-auto px-3 sm:px-5 pt-4 md:pt-8 pb-10">
         <div class="glass rounded-[1.6rem] overflow-hidden">
             <div class="h-1.5 bg-gradient-to-l from-amber-300 via-yellow-500 to-teal-400"></div>
-
             <div class="p-4 sm:p-6 md:p-8">
-                <!-- هدر -->
-                <header class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/10 pb-5 mb-5 text-center sm:text-right">
-                    <div class="flex items-center gap-3.5 flex-col sm:flex-row">
-                        <div class="relative float-slow">
-                            <img src="icons/icon-192.png" alt="لوگوی میلانو" class="w-16 h-16 md:w-[4.5rem] md:h-[4.5rem] rounded-2xl logo-glow object-cover" loading="eager" decoding="async">
-                            <span class="absolute -bottom-1.5 -left-1.5 text-[10px] font-black bg-gradient-to-l from-emerald-400 to-teal-500 text-emerald-950 px-2 py-0.5 rounded-lg shadow">AI</span>
-                        </div>
+
+                <!-- هدر مینیمال -->
+                <header class="flex items-center justify-between gap-3 border-b border-white/10 pb-4 mb-5">
+                    <div class="flex items-center gap-3">
+                        <img src="icons/icon-192.png" alt="لوگوی میلانو" class="w-14 h-14 md:w-16 md:h-16 rounded-2xl logo-glow object-cover float-slow" loading="eager" decoding="async">
                         <div>
-                            <h1 class="text-lg sm:text-xl md:text-2xl font-black leading-snug text-transparent bg-clip-text bg-gradient-to-l from-amber-200 via-yellow-400 to-amber-500">
-                                پنل هوشمند میلانو
-                            </h1>
-                            <p class="text-slate-400 text-[11px] md:text-xs mt-1">مدیریت انبار • استعلام بازار • استودیو تصویر سه‌بعدی</p>
-                            <div class="flex items-center justify-center sm:justify-start gap-1.5 mt-1.5 text-[11px] text-slate-400">
-                                <i class="fa-regular fa-clock text-amber-400"></i>
-                                <span id="clock">—</span>
-                            </div>
+                            <h1 class="text-lg md:text-xl font-black leading-snug text-transparent bg-clip-text bg-gradient-to-l from-amber-200 via-yellow-400 to-amber-500">پنل هوشمند میلانو</h1>
+                            <p class="text-slate-400 text-[11px] mt-0.5">انبار • بازار • استودیو تصویر</p>
                         </div>
                     </div>
-                    <div class="flex items-center justify-center gap-2 flex-wrap">
-                        <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25"><i class="fa-solid fa-database text-[11px]"></i> meelanoi_shops</span>
-                        <span class="chip bg-teal-500/10 text-teal-300 border-teal-500/25"><i class="fa-solid fa-bolt text-[11px]"></i> ویزارد مرحله‌ای</span>
-                        <button type="button" onclick="openHistory()" class="chip bg-indigo-500/10 text-indigo-300 border-indigo-500/30 hover:bg-indigo-500/20 transition relative">
-                            <i class="fa-solid fa-chart-line text-[11px]"></i> تاریخچه قیمت
-                            <span id="hist_count" class="absolute -top-1.5 -left-1.5 min-w-5 h-5 px-1 rounded-full bg-gradient-to-l from-amber-300 to-amber-500 text-[#03142a] text-[10px] font-black items-center justify-center" style="display:none;font-variant-numeric:tabular-nums">۰</span>
-                        </button>
-                    </div>
+                    <button type="button" onclick="openProducts()" class="icon-btn" aria-label="محصولات ثبت‌شده">
+                        <i class="fa-solid fa-box-archive"></i>
+                        <span id="prod_count" class="count-badge" style="display:none">۰</span>
+                    </button>
                 </header>
 
-                <form id="productForm" action="save_product.php" method="POST" enctype="multipart/form-data">
+                <form id="productForm" method="POST" enctype="multipart/form-data" novalidate>
 
-                    <!-- نوار پیشرفت ویزارد -->
                     <div class="mb-5">
                         <div id="wizard_dots" class="flex items-start justify-between gap-1"></div>
                         <div class="flex items-center justify-between mt-3 text-[11px] text-slate-400">
@@ -296,7 +247,7 @@
                         </div>
                     </div>
 
-                    <!-- ═══ مرحله ۱: اطلاعات پایه ═══ -->
+                    <!-- ═══ گام ۱: اطلاعات پایه ═══ -->
                     <section class="wstep card p-5 md:p-6 rounded-2xl" data-step="0">
                         <div class="flex items-center gap-2.5 mb-4">
                             <span class="sec-num">گام ۱</span>
@@ -305,15 +256,19 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="lbl" for="product_title">نام محصول / مدل دقیق <span class="text-red-400">*</span></label>
-                                <input type="text" id="product_title" name="title" required class="inp" placeholder="مثلاً: سرفیس پرو 9 مایکروسافت..." autocomplete="off">
+                                <input type="text" id="product_title" name="title" required class="inp" placeholder="مثلاً: گلکسی A55 سامسونگ..." autocomplete="off">
                             </div>
                             <div>
                                 <label class="lbl" for="brand_name">برند سازنده <span class="text-red-400">*</span></label>
-                                <input type="text" id="brand_name" name="brand_name" required class="inp font-bold !text-amber-200" placeholder="مثلاً: مایکروسافت..." autocomplete="off">
-                                <button type="button" onclick="runPreciseAiAnalysis()" class="btn btn-gold w-full mt-2.5 py-3 rounded-xl text-xs flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i> تحلیل هوشمند AI (قیمت + رنگ + بارکد)
-                                </button>
+                                <input type="text" id="brand_name" name="brand_name" required class="inp font-bold !text-amber-200" placeholder="مثلاً: سامسونگ..." autocomplete="off">
                             </div>
+                            <div>
+                                <button type="button" onclick="analyzeStep1()" class="btn btn-indigo w-full py-3.5 rounded-xl text-xs flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> تحلیل هوشمند گام ۱ (شناسایی + بارکد + رنگ)
+                                </button>
+                                <div class="chain-note"><i class="fa-solid fa-link text-[10px]"></i> مبنا: نام و برند واردشده • نتیجه در گام‌های بعد استفاده می‌شود</div>
+                            </div>
+                            <div id="ai_result_1" class="ai-result hidden"></div>
                             <div class="grid grid-cols-2 gap-3.5">
                                 <div>
                                     <label class="lbl" for="stock_quantity">موجودی <span class="text-emerald-400">*</span></label>
@@ -327,8 +282,8 @@
                                     <input type="text" id="unit" name="unit" value="عدد" class="inp">
                                 </div>
                                 <div>
-                                    <label class="lbl" for="barcode">بارکد جهانی (GTIN)</label>
-                                    <input type="text" id="barcode" name="barcode" inputmode="numeric" class="inp !text-xs" style="direction:ltr;text-align:right" placeholder="Barcode...">
+                                    <label class="lbl" for="barcode">بارکد (EAN-13)</label>
+                                    <input type="text" id="barcode" name="barcode" inputmode="numeric" class="inp !text-xs" style="direction:ltr;text-align:right" placeholder="خودکار با تحلیل">
                                 </div>
                                 <div>
                                     <label class="lbl" for="category_id">دسته‌بندی</label>
@@ -341,29 +296,38 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="lbl" for="color"><i class="fa-solid fa-palette text-amber-400 ml-1"></i>پالت رنگ‌بندی (خودکار با AI)</label>
-                                <input type="text" id="color" name="color" class="inp font-bold !text-amber-200 !text-xs" placeholder="پس از تحلیل هوشمند پر می‌شود...">
+                                <label class="lbl" for="color"><i class="fa-solid fa-palette text-amber-400 ml-1"></i>پالت رنگ‌بندی</label>
+                                <input type="text" id="color" name="color" class="inp font-bold !text-amber-200 !text-xs" placeholder="پس از تحلیل گام ۱ پر می‌شود...">
                             </div>
-                            <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                            <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
                                 تأیید و ادامه به استعلام بازار <i class="fa-solid fa-arrow-left"></i>
                             </button>
                         </div>
                     </section>
 
-                    <!-- ═══ مرحله ۲: استعلام بازار ═══ -->
-                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="1" style="border-color:rgba(129,140,248,.3)">
+                    <!-- ═══ گام ۲: استعلام بازار ═══ -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4 hidden-step" data-step="1" style="border-color:rgba(129,140,248,.3)">
                         <div class="flex items-center justify-between flex-wrap gap-2">
                             <div class="flex items-center gap-2.5">
                                 <span class="sec-num">گام ۲</span>
                                 <h2 class="font-extrabold text-sm md:text-base text-indigo-200">استعلام هوشمند بازار</h2>
                             </div>
-                            <span id="market_status_badge" class="chip bg-white/5 text-slate-300 border-white/15">در انتظار تحلیل</span>
+                            <div class="flex items-center gap-2">
+                                <span id="market_status_badge" class="chip bg-white/5 text-slate-300 border-white/15">در انتظار تحلیل</span>
+                                <button type="button" onclick="openHistory()" class="chip bg-indigo-500/10 text-indigo-300 border-indigo-500/30 hover:bg-indigo-500/20 transition">
+                                    <i class="fa-solid fa-chart-line text-[11px]"></i> تاریخچه
+                                    <span id="hist_count" class="text-[10px] font-black" style="display:none;font-variant-numeric:tabular-nums"></span>
+                                </button>
+                            </div>
                         </div>
 
-                        <div id="market_tip" class="flex items-start gap-2 text-[11px] md:text-xs text-slate-300 bg-indigo-500/[.08] border border-indigo-500/25 rounded-xl px-3.5 py-3 leading-relaxed">
-                            <i class="fa-solid fa-circle-info mt-0.5 text-indigo-300 shrink-0"></i>
-                            <span>اگر هنوز تحلیل اجرا نشده، از گام ۱ دکمه «تحلیل هوشمند» را بزنید یا همین‌جا تحلیل مجدد بگیرید.</span>
+                        <div>
+                            <button type="button" onclick="analyzeMarket()" class="btn btn-indigo w-full py-3.5 rounded-xl text-xs flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-magnifying-glass-dollar"></i> تحلیل بازار بر اساس اطلاعات گام ۱
+                            </button>
+                            <div class="chain-note"><i class="fa-solid fa-link text-[10px]"></i> مبنا: نام، برند و دسته‌بندی گام ۱ • دیتابیس + تلاش زنده از وب</div>
                         </div>
+                        <div id="ai_result_2" class="ai-result hidden"></div>
 
                         <div class="space-y-3.5">
                             <div id="card-digi" class="market-card relative overflow-hidden bg-[#050f22]/90 p-4 rounded-2xl border border-red-500/30 flex items-center justify-between gap-3">
@@ -378,7 +342,6 @@
                                     <i class="fa-solid fa-check"></i> انتخاب
                                 </button>
                             </div>
-
                             <div id="card-torob" class="market-card relative overflow-hidden bg-[#050f22]/90 p-4 rounded-2xl border border-orange-500/30 flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
                                     <div class="p-3 rounded-2xl badge-torob flex items-center justify-center text-white text-xl shrink-0"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
@@ -395,29 +358,28 @@
 
                         <div class="bg-emerald-500/[.07] p-3.5 rounded-xl border border-emerald-500/30 flex items-center justify-between gap-2 flex-wrap">
                             <span class="text-emerald-300 font-bold flex items-center gap-2 text-[11px] md:text-xs"><i class="fa-solid fa-shield-halved text-emerald-400"></i> قیمت نهایی منتخب</span>
-                            <span id="selected_active_price_display" class="text-emerald-300 font-black text-base" style="-webkit-text-fill-color:#6ee7b7;font-variant-numeric:tabular-nums">۰ ریال</span>
+                            <span id="selected_active_price_display" class="text-emerald-300 font-black text-base" style="font-variant-numeric:tabular-nums">۰ ریال</span>
                         </div>
 
-                        <div class="flex gap-2.5">
-                            <button type="button" onclick="runPreciseAiAnalysis()" class="btn btn-ghost flex-1 py-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-rotate-right"></i> تحلیل مجدد
-                            </button>
-                            <button type="button" onclick="nextStep()" class="btn btn-gold flex-[1.6] py-3 rounded-xl text-xs flex items-center justify-center gap-2">
-                                تأیید قیمت و ادامه <i class="fa-solid fa-arrow-left"></i>
-                            </button>
-                        </div>
+                        <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
+                            تأیید قیمت و ادامه به قیمت‌گذاری <i class="fa-solid fa-arrow-left"></i>
+                        </button>
                         <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
-                    <!-- ═══ مرحله ۳: قیمت‌گذاری ═══ -->
-                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="2">
-                        <div class="flex items-center justify-between flex-wrap gap-2">
-                            <div class="flex items-center gap-2.5">
-                                <span class="sec-num">گام ۳</span>
-                                <h2 class="font-extrabold text-sm md:text-base text-amber-300">قیمت‌گذاری انبار</h2>
-                            </div>
-                            <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25"><i class="fa-solid fa-robot text-[11px]"></i> محاسبه خودکار سود</span>
+                    <!-- ═══ گام ۳: قیمت‌گذاری ═══ -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4 hidden-step" data-step="2">
+                        <div class="flex items-center gap-2.5">
+                            <span class="sec-num">گام ۳</span>
+                            <h2 class="font-extrabold text-sm md:text-base text-amber-300">قیمت‌گذاری انبار</h2>
                         </div>
+                        <div>
+                            <button type="button" onclick="suggestPricing()" class="btn btn-indigo w-full py-3.5 rounded-xl text-xs flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> پیشنهاد قیمت‌گذاری بر اساس قیمت منتخب گام ۲
+                            </button>
+                            <div class="chain-note"><i class="fa-solid fa-link text-[10px]"></i> مبنا: قیمت منتخب بازار + حاشیه سود دسته‌بندی گام ۱</div>
+                        </div>
+                        <div id="ai_result_3" class="ai-result hidden"></div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
                                 <label class="lbl" for="purchase_price">قیمت خرید پایه (ریال)</label>
@@ -440,14 +402,14 @@
                             <i class="fa-solid fa-chart-line text-teal-300"></i>
                             <span>حاشیه سود پس از ورود قیمت‌ها محاسبه می‌شود.</span>
                         </div>
-                        <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
                             تأیید قیمت‌ها و ادامه به استودیو تصویر <i class="fa-solid fa-arrow-left"></i>
                         </button>
                         <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
-                    <!-- ═══ مرحله ۴: استودیو تصویر ═══ -->
-                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="3">
+                    <!-- ═══ گام ۴: استودیو تصویر ═══ -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4 hidden-step" data-step="3">
                         <div class="flex items-center justify-between flex-wrap gap-2">
                             <div class="flex items-center gap-2.5">
                                 <span class="sec-num">گام ۴</span>
@@ -455,7 +417,6 @@
                             </div>
                             <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25">AI واقعی • WebP • 768×768</span>
                         </div>
-
                         <div class="flex flex-col items-center border-2 border-dashed border-white/15 rounded-2xl p-5 bg-[#010b18]/60">
                             <div class="w-48 h-48 md:w-56 md:h-56 flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900 border border-white/10 relative logo-glow">
                                 <img id="product_image_preview" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600" class="object-cover h-full w-full" alt="پیش‌نمایش موکاپ تبلیغاتی محصول" loading="lazy" decoding="async">
@@ -467,10 +428,9 @@
                                 <input type="file" name="product_image_file" accept=".webp,.jpg,.jpeg,.png" capture="environment" class="hidden" onchange="previewLocalImage(this)">
                             </label>
                         </div>
-
                         <div class="space-y-3.5">
                             <div>
-                                <label class="lbl" for="ai_image_provider">موتور تولید تصویر هوش مصنوعی</label>
+                                <label class="lbl" for="ai_image_provider">موتور تولید تصویر</label>
                                 <select id="ai_image_provider" class="inp !text-xs">
                                     <option value="flux">Flux • کیفیت استودیویی (رایگان و واقعی)</option>
                                     <option value="turbo">Turbo • سرعت بالا (رایگان و واقعی)</option>
@@ -478,29 +438,45 @@
                             </div>
                             <div>
                                 <label class="lbl" for="custom_image_prompt_text">توصیف صحنه تبلیغاتی (اختیاری)</label>
-                                <input type="text" id="custom_image_prompt_text" class="inp !text-xs" placeholder="خالی باشد: بر اساس نام و برند، صحنه لوکس ساخته می‌شود">
+                                <input type="text" id="custom_image_prompt_text" class="inp !text-xs" placeholder="خالی باشد: بر اساس نام، برند و پالت رنگ ساخته می‌شود">
                             </div>
                             <button type="button" onclick="generateWebpAiImage()" class="btn btn-indigo w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> ساخت موکاپ تبلیغاتی با AI و تبدیل WebP
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> تولید موکاپ با AI بر اساس گام ۱
                             </button>
-                            <p class="text-[11px] text-slate-500 leading-relaxed flex items-start gap-1.5"><i class="fa-solid fa-circle-info mt-0.5 text-indigo-400"></i>تصویر واقعاً توسط موتور هوش مصنوعی تولید، به ابعاد 768×768 برش و به فرمت WebP تبدیل می‌شود.</p>
+                            <div class="chain-note"><i class="fa-solid fa-link text-[10px]"></i> مبنا: نام، برند و پالت رنگ گام ۱ در صحنه تصویر لحاظ می‌شود</div>
                         </div>
-
-                        <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <div id="ai_result_4" class="ai-result hidden"></div>
+                        <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
                             تأیید تصویر و ادامه به ثبت نهایی <i class="fa-solid fa-arrow-left"></i>
                         </button>
                         <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
-                    <!-- ═══ مرحله ۵: مشخصات و ثبت ═══ -->
-                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="4">
+                    <!-- ═══ گام ۵: ثبت نهایی ═══ -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4 hidden-step" data-step="4">
                         <div class="flex items-center gap-2.5">
                             <span class="sec-num">گام ۵</span>
-                            <h2 class="font-extrabold text-sm md:text-base text-slate-100">مشخصات و ثبت نهایی</h2>
+                            <h2 class="font-extrabold text-sm md:text-base text-slate-100">بازبینی هوشمند و ثبت نهایی</h2>
                         </div>
-
+                        <div class="flex items-center gap-4 bg-white/[.03] border border-white/10 rounded-2xl p-4">
+                            <svg viewBox="0 0 84 84" class="w-24 h-24 shrink-0 -rotate-90">
+                                <defs>
+                                    <linearGradient id="scoreGrad" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#f5c542"/><stop offset="100%" stop-color="#2dd4bf"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="42" cy="42" r="34" fill="none" stroke="rgba(148,163,184,.15)" stroke-width="9"/>
+                                <circle id="score_arc" cx="42" cy="42" r="34" fill="none" stroke="url(#scoreGrad)" stroke-width="9"
+                                    stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6" style="transition:stroke-dashoffset 1s cubic-bezier(.2,.7,.3,1)"/>
+                            </svg>
+                            <div class="min-w-0">
+                                <div class="text-[11px] text-slate-400">امتیاز آمادگی ثبت</div>
+                                <div id="score_num" class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-l from-amber-200 to-teal-300" style="font-variant-numeric:tabular-nums">۰</div>
+                                <div id="score_tip" class="text-[11px] text-slate-400 leading-relaxed mt-1">—</div>
+                            </div>
+                        </div>
+                        <ul id="score_list" class="space-y-1.5 text-[11px] md:text-xs"></ul>
                         <div id="order_summary" class="text-[11px] md:text-xs leading-loose bg-amber-500/[.06] border border-amber-500/25 rounded-xl px-4 py-3 text-slate-300"></div>
-
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
                             <div><label class="lbl" for="weight">وزن (kg)</label><input type="number" step="0.01" id="weight" name="weight" value="0.85" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
                             <div><label class="lbl" for="length">طول (cm)</label><input type="number" step="0.1" id="length" name="length" value="28.7" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
@@ -510,40 +486,23 @@
                         </div>
                         <div>
                             <label class="lbl" for="short_description"><i class="fa-solid fa-pen-nib text-amber-400 ml-1"></i>توضیحات کوتاه سئو</label>
-                            <textarea id="short_description" name="short_description" rows="2" class="inp resize-none !text-xs" placeholder="توضیح کوتاه فارسی برای موتورهای جستجو..."></textarea>
+                            <textarea id="short_description" name="short_description" rows="2" class="inp !text-xs" placeholder="توضیح کوتاه فارسی برای موتورهای جستجو..."></textarea>
                         </div>
                         <button type="submit" id="submitBtn" class="btn btn-emerald w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2.5">
-                            <i class="fa-solid fa-floppy-disk text-lg"></i> تأیید و ثبت نهایی در دیتابیس میلانو
+                            <i class="fa-solid fa-floppy-disk text-lg"></i> تأیید و ثبت نهایی در میلانو
                         </button>
                         <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
                 </form>
 
-                <!-- فوتر -->
                 <footer class="text-center pt-5 pb-1">
                     <div class="flex items-center justify-center gap-2 text-[11px] text-slate-500">
                         <img src="icons/icon-192.png" alt="" class="w-5 h-5 rounded-md" loading="lazy" decoding="async">
-                        <span>پنل هوشمند میلانو • <span id="year">۱۴۰۵</span></span>
+                        <span>پنل هوشمند میلانو</span>
                     </div>
                 </footer>
             </div>
-        </div>
-    </div>
-
-    <!-- ناوبری چسبان ویزارد -->
-    <div class="fixed bottom-0 inset-x-0 z-[60] px-3 pb-[calc(.7rem+env(safe-area-inset-bottom))] pt-2 bg-gradient-to-t from-[#010b18] via-[#010b18]/95 to-transparent">
-        <div class="max-w-3xl mx-auto rounded-2xl border border-white/10 bg-[#04122a]/95 px-2.5 py-2 flex items-center gap-2" style="box-shadow:0 -8px 30px -10px rgba(0,0,0,.8)">
-            <button type="button" id="nav_prev" onclick="prevStep()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-xs items-center justify-center gap-1.5 min-w-[5.2rem]" style="display:none">
-                <i class="fa-solid fa-arrow-right"></i> قبلی
-            </button>
-            <span id="nav_counter" class="flex-1 text-center text-[11px] font-bold text-slate-400" style="font-variant-numeric:tabular-nums">۱ از ۵</span>
-            <button type="button" id="nav_next" onclick="nextStep()" class="btn btn-gold px-5 py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 min-w-[7rem]">
-                بعدی <i class="fa-solid fa-arrow-left"></i>
-            </button>
-            <button type="button" id="nav_submit" onclick="document.getElementById('productForm').requestSubmit()" class="btn btn-emerald px-5 py-2.5 rounded-xl text-xs items-center justify-center gap-1.5 min-w-[7rem]" style="display:none">
-                <i class="fa-solid fa-check"></i> ثبت نهایی
-            </button>
         </div>
     </div>
 
@@ -569,6 +528,40 @@
         </div>
     </div>
 
+    <!-- مودال محصولات ثبت‌شده -->
+    <div id="products_modal" class="fixed inset-0 z-[70] hidden items-end md:items-center justify-center">
+        <div class="absolute inset-0 bg-black/70" onclick="closeProducts()"></div>
+        <div class="sheet-anim relative w-full md:max-w-lg bg-[#04122a] border border-white/15 rounded-t-3xl md:rounded-3xl p-5 max-h-[88vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-extrabold text-sm text-amber-200"><i class="fa-solid fa-box-archive ml-1.5"></i>محصولات ثبت‌شده در گوشی</h3>
+                <button type="button" onclick="closeProducts()" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white transition" aria-label="بستن"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="prod_total" class="text-[11px] text-slate-300 bg-white/[.04] border border-white/10 rounded-xl px-3.5 py-2.5 mb-3 leading-relaxed"></div>
+            <div id="prod_list" class="space-y-2 mb-3"></div>
+            <div class="flex gap-2">
+                <button type="button" onclick="exportProducts('json')" class="btn btn-ghost flex-1 py-2.5 rounded-xl text-[11px]"><i class="fa-solid fa-file-arrow-down ml-1"></i>خروجی JSON</button>
+                <button type="button" onclick="exportProducts('csv')" class="btn btn-ghost flex-1 py-2.5 rounded-xl text-[11px]"><i class="fa-solid fa-file-csv ml-1"></i>خروجی اکسل (CSV)</button>
+                <button type="button" onclick="clearProducts()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-[11px] !text-red-300">حذف همه</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال موفقیت ثبت -->
+    <div id="success_modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/75"></div>
+        <div class="sheet-anim relative card rounded-3xl max-w-sm w-full text-center p-6" style="border-color:rgba(52,211,153,.45)">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-2xl text-emerald-950 shadow-lg">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="font-extrabold text-base text-emerald-200 mb-1.5">ثبت شد!</h3>
+            <p id="success_text" class="text-xs text-slate-300 leading-relaxed mb-5"></p>
+            <div class="flex gap-2">
+                <button type="button" onclick="closeSuccess();openProducts()" class="btn btn-ghost flex-1 py-3 rounded-xl text-xs">مشاهده محصولات</button>
+                <button type="button" onclick="closeSuccess();resetWizard()" class="btn btn-emerald flex-1 py-3 rounded-xl text-xs">کالای جدید</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const $ = (id) => document.getElementById(id);
         const FA_D = '۰۱۲۳۴۵۶۷۸۹';
@@ -576,32 +569,42 @@
         const parseNum = (v) => parseInt(String(v).replace(/\D/g, ''), 10) || 0;
         const fmtEN = (n) => Number(n).toLocaleString('en-US');
         const fmtFA = (n) => toFa(fmtEN(n));
+        const faToEnNum = (s) => parseInt(String(s).replace(/[۰-۹]/g, d => FA_D.indexOf(d)).replace(/[٬,]/g, '').replace(/[^\d]/g, ''), 10) || 0;
 
-        /* ---------- تست‌ها ---------- */
+        /* نرمال‌سازی فارسی برای تطبیق دقیق */
+        function normalizeFa(s) {
+            return String(s || '').replace(/[ي]/g, 'ی').replace(/[ك]/g, 'ک').replace(/‌/g, '').replace(/ة/g, 'ه')
+                .replace(/[أإآ]/g, 'ا').replace(/ؤ/g, 'و').replace(/\s+/g, ' ').trim().toLowerCase();
+        }
+        function ean13Check(b12) {
+            let s = 0;
+            for (let i = 0; i < 12; i++) { const d = +b12[i] || 0; s += (i % 2 === 0) ? d : d * 3; }
+            return String((10 - (s % 10)) % 10);
+        }
+        function validEAN(s) {
+            s = String(s || '').replace(/\D/g, '');
+            if (s.length !== 13) return false;
+            return ean13Check(s.slice(0, 12)) === s[12];
+        }
+        function randomEAN(prefix) {
+            let b = String(prefix || '626').replace(/\D/g, '').slice(0, 12);
+            while (b.length < 12) b += Math.floor(Math.random() * 10);
+            return b + ean13Check(b);
+        }
+
         function toast(msg, type = 'info') {
             const box = $('toast_box');
             const icons = { success: 'fa-circle-check text-emerald-400', error: 'fa-circle-exclamation text-red-400', info: 'fa-circle-info text-amber-300' };
             const borders = { success: 'border-emerald-500/40', error: 'border-red-500/40', info: 'border-amber-500/30' };
             const el = document.createElement('div');
-            el.className = `toast ${borders[type] || borders.info}`;
-            el.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} text-base"></i><span class="leading-relaxed">${msg}</span>`;
+            el.className = 'toast ' + (borders[type] || borders.info);
+            el.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + ' text-base"></i><span class="leading-relaxed">' + msg + '</span>';
             box.appendChild(el);
-            setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 320); }, 3400);
+            setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 320); }, 3600);
         }
 
-        /* ---------- ساعت زنده ---------- */
-        function updateClock() {
-            try {
-                const now = new Date();
-                $('clock').textContent = now.toLocaleDateString('fa-IR', { weekday: 'long', day: 'numeric', month: 'long' }) + ' • ' +
-                    now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
-                $('year').textContent = now.toLocaleDateString('fa-IR', { year: 'numeric' });
-            } catch (e) { /* ignore */ }
-        }
-        updateClock(); setInterval(updateClock, 30000);
-
-        /* ═════════ ویزارد مرحله‌ای ═════════ */
-        const STEP_NAMES = ['اطلاعات پایه کالا', 'استعلام هوشمند بازار', 'قیمت‌گذاری انبار', 'استودیو تصویر تبلیغاتی', 'مشخصات و ثبت نهایی'];
+        /* ═════════ ویزارد ═════════ */
+        const STEP_NAMES = ['اطلاعات پایه کالا', 'استعلام هوشمند بازار', 'قیمت‌گذاری انبار', 'استودیو تصویر تبلیغاتی', 'بازبینی و ثبت نهایی'];
         const STEP_SHORT = ['اطلاعات', 'بازار', 'قیمت', 'تصویر', 'ثبت'];
         const panels = Array.from(document.querySelectorAll('.wstep'));
         let curStep = 0, maxStep = 0;
@@ -612,43 +615,29 @@
             panels.forEach((_, i) => {
                 if (i > 0) {
                     const line = document.createElement('div');
-                    line.className = 'wline';
+                    line.className = 'wline'; line.id = 'wline_' + i;
                     line.innerHTML = '<span></span>';
-                    line.id = 'wline_' + i;
                     box.appendChild(line);
                 }
                 const b = document.createElement('button');
-                b.type = 'button';
-                b.className = 'wdot';
-                b.id = 'wdot_' + i;
+                b.type = 'button'; b.className = 'wdot'; b.id = 'wdot_' + i;
                 b.setAttribute('aria-label', 'گام ' + toFa(i + 1) + ': ' + STEP_NAMES[i]);
-                b.innerHTML = `<span class="bub">${toFa(i + 1)}</span><span class="cap">${STEP_SHORT[i]}</span>`;
+                b.innerHTML = '<span class="bub">' + toFa(i + 1) + '</span><span class="cap">' + STEP_SHORT[i] + '</span>';
                 b.onclick = () => { if (i <= maxStep) goStep(i, true); else toast('اول گام‌های قبلی را تأیید کنید.', 'info'); };
                 box.appendChild(b);
             });
         }
-
         function renderWizard() {
             panels.forEach((_, i) => {
                 const d = $('wdot_' + i);
                 d.classList.toggle('now', i === curStep);
-                d.classList.toggle('done', i < curStep || (i <= maxStep && i !== curStep && false));
                 d.querySelector('.bub').innerHTML = (i < curStep) ? '<i class="fa-solid fa-check text-xs"></i>' : toFa(i + 1);
-                if (i > 0) {
-                    const fill = $('wline_' + i).firstChild;
-                    fill.style.width = (i <= curStep) ? '100%' : '0%';
-                }
+                if (i > 0) $('wline_' + i).firstChild.style.width = (i <= curStep) ? '100%' : '0%';
             });
             $('wizard_label').textContent = 'مرحله ' + toFa(curStep + 1) + ': ' + STEP_NAMES[curStep];
             $('wizard_counter').textContent = toFa(curStep + 1) + ' از ' + toFa(panels.length);
-            $('nav_counter').textContent = toFa(curStep + 1) + ' از ' + toFa(panels.length);
             $('wizard_fill').style.width = ((curStep + 1) / panels.length * 100) + '%';
-            const last = curStep === panels.length - 1;
-            $('nav_prev').style.display = curStep === 0 ? 'none' : 'inline-flex';
-            $('nav_next').style.display = last ? 'none' : 'inline-flex';
-            $('nav_submit').style.display = last ? 'inline-flex' : 'none';
         }
-
         function showStep(n) {
             curStep = n;
             maxStep = Math.max(maxStep, n);
@@ -656,33 +645,35 @@
                 p.classList.toggle('hidden-step', i !== n);
                 p.classList.toggle('active', i === n);
             });
-            if (n === panels.length - 1) renderSummary();
+            if (n === panels.length - 1) renderFinalScore();
             renderWizard();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
+        function fieldLabel(el) {
+            const wrap = el.closest('div');
+            const l = wrap ? wrap.querySelector('.lbl') : null;
+            return l ? l.textContent.replace('*', '').trim() : 'فیلد اجباری';
+        }
         function validateStep(i) {
             const reqs = panels[i].querySelectorAll('[required]');
             for (const el of reqs) {
                 el.classList.remove('err');
                 if (!String(el.value).trim()) {
                     el.classList.add('err');
-                    el.focus({ preventScroll: false });
-                    toast('لطفاً «' + (el.closest('div').querySelector('.lbl')?.textContent.replace('*', '').trim() || 'فیلد اجباری') + '» را تکمیل کنید.', 'error');
+                    el.focus();
+                    toast('لطفاً «' + fieldLabel(el) + '» را تکمیل کنید.', 'error');
                     return false;
                 }
             }
             return true;
         }
-
-        function nextStep() { if (validateStep(curStep)) showStep(Math.min(panels.length - 1, curStep + 1)); }
+        function nextStep() { if (validateStep(curStep)) { showStep(Math.min(panels.length - 1, curStep + 1)); } }
         function prevStep() { showStep(Math.max(0, curStep - 1)); }
-        function goStep(n, fromDot = false) {
+        function goStep(n, fromDot) {
             if (n > curStep && !validateStep(curStep)) return;
             showStep(n);
             if (!fromDot) toast('وارد «' + STEP_NAMES[n] + '» شدید.', 'info');
         }
-
         function renderSummary() {
             const t = $('product_title').value.trim() || '—';
             const b = $('brand_name').value.trim() || '—';
@@ -698,13 +689,15 @@
         showStep(0);
         loadHist();
         updateHistBadge();
+        updateProdBadge();
 
-        /* ---------- قیمت ---------- */
+        /* ═════════ قیمت و حاشیه سود ═════════ */
         function formatPrice(input) {
             const v = input.value.replace(/\D/g, '');
             input.value = v.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
-        function animatePrice(el, to, suffix = ' ریال') {
+        function animatePrice(el, to, suffix) {
+            suffix = suffix || ' ریال';
             const dur = 650, t0 = performance.now();
             function frame(t) {
                 const p = Math.min(1, (t - t0) / dur);
@@ -720,30 +713,68 @@
             const whole = parseNum($('sale_price_wholesale').value);
             const box = $('profit_hint');
             if (!buy || !retail) { box.innerHTML = '<i class="fa-solid fa-chart-line text-teal-300"></i><span>حاشیه سود پس از ورود قیمت‌ها محاسبه می‌شود.</span>'; return; }
-            const pctR = ((retail - buy) / buy * 100);
-            const pctW = whole ? ((whole - buy) / buy * 100) : 0;
+            const pctR = (retail - buy) / buy * 100;
+            const pctW = whole ? (whole - buy) / buy * 100 : 0;
             const cls = pctR >= 0 ? 'text-emerald-300' : 'text-red-300';
-            box.innerHTML = `<i class="fa-solid fa-chart-line text-teal-300"></i><span>حاشیه سود خرده‌فروشی: <b class="${cls}">${toFa(pctR.toFixed(1))}٪</b> (${fmtFA(retail - buy)} ریال)` +
-                (whole ? ` • عمده‌فروشی: <b class="${cls}">${toFa(pctW.toFixed(1))}٪</b>` : '') + '</span>';
+            box.innerHTML = '<i class="fa-solid fa-chart-line text-teal-300"></i><span>حاشیه سود خرده‌فروشی: <b class="' + cls + '">' + toFa(pctR.toFixed(1)) + '٪</b> (' + fmtFA(retail - buy) + ' ریال)' +
+                (whole ? ' • عمده‌فروشی: <b class="' + cls + '">' + toFa(pctW.toFixed(1)) + '٪</b>' : '') + '</span>';
         }
-
-        /* ---------- پیش‌نمایش تصویر محلی ---------- */
         function previewLocalImage(input) {
             if (input.files && input.files[0]) {
-                const url = URL.createObjectURL(input.files[0]);
-                $('product_image_preview').src = url;
+                $('product_image_preview').src = URL.createObjectURL(input.files[0]);
                 $('product_image_webp').value = '';
+                imgReady = true;
                 toast('تصویر انتخاب شد و پیش‌نمایش به‌روز شد.', 'success');
             }
         }
 
-        /* ---------- دیتابیس تطبیق ---------- */
+        /* ═════════ دیتابیس دانش کالا (تطبیق فازی فارسی) ═════════ */
         const exactMatchDatabase = [
-            { brandKey: 'میکروسافت', productKeywords: ['سرفیس', 'surface', 'pro 9', 'pro 11', 'laptop'], brand: 'میکروسافت (Microsoft)', barcode: '8898428751234', unit: 'عدد', category: 1, colors: 'پلاتینیوم، گرافیتی، مشکی متالیک', digikala: 775000000, torob: 760000000, purchase: 680000000, retail: 790000000, wholesale: 705000000 },
-            { brandKey: 'سامسونگ', productKeywords: ['a55', 'a35', 's24', 'galaxy', 'موبایل'], brand: 'سامسونگ (Samsung)', barcode: '8806095312457', unit: 'عدد', category: 1, colors: 'آبی روشن، سرمه‌ای، مشکی اتمی', digikala: 239000000, torob: 235000000, purchase: 215000000, retail: 245000000, wholesale: 222000000 },
-            { brandKey: 'باراکا', productKeywords: ['شکلات', 'تلخ', '84'], brand: 'باراکا (Baraka)', barcode: '6260172511234', unit: 'بسته', category: 2, colors: 'قهوه‌ای تیره، طلایی مات', digikala: 520000, torob: 495000, purchase: 380000, retail: 540000, wholesale: 420000 }
+            { bk: 'مایکروسافت', keys: ['سرفیس', 'surface', 'pro 9', 'pro 11', 'laptop'], brand: 'میکروسافت (Microsoft)', bc: '889842875123', unit: 'عدد', cat: 1, colors: 'پلاتینیوم، گرافیتی، مشکی متالیک', dg: 775000000, tr: 760000000, buy: 680000000, ret: 790000000, wh: 705000000 },
+            { bk: 'سامسونگ', keys: ['گلکسی a', 'galaxy a', 'a55', 'a35', 'a54'], brand: 'سامسونگ (Samsung)', bc: '880609531245', unit: 'عدد', cat: 1, colors: 'آبی روشن، سرمه‌ای، مشکی', dg: 239000000, tr: 235000000, buy: 215000000, ret: 245000000, wh: 222000000 },
+            { bk: 'سامسونگ', keys: ['گلکسی s', 'galaxy s', 's24', 's23', 'اولترا'], brand: 'سامسونگ (Samsung)', bc: '880609598711', unit: 'عدد', cat: 1, colors: 'خاکستری، بنفش، مشکی', dg: 520000000, tr: 505000000, buy: 460000000, ret: 535000000, wh: 475000000 },
+            { bk: 'شیائومی', keys: ['redmi', 'ردمی', 'note 13', 'note 14', 'نوت ۱۳'], brand: 'شیائومی (Xiaomi)', bc: '693417778234', unit: 'عدد', cat: 1, colors: 'مشکی، آبی، سبز', dg: 125000000, tr: 119000000, buy: 105000000, ret: 129000000, wh: 110000000 },
+            { bk: 'پوکو', keys: ['poco', 'پوکو', 'x6', 'x7', 'f6'], brand: 'پوکو (POCO)', bc: '693417779876', unit: 'عدد', cat: 1, colors: 'زرد، مشکی', dg: 142000000, tr: 136000000, buy: 120000000, ret: 146000000, wh: 126000000 },
+            { bk: 'اپل', keys: ['آیفون', 'iphone', 'گوشی اپل'], brand: 'اپل (Apple)', bc: '190198123456', unit: 'عدد', cat: 1, colors: 'آبی، مشکی، سفید', dg: 1450000000, tr: 1410000000, buy: 1280000000, ret: 1490000000, wh: 1330000000 },
+            { bk: 'سونی', keys: ['سونی', 'sony', 'xm5', 'wh-1000', 'هدفون'], brand: 'سونی (Sony)', bc: '454873613745', unit: 'عدد', cat: 1, colors: 'مشکی، نقره‌ای', dg: 185000000, tr: 178000000, buy: 155000000, ret: 192000000, wh: 165000000 },
+            { bk: 'اپل', keys: ['ایرپاد', 'airpods', 'ایربادز پرو'], brand: 'اپل (Apple)', bc: '190199234567', unit: 'عدد', cat: 1, colors: 'سفید', dg: 135000000, tr: 129000000, buy: 112000000, ret: 139000000, wh: 118000000 },
+            { bk: 'اچ‌پی', keys: ['probook', 'elitebook', 'لپ‌تاپ اچ‌پی', 'hp پاویلیون'], brand: 'اچ‌پی (HP)', bc: '190203456789', unit: 'عدد', cat: 1, colors: 'نقره‌ای، مشکی', dg: 460000000, tr: 445000000, buy: 395000000, ret: 475000000, wh: 415000000 },
+            { bk: 'لنوو', keys: ['لنوو', 'lenovo', 'thinkpad', 'ideapad', 'تینک‌پد'], brand: 'لنوو (Lenovo)', bc: '192330045678', unit: 'عدد', cat: 1, colors: 'مشکی', dg: 385000000, tr: 372000000, buy: 330000000, ret: 398000000, wh: 345000000 },
+            { bk: 'ایسوس', keys: ['ایسوس', 'asus', 'vivobook', 'rog', 'ویووبوک'], brand: 'ایسوس (ASUS)', bc: '471108933456', unit: 'عدد', cat: 1, colors: 'مشکی، آبی', dg: 420000000, tr: 408000000, buy: 365000000, ret: 435000000, wh: 380000000 },
+            { bk: 'لاجیتک', keys: ['لاجیتک', 'logitech', 'موس', 'mx master', 'کیبورد'], brand: 'لاجیتک (Logitech)', bc: '097855178234', unit: 'عدد', cat: 1, colors: 'مشکی، خاکستری', dg: 58000000, tr: 54000000, buy: 46000000, ret: 60000000, wh: 49000000 },
+            { bk: 'سامسونگ', keys: ['گلکسی واچ', 'watch 6', 'watch 7', 'ساعت هوشمند سامسونگ'], brand: 'سامسونگ (Samsung)', bc: '880609587123', unit: 'عدد', cat: 1, colors: 'مشکی، نقره‌ای', dg: 158000000, tr: 151000000, buy: 132000000, ret: 163000000, wh: 140000000 },
+            { bk: 'شیائومی', keys: ['می بند', 'mi band', 'مچ‌بند', 'smart band'], brand: 'شیائومی (Xiaomi)', bc: '693417771245', unit: 'عدد', cat: 1, colors: 'مشکی', dg: 22000000, tr: 20500000, buy: 17000000, ret: 23000000, wh: 18500000 },
+            { bk: 'اسنوا', keys: ['اسنوا', 'snowa', 'یخچال اسنوا'], brand: 'اسنوا (Snowa)', bc: '626011234567', unit: 'دستگاه', cat: 1, colors: 'سفید، نقره‌ای', dg: 320000000, tr: 308000000, buy: 275000000, ret: 332000000, wh: 290000000 },
+            { bk: 'پارس‌خزر', keys: ['پارس‌خزر', 'pars khazar', 'پنکه'], brand: 'پارس‌خزر', bc: '626022345678', unit: 'دستگاه', cat: 1, colors: 'سفید', dg: 28000000, tr: 26500000, buy: 22000000, ret: 29500000, wh: 24000000 },
+            { bk: 'باراکا', keys: ['باراکا', 'baraka', 'شکلات', 'تلخ'], brand: 'باراکا (Baraka)', bc: '626017251123', unit: 'بسته', cat: 2, colors: 'قهوه‌ای تیره، طلایی مات', dg: 520000, tr: 495000, buy: 380000, ret: 540000, wh: 420000 },
+            { bk: 'چیتوز', keys: ['چیتوز', 'cheetoz', 'چیپس'], brand: 'چیتوز (Cheetoz)', bc: '626033456789', unit: 'بسته', cat: 2, colors: 'نارنجی، قرمز', dg: 180000, tr: 170000, buy: 120000, ret: 195000, wh: 140000 },
+            { bk: 'مهرام', keys: ['مهرام', 'mahram', 'سس', 'رب گوجه'], brand: 'مهرام (Mahram)', bc: '626044567890', unit: 'بسته', cat: 2, colors: 'قرمز، سفید', dg: 450000, tr: 430000, buy: 310000, ret: 480000, wh: 350000 },
+            { bk: 'کاله', keys: ['کاله', 'kalleh', 'ماست', 'پنیر'], brand: 'کاله (Kalleh)', bc: '626055678901', unit: 'بسته', cat: 2, colors: 'سفید، آبی', dg: 680000, tr: 650000, buy: 480000, ret: 730000, wh: 540000 },
+            { bk: 'زر', keys: ['زر ماکارون', 'تک‌ماکارون', 'پاستا', 'ماکارونی'], brand: 'زر (Zar)', bc: '626066789012', unit: 'بسته', cat: 2, colors: 'زرد، قرمز', dg: 320000, tr: 300000, buy: 220000, ret: 350000, wh: 250000 },
+            { bk: 'سینره', keys: ['سینره', 'cinere', 'شامپو'], brand: 'سینره (Cinere)', bc: '626077890123', unit: 'عدد', cat: 3, colors: 'سبز، سفید', dg: 890000, tr: 840000, buy: 600000, ret: 980000, wh: 700000 },
+            { bk: 'لافارر', keys: ['لافارر', 'lafarrerr', 'کرم'], brand: 'لافارر (La Farrerr)', bc: '626088901234', unit: 'عدد', cat: 3, colors: 'سفید، طلایی', dg: 1250000, tr: 1180000, buy: 850000, ret: 1380000, wh: 980000 },
+            { bk: 'مای', keys: ['لوازم مای', 'my makeup', 'رژ مای'], brand: 'مای (My)', bc: '626099012345', unit: 'عدد', cat: 3, colors: 'صورتی، مشکی', dg: 560000, tr: 530000, buy: 380000, ret: 620000, wh: 440000 },
+            { bk: 'عسل', keys: ['عسل', 'ارگانیک', 'طبیعی'], brand: 'ایستگاه سلامت', bc: '626100123456', unit: 'شیشه', cat: 4, colors: 'کهربایی', dg: 2800000, tr: 2650000, buy: 1900000, ret: 3100000, wh: 2200000 }
         ];
-        let rawDigiPrice = 0, rawTorobPrice = 0;
+        exactMatchDatabase.forEach(e => {
+            e._nb = normalizeFa(e.bk);
+            e._nk = e.keys.map(normalizeFa);
+        });
+        function findMatch(titleRaw, brandRaw) {
+            const T = normalizeFa(titleRaw), B = normalizeFa(brandRaw);
+            if (!T && !B) return null;
+            const hit = (e) => e._nk.some(k => k && (T.includes(k) || B.includes(k)));
+            let m = exactMatchDatabase.find(e => B.includes(e._nb) && hit(e));
+            if (m) return m;
+            m = exactMatchDatabase.find(e => hit(e));
+            if (m) return m;
+            m = exactMatchDatabase.find(e => e._nb && (B.includes(e._nb) || T.includes(e._nb)));
+            return m || null;
+        }
+
+        let rawDigiPrice = 0, rawTorobPrice = 0, imgReady = false;
+        const CAT_NAMES = { 1: 'دیجیتال و لوازم جانبی', 2: 'مواد غذایی', 3: 'آرایشی و سلامت', 4: 'ارگانیک' };
+        const CAT_MARGIN = { 1: { buy: .90, ret: 1.08, wh: .96 }, 2: { buy: .72, ret: 1.18, wh: 1.06 }, 3: { buy: .68, ret: 1.25, wh: 1.10 }, 4: { buy: .70, ret: 1.22, wh: 1.08 } };
 
         function showAiModal(text) {
             const m = $('ai_loading_modal');
@@ -752,71 +783,140 @@
             $('ai_progress_percent').textContent = '۰٪';
             if (text) $('ai_loading_status_text').textContent = text;
         }
-        function hideAiModal() {
-            const m = $('ai_loading_modal');
-            m.classList.add('hidden'); m.classList.remove('flex');
-        }
+        function hideAiModal() { const m = $('ai_loading_modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
         function setProgress(p, stageText) {
             $('ai_progress_bar').style.width = p + '%';
             $('ai_progress_percent').textContent = toFa(p) + '٪';
             if (stageText) $('ai_loading_status_text').textContent = stageText;
         }
-
-        function runPreciseAiAnalysis() {
-            const productInput = $('product_title').value.trim().toLowerCase();
-            const brandInput = $('brand_name').value.trim().toLowerCase();
-            if (!productInput || !brandInput) { toast('لطفاً نام محصول و برند را برای تحلیل دقیق وارد کنید.', 'error'); return; }
-            showAiModal('استعلام دقیق قیمت از ترب و دیجی‌کالا و ساخت پالت رنگی...');
-            const stages = { 30: 'بررسی الگوهای هوش مصنوعی در دیتابیس...', 65: 'خزش آنلاین و استعلام قیمت از سرورهای ترب و دیجی‌کالا...', 90: 'محاسبه پالت رنگی و استخراج کمترین قیمت بازار...', 100: 'تکمیل تحلیل و آماده‌سازی نرخ‌ها...' };
-            let progress = 0;
-            const timer = setInterval(() => {
-                progress = Math.min(100, progress + 5);
-                setProgress(progress, stages[progress]);
-                if (progress === 100) {
-                    clearInterval(timer);
-                    setTimeout(() => {
-                        hideAiModal();
-                        applyAiResults(productInput, brandInput);
-                        const badge = $('market_status_badge');
-                        badge.textContent = '✓ استعلام موفق از بازار';
-                        badge.className = 'chip bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
-                        $('market_tip').style.display = 'none';
-                        toast('تحلیل هوشمند با موفقیت انجام شد.', 'success');
-                    }, 400);
-                }
-            }, 50);
+        function showResult(boxId, html) {
+            const b = $(boxId);
+            b.innerHTML = html;
+            b.classList.remove('hidden');
         }
 
-        function applyAiResults(productInput, brandInput) {
-            const matchedItem = exactMatchDatabase.find(item =>
-                brandInput.includes(item.brandKey) || item.productKeywords.some(kw => productInput.includes(kw)));
-            let finalBrand = $('brand_name').value.trim();
-            let realBarcode = '626' + Math.floor(Math.random() * 8999999 + 1000000);
-            let detectedColors = 'مشکی متالیک، نقره‌ای، سفید';
-            if (matchedItem) {
-                finalBrand = matchedItem.brand; realBarcode = matchedItem.barcode; detectedColors = matchedItem.colors;
-                rawDigiPrice = matchedItem.digikala; rawTorobPrice = matchedItem.torob;
-                $('purchase_price').value = fmtEN(matchedItem.purchase);
-                $('sale_price_retail').value = fmtEN(matchedItem.retail);
-                $('sale_price_wholesale').value = fmtEN(matchedItem.wholesale);
+        /* ── تحلیل گام ۱: شناسایی کالا ── */
+        function analyzeStep1() {
+            const title = $('product_title').value.trim();
+            const brand = $('brand_name').value.trim();
+            if (!title || !brand) { toast('لطفاً نام محصول و برند را وارد کنید.', 'error'); return; }
+            showAiModal('شناسایی کالا، ساخت بارکد معتبر و استخراج پالت رنگ...');
+            const stages = { 35: 'نرمال‌سازی فارسی و تطبیق فازی با دیتابیس...', 70: 'ساخت بارکد EAN-13 با رقم کنترلی معتبر...', 100: 'استخراج پالت رنگ و دسته‌بندی...' };
+            let p = 0;
+            const timer = setInterval(() => {
+                p = Math.min(100, p + 5);
+                setProgress(p, stages[p]);
+                if (p === 100) {
+                    clearInterval(timer);
+                    setTimeout(() => { hideAiModal(); applyStep1(title, brand); }, 350);
+                }
+            }, 45);
+        }
+        function applyStep1(title, brand) {
+            const m = findMatch(title, brand);
+            let finalBrand = brand, barcode, colors, cat = 1, unit = 'عدد', srcDb = false;
+            if (m) {
+                finalBrand = m.brand; barcode = m.bc + ean13Check(m.bc);
+                colors = m.colors; cat = m.cat; unit = m.unit; srcDb = true;
+                rawDigiPrice = m.dg; rawTorobPrice = m.tr;
+                $('purchase_price').value = fmtEN(m.buy);
+                $('sale_price_retail').value = fmtEN(m.ret);
+                $('sale_price_wholesale').value = fmtEN(m.wh);
             } else {
+                barcode = randomEAN('626');
+                colors = 'مشکی متالیک، نقره‌ای، سفید';
                 rawDigiPrice = 3450000; rawTorobPrice = 3200000;
                 $('purchase_price').value = '2,500,000';
                 $('sale_price_retail').value = '3,600,000';
                 $('sale_price_wholesale').value = '3,100,000';
             }
             $('brand_name').value = finalBrand;
-            $('barcode').value = realBarcode;
-            $('color').value = detectedColors;
-            animatePrice($('digikala_price_text'), rawDigiPrice);
-            animatePrice($('torob_price_text'), rawTorobPrice);
+            $('barcode').value = barcode;
+            $('unit').value = unit;
+            $('category_id').value = String(cat);
+            $('color').value = colors;
+            $('short_description').value = title + ' برند ' + finalBrand + ' با پالت رنگی (' + colors + ') و تضمین بهترین قیمت بازار.';
             selectMarketPrice('torob', true);
-            $('short_description').value = $('product_title').value + ' برند ' + finalBrand + ' با پالت رنگی (' + detectedColors + ') و تضمین بهترین قیمت بازار.';
-            recordAnalysis();
             updateMargins();
+            recordAnalysis();
+            showResult('ai_result_1',
+                '<b class="text-amber-200">✓ نتیجه تحلیل گام ۱</b> <span class="src ' + (srcDb ? 'src-db">دیتابیس' : 'src-web">برآورد هوشمند') + '</span><br>' +
+                'برند شناسایی‌شده: <b>' + escapeHtml(finalBrand) + '</b><br>' +
+                'بارکد معتبر EAN-13: <b style="font-variant-numeric:tabular-nums">' + barcode + '</b> ' + (validEAN(barcode) ? '<span class="text-emerald-300">✓ معتبر</span>' : '<span class="text-red-300">نامعتبر</span>') + '<br>' +
+                'دسته: <b>' + CAT_NAMES[cat] + '</b> • واحد: <b>' + escapeHtml(unit) + '</b> • رنگ: <b>' + escapeHtml(colors) + '</b>');
+            toast('تحلیل گام ۱ انجام شد و در گام‌های بعد استفاده می‌شود.', 'success');
+        }
+        /* سازگاری با نسخه‌های قبلی */
+        function runPreciseAiAnalysis() { analyzeStep1(); }
+        function applyAiResults(a, b) { applyStep1($('product_title').value.trim(), $('brand_name').value.trim()); }
+
+        /* تلاش زنده از وب (ترب) — مکمل دیتابیس */
+        async function fetchLiveTorob(query) {
+            try {
+                const ctl = new AbortController();
+                const to = setTimeout(() => ctl.abort(), 12000);
+                const r = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://torob.com/search/?query=' + encodeURIComponent(query)), { signal: ctl.signal });
+                clearTimeout(to);
+                const j = await r.json();
+                const html = j.contents || '';
+                const text = html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ');
+                const re = /([۰-۹0-9][۰-۹0-9٬,.\s]*)\s*(تومان|تومان|ریال)/g;
+                const vals = [];
+                let mm;
+                while ((mm = re.exec(text)) !== null && vals.length < 400) {
+                    const num = faToEnNum(mm[1]);
+                    if (!num) continue;
+                    const rial = /ریال/.test(mm[2]) ? num : num * 10;
+                    if (rial >= 50000 && rial <= 50000000000) vals.push(rial);
+                }
+                if (!vals.length) return null;
+                vals.sort((a, b) => a - b);
+                return { min: vals[0], count: vals.length };
+            } catch (e) { return null; }
         }
 
-        function selectMarketPrice(source, silent = false) {
+        /* ── تحلیل گام ۲: بازار (وابسته به گام ۱) ── */
+        async function analyzeMarket() {
+            const title = $('product_title').value.trim();
+            const brand = $('brand_name').value.trim();
+            if (!title || !brand) { toast('اول در گام ۱ نام و برند را وارد و تأیید کنید.', 'error'); showStep(0); return; }
+            showAiModal('استعلام بازار بر اساس «' + title + '»...');
+            setProgress(20, 'تطبیق با دیتابیس بر اساس اطلاعات گام ۱...');
+            await new Promise(r => setTimeout(r, 350));
+            const m = findMatch(title, brand);
+            let srcDb = false;
+            if (m) {
+                rawDigiPrice = m.dg; rawTorobPrice = m.tr; srcDb = true;
+            } else if (!rawDigiPrice && !rawTorobPrice) {
+                rawDigiPrice = 3450000; rawTorobPrice = 3200000;
+            }
+            animatePrice($('digikala_price_text'), rawDigiPrice);
+            animatePrice($('torob_price_text'), rawTorobPrice);
+            setProgress(55, 'تلاش برای دریافت قیمت زنده از وب (ترب)...');
+            const live = await fetchLiveTorob(title + ' ' + brand);
+            setProgress(85, 'انتخاب هوشمند بهترین قیمت...');
+            await new Promise(r => setTimeout(r, 250));
+            const rec = rawTorobPrice <= rawDigiPrice ? 'torob' : 'digikala';
+            selectMarketPrice(rec, true);
+            const badge = $('market_status_badge');
+            badge.textContent = '✓ تحلیل بازار کامل شد';
+            badge.className = 'chip bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
+            recordAnalysis();
+            updateMargins();
+            const diff = rawDigiPrice ? Math.abs(rawDigiPrice - rawTorobPrice) / rawDigiPrice * 100 : 0;
+            let html = '<b class="text-amber-200">✓ نتیجه تحلیل گام ۲</b> <span class="src src-db">دیتابیس</span><br>' +
+                'مبنا: <b>' + escapeHtml(title) + '</b> • ' + escapeHtml($('brand_name').value.trim()) + '<br>' +
+                'پیشنهاد هوشمند: <b class="text-emerald-300">' + (rec === 'torob' ? 'کف قیمت ترب' : 'قیمت دیجی‌کالا') + '</b> (' + toFa(diff.toFixed(1)) + '٪ اختلاف) به جدول منتقل شد.';
+            if (live) {
+                html += '<br><span class="src src-web">وب زنده</span> کمترین قیمت مشاهده‌شده در ترب: <b>' + fmtFA(live.min) + ' ریال</b> (از ' + toFa(live.count) + ' مورد)';
+            } else {
+                html += '<br><span class="text-slate-500">قیمت زنده وب در دسترس نبود؛ برآورد دیتابیس مبنای کار است.</span>';
+            }
+            setProgress(100, 'تکمیل شد.');
+            setTimeout(() => { hideAiModal(); showResult('ai_result_2', html); toast('تحلیل بازار انجام شد.', 'success'); }, 350);
+        }
+
+        function selectMarketPrice(source, silent) {
             let chosenPrice = (source === 'digikala') ? rawDigiPrice : rawTorobPrice;
             if (!chosenPrice) chosenPrice = 3200000;
             animatePrice($('selected_active_price_display'), chosenPrice);
@@ -830,8 +930,31 @@
             if (!silent) toast(source === 'digikala' ? 'قیمت دیجی‌کالا به جدول منتقل شد.' : 'کف قیمت ترب به جدول منتقل شد.', 'success');
         }
 
-        /* ═════════ تولید واقعی موکاپ تبلیغاتی با هوش مصنوعی ═════════ */
-        function loadImageAsync(src, timeoutMs = 90000) {
+        /* ── تحلیل گام ۳: پیشنهاد قیمت‌گذاری (وابسته به گام ۲ و دسته گام ۱) ── */
+        function suggestPricing() {
+            const chosen = parseNum($('min_sale_price').value);
+            if (!chosen) { toast('اول در گام ۲ تحلیل بازار را انجام دهید.', 'error'); showStep(1); return; }
+            const cat = parseInt($('category_id').value, 10) || 1;
+            const mr = CAT_MARGIN[cat] || CAT_MARGIN[1];
+            const buy = Math.round(chosen * mr.buy / 1000) * 1000;
+            const ret = Math.round(chosen * mr.ret / 1000) * 1000;
+            const wh = Math.round(chosen * mr.wh / 1000) * 1000;
+            $('purchase_price').value = fmtEN(buy);
+            $('sale_price_retail').value = fmtEN(ret);
+            $('sale_price_wholesale').value = fmtEN(wh);
+            updateMargins();
+            updateLastChosen();
+            const pR = (ret - buy) / buy * 100, pW = (wh - buy) / buy * 100;
+            showResult('ai_result_3',
+                '<b class="text-amber-200">✓ پیشنهاد قیمت‌گذاری هوشمند</b> <span class="src src-db">دسته: ' + CAT_NAMES[cat] + '</span><br>' +
+                'مبنا: قیمت منتخب <b>' + fmtFA(chosen) + ' ریال</b><br>' +
+                'خرید: <b>' + fmtFA(buy) + '</b> • خرده: <b>' + fmtFA(ret) + '</b> (' + toFa(pR.toFixed(1)) + '٪ سود) • عمده: <b>' + fmtFA(wh) + '</b> (' + toFa(pW.toFixed(1)) + '٪ سود)');
+            toast('قیمت‌گذاری هوشمند بر اساس گام ۲ انجام شد.', 'success');
+        }
+
+        /* ── تولید موکاپ (وابسته به گام ۱: نام، برند، پالت رنگ) ── */
+        function loadImageAsync(src, timeoutMs) {
+            timeoutMs = timeoutMs || 90000;
             return new Promise((resolve, reject) => {
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
@@ -841,7 +964,8 @@
                 img.src = src;
             });
         }
-        function imageToWebP(img, size = 768, quality = 0.9) {
+        function imageToWebP(img, size, quality) {
+            size = size || 768; quality = quality || 0.9;
             const c = document.createElement('canvas');
             c.width = size; c.height = size;
             const x = c.getContext('2d');
@@ -850,87 +974,93 @@
             x.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
             return c.toDataURL('image/webp', quality);
         }
-
         async function generateWebpAiImage() {
-            const productTitle = $('product_title').value.trim();
-            const brandName = $('brand_name').value.trim();
+            const title = $('product_title').value.trim();
+            const brand = $('brand_name').value.trim();
             const customPrompt = $('custom_image_prompt_text').value.trim();
-            if (!productTitle || !brandName) { toast('لطفاً ابتدا در گام ۱ نام محصول و برند را وارد کنید.', 'error'); return; }
-
+            const palette = $('color').value.trim();
+            if (!title || !brand) { toast('لطفاً اول در گام ۱ نام و برند را وارد و تأیید کنید.', 'error'); showStep(0); return; }
             const provider = $('ai_image_provider').value === 'turbo' ? 'turbo' : 'flux';
             const styleEN = 'premium e-commerce advertising mockup photograph, luxurious 3D product render, dramatic studio lighting, dark navy and gold background, floating golden particles, ultra detailed, centered composition, no text, no watermark';
+            const paletteEN = palette ? ', color palette accents of ' + palette : '';
             const subjectEN = customPrompt
-                ? `advertising scene: ${customPrompt}, featuring product "${productTitle}" by brand "${brandName}"`
-                : `product "${productTitle}" by brand "${brandName}"`;
+                ? 'advertising scene: ' + customPrompt + ', featuring product "' + title + '" by brand "' + brand + '"' + paletteEN
+                : 'product "' + title + '" by brand "' + brand + '"' + paletteEN;
             const seed = Math.floor(Math.random() * 999999);
+            const t0 = Date.now();
             const url = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(subjectEN + ', ' + styleEN) +
                 '?width=768&height=768&seed=' + seed + '&nologo=true&model=' + provider;
-
-            showAiModal('اتصال به موتور هوش مصنوعی...');
-            setProgress(12, 'ارسال درخواست تولید تصویر به موتور ' + (provider === 'turbo' ? 'Turbo' : 'Flux') + '...');
+            showAiModal('تولید موکاپ بر اساس اطلاعات گام ۱...');
+            setProgress(12, 'ارسال به موتور ' + (provider === 'turbo' ? 'Turbo' : 'Flux') + ' با پالت رنگ گام ۱...');
             try {
                 const img = await loadImageAsync(url);
-                setProgress(72, 'تصویر ساخته شد؛ برش به 768×768 و تبدیل به WebP...');
+                setProgress(72, 'برش 768×768 و تبدیل به WebP...');
                 await new Promise(r => setTimeout(r, 150));
                 try {
                     const webp = imageToWebP(img, 768, 0.9);
                     $('product_image_preview').src = webp;
                     $('product_image_webp').value = webp;
+                    imgReady = true;
+                    const kb = Math.round(webp.length * 3 / 4 / 1024);
+                    const secs = ((Date.now() - t0) / 1000).toFixed(0);
+                    showResult('ai_result_4',
+                        '<b class="text-amber-200">✓ موکاپ ساخته شد</b> <span class="src src-web">AI واقعی</span><br>' +
+                        'موتور: <b>' + (provider === 'turbo' ? 'Turbo' : 'Flux') + '</b> • ابعاد: <b>768×768</b> • حجم WebP: <b>' + toFa(kb) + 'KB</b> • زمان: <b>' + toFa(secs) + ' ثانیه</b><br>' +
+                        '<span class="text-slate-400">پالت رنگ گام ۱ در صحنه لحاظ شد.</span>');
                     setProgress(100, 'تکمیل شد.');
-                    setTimeout(() => { hideAiModal(); toast('موکاپ تبلیغاتی با هوش مصنوعی ساخته و به WebP تبدیل شد.', 'success'); }, 350);
+                    setTimeout(() => { hideAiModal(); toast('موکاپ تبلیغاتی ساخته و به WebP تبدیل شد.', 'success'); }, 350);
                 } catch (convErr) {
                     $('product_image_preview').src = url;
                     $('product_image_webp').value = '';
+                    imgReady = true;
                     setProgress(100, 'تکمیل شد.');
-                    setTimeout(() => { hideAiModal(); toast('تصویر ساخته شد (نمایش مستقیم بدون تبدیل WebP).', 'info'); }, 350);
+                    setTimeout(() => { hideAiModal(); toast('تصویر ساخته شد (نمایش مستقیم).', 'info'); }, 350);
                 }
             } catch (err) {
                 hideAiModal();
-                toast('ارتباط با موتور هوش مصنوعی برقرار نشد. اینترنت را بررسی کنید و دوباره تلاش کنید.', 'error');
+                toast('ارتباط با موتور هوش مصنوعی برقرار نشد. اینترنت را بررسی و دوباره تلاش کنید.', 'error');
             }
         }
+        function generateWebpAiImageLegacy() { generateWebpAiImage(); }
 
-        /* ---------- ثبت فرم ---------- */
-        $('productForm').addEventListener('submit', function (e) {
-            if (!this.checkValidity()) {
-                e.preventDefault();
-                const bad = this.querySelector(':invalid');
-                if (bad) {
-                    const panel = bad.closest('.wstep');
-                    const idx = panels.indexOf(panel);
-                    if (idx > -1 && idx !== curStep) showStep(idx);
-                    bad.classList.add('err');
-                    setTimeout(() => this.reportValidity(), 60);
-                    toast('یک فیلد اجباری ناقص است؛ به همان گام منتقل شدید.', 'error');
-                }
-                return;
-            }
-            const btn = $('submitBtn');
-            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> در حال ذخیره‌سازی...'; }
-            const ns = $('nav_submit');
-            if (ns) { ns.disabled = true; }
-            toast('در حال ثبت نهایی در دیتابیس میلانو...', 'info');
-        });
-
-        /* ---------- سرویس‌ورکر (آفلاین، نامرئی) ---------- */
-        if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js').catch(() => {});
-            });
+        /* ── امتیاز نهایی (وابسته به همه گام‌ها) ── */
+        function renderFinalScore() {
+            renderSummary();
+            const title = $('product_title').value.trim(), brand = $('brand_name').value.trim();
+            const chosen = parseNum($('min_sale_price').value);
+            const buy = parseNum($('purchase_price').value), ret = parseNum($('sale_price_retail').value);
+            const desc = $('short_description').value.trim();
+            const items = [
+                { t: 'نام و برند کالا', ok: !!(title && brand), w: 20 },
+                { t: 'بارکد معتبر EAN-13', ok: validEAN($('barcode').value), w: 15 },
+                { t: 'پالت رنگ', ok: !!$('color').value.trim(), w: 10 },
+                { t: 'قیمت بازار منتخب', ok: chosen > 0, w: 15 },
+                { t: 'سود منطقی (خرده > خرید)', ok: buy > 0 && ret > buy, w: 15 },
+                { t: 'تصویر محصول', ok: imgReady, w: 15 },
+                { t: 'ابعاد و مالیات', ok: parseFloat($('weight').value) > 0 && parseFloat($('length').value) > 0, w: 5 },
+                { t: 'توضیح سئو', ok: desc.length > 10, w: 5 }
+            ];
+            let score = 0;
+            items.forEach(it => { if (it.ok) score += it.w; });
+            const C = 213.6;
+            $('score_arc').style.strokeDashoffset = String(C - C * score / 100);
+            const num = $('score_num');
+            const t0 = performance.now();
+            (function cnt(t) {
+                const p = Math.min(1, (t - t0) / 800);
+                num.textContent = toFa(Math.round(score * p));
+                if (p < 1) requestAnimationFrame(cnt);
+            })(t0);
+            $('score_tip').textContent = score >= 85 ? 'عالی! آماده ثبت نهایی است.' : (score >= 60 ? 'خوب است؛ موارد ضربدر را تکمیل کنید.' : 'چند مورد مهم ناقص است؛ به گام مربوطه برگردید.');
+            $('score_list').innerHTML = items.map(it =>
+                '<li class="flex items-center gap-2 ' + (it.ok ? 'text-emerald-300' : 'text-slate-500') + '">' +
+                '<i class="fa-solid ' + (it.ok ? 'fa-circle-check' : 'fa-circle-xmark') + '"></i><span>' + it.t + '</span></li>'
+            ).join('');
         }
-    </script>
-</body>
-</html>
-).value) || rawTorobPrice,
-                retail: parseNum($('sale_price_retail').value),
-                whole: parseNum($('sale_price_wholesale').value)
-            });
-        }
-        /* ═════════ تاریخچه روند قیمت‌ها ═════════ */
+        /* ═════════ تاریخچه قیمت ═════════ */
         const HIST_KEY = 'meelano_price_history_v1';
         let histMem = [];
         let histFilterMine = false;
-
         function loadHist() {
             try { histMem = JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch (e) { /* حافظه موقت */ }
             if (!Array.isArray(histMem)) histMem = [];
@@ -945,14 +1075,11 @@
             if (!b) return;
             if (histMem.length) {
                 b.textContent = toFa(histMem.length > 99 ? '99+' : histMem.length);
-                b.style.display = 'inline-flex';
+                b.style.display = 'inline';
             } else b.style.display = 'none';
         }
         function currentTitle() { return $('product_title').value.trim(); }
-        function addHist(entry) {
-            histMem.unshift(Object.assign({ t: Date.now() }, entry));
-            saveHist();
-        }
+        function addHist(entry) { histMem.unshift(Object.assign({ t: Date.now() }, entry)); saveHist(); }
         function recordAnalysis() {
             const t = currentTitle();
             if (!t || (!rawDigiPrice && !rawTorobPrice)) return;
@@ -971,12 +1098,10 @@
             const retail = parseNum($('sale_price_retail').value);
             const whole = parseNum($('sale_price_wholesale').value);
             if (histMem.length && histMem[0].title === t) {
-                histMem[0].chosen = chosen;
-                histMem[0].retail = retail;
-                histMem[0].whole = whole;
+                histMem[0].chosen = chosen; histMem[0].retail = retail; histMem[0].whole = whole;
                 saveHist();
             } else if (rawDigiPrice || rawTorobPrice) {
-                addHist({ title: t, brand: $('brand_name').value.trim(), digi: rawDigiPrice, torob: rawTorobPrice, chosen: chosen || rawTorobPrice, retail, whole });
+                addHist({ title: t, brand: $('brand_name').value.trim(), digi: rawDigiPrice, torob: rawTorobPrice, chosen: chosen || rawTorobPrice, retail: retail, whole: whole });
             }
         }
         function fmtCompact(n) {
@@ -1054,12 +1179,12 @@
                     const p = (b - a) / a * 100, down = p < 0;
                     const cls = down ? 'text-emerald-300' : 'text-red-300';
                     const arrow = down ? 'fa-arrow-trend-down' : 'fa-arrow-trend-up';
-                    box.innerHTML = `<i class="fa-solid ${arrow} ${cls}"></i><span>تغییر کف بازار از اول دوره: <b class="${cls}">${toFa(Math.abs(p).toFixed(1))}٪ ${down ? 'کاهش' : 'افزایش'}</b> • ${toFa(all.length)} رکورد</span>`;
-                } else box.innerHTML = `<i class="fa-solid fa-chart-line text-teal-300"></i><span>${toFa(all.length)} رکورد ثبت شده است.</span>`;
+                    box.innerHTML = '<i class="fa-solid ' + arrow + ' ' + cls + '"></i><span>تغییر کف بازار از اول دوره: <b class="' + cls + '">' + toFa(Math.abs(p).toFixed(1)) + '٪ ' + (down ? 'کاهش' : 'افزایش') + '</b> • ' + toFa(all.length) + ' رکورد</span>';
+                } else box.innerHTML = '<i class="fa-solid fa-chart-line text-teal-300"></i><span>' + toFa(all.length) + ' رکورد ثبت شده است.</span>';
             } else if (all.length === 1) {
                 box.innerHTML = '<i class="fa-solid fa-chart-line text-teal-300"></i><span>اولین رکورد ثبت شد؛ با تحلیل‌های بعدی نمودار کامل می‌شود.</span>';
             } else {
-                box.innerHTML = '<i class="fa-solid fa-circle-info text-amber-300"></i><span>هنوز رکوردی نیست — از گام ۱ «تحلیل هوشمند» بگیرید تا تاریخچه ساخته شود.</span>';
+                box.innerHTML = '<i class="fa-solid fa-circle-info text-amber-300"></i><span>هنوز رکوردی نیست — از گام ۱ تحلیل بگیرید تا تاریخچه ساخته شود.</span>';
             }
             drawHistChart(all.slice(0, 20).reverse());
             $('hist_filter_btn').innerHTML = histFilterMine
@@ -1070,16 +1195,13 @@
             list.innerHTML = all.slice(0, 30).map(e => {
                 const d = new Date(e.t);
                 const dt = d.toLocaleDateString('fa-IR', { day: 'numeric', month: 'numeric' }) + ' • ' + d.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
-                return `<div class="hist-row flex items-center justify-between gap-2 border border-white/10 rounded-xl px-3 py-2.5 bg-white/[.03]">
-                    <div class="min-w-0">
-                        <div class="text-[11px] font-bold text-slate-200 truncate">${escapeHtml(e.title)} <span class="text-slate-500 font-normal">• ${escapeHtml(e.brand || '')}</span></div>
-                        <div class="text-[10px] text-slate-500 mt-0.5" style="font-variant-numeric:tabular-nums">${dt} • ترب ${fmtCompact(e.torob)} • دیجی ${fmtCompact(e.digi)}</div>
-                    </div>
-                    <div class="flex items-center gap-1.5 shrink-0">
-                        <button type="button" onclick="applyHistEntry(${e.t})" class="btn btn-ghost text-[10px] px-2.5 py-1.5 rounded-lg">اعمال</button>
-                        <button type="button" onclick="delHistEntry(${e.t})" class="text-slate-600 hover:text-red-400 transition px-1" aria-label="حذف رکورد"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                    </div>
-                </div>`;
+                return '<div class="hist-row flex items-center justify-between gap-2 border border-white/10 rounded-xl px-3 py-2.5 bg-white/[.03]">' +
+                    '<div class="min-w-0"><div class="text-[11px] font-bold text-slate-200 truncate">' + escapeHtml(e.title) + ' <span class="text-slate-500 font-normal">• ' + escapeHtml(e.brand || '') + '</span></div>' +
+                    '<div class="text-[10px] text-slate-500 mt-0.5" style="font-variant-numeric:tabular-nums">' + dt + ' • ترب ' + fmtCompact(e.torob) + ' • دیجی ' + fmtCompact(e.digi) + '</div></div>' +
+                    '<div class="flex items-center gap-1.5 shrink-0">' +
+                    '<button type="button" onclick="applyHistEntry(' + e.t + ')" class="btn btn-ghost text-[10px] px-2.5 py-1.5 rounded-lg">اعمال</button>' +
+                    '<button type="button" onclick="delHistEntry(' + e.t + ')" class="text-slate-600 hover:text-red-400 transition px-1" aria-label="حذف رکورد"><i class="fa-solid fa-trash-can text-xs"></i></button>' +
+                    '</div></div>';
             }).join('');
         }
         function applyHistEntry(ts) {
@@ -1123,10 +1245,180 @@
             document.body.style.overflow = '';
         }
 
-        /* ---------- ثبت فرم ---------- */
-        
+        /* ═════════ محصولات ثبت‌شده (جایگزین PHP — کاملاً آفلاین) ═════════ */
+        const PROD_KEY = 'meelano_products_v1';
+        let prodMem = [];
+        function loadProducts() {
+            try { prodMem = JSON.parse(localStorage.getItem(PROD_KEY) || '[]'); } catch (e) { /* ignore */ }
+            if (!Array.isArray(prodMem)) prodMem = [];
+        }
+        function saveProducts() {
+            prodMem = prodMem.slice(0, 100);
+            try { localStorage.setItem(PROD_KEY, JSON.stringify(prodMem)); } catch (e) { toast('حافظه گوشی پر است؛ خروجی بگیرید و پاک کنید.', 'error'); }
+            updateProdBadge();
+        }
+        function updateProdBadge() {
+            const b = $('prod_count');
+            if (prodMem.length) { b.textContent = toFa(prodMem.length > 99 ? '99+' : prodMem.length); b.style.display = 'flex'; }
+            else b.style.display = 'none';
+        }
+        function collectProduct() {
+            return {
+                t: Date.now(),
+                title: $('product_title').value.trim(),
+                brand: $('brand_name').value.trim(),
+                stock: parseNum($('stock_quantity').value),
+                barcode: $('barcode').value.trim(),
+                unit: $('unit').value.trim() || 'عدد',
+                cat: parseInt($('category_id').value, 10) || 1,
+                color: $('color').value.trim(),
+                buy: parseNum($('purchase_price').value),
+                floor: parseNum($('min_sale_price').value),
+                retail: parseNum($('sale_price_retail').value),
+                whole: parseNum($('sale_price_wholesale').value),
+                weight: parseFloat($('weight').value) || 0,
+                dims: [parseFloat($('length').value) || 0, parseFloat($('width').value) || 0, parseFloat($('height').value) || 0],
+                tax: parseFloat($('tax_percent').value) || 0,
+                desc: $('short_description').value.trim(),
+                hasImage: imgReady
+            };
+        }
+        function openProducts() {
+            renderProducts();
+            const m = $('products_modal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeProducts() {
+            const m = $('products_modal');
+            m.classList.add('hidden'); m.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+        function renderProducts() {
+            const list = $('prod_list');
+            let total = 0;
+            prodMem.forEach(p => { total += (p.stock || 0) * (p.retail || 0); });
+            $('prod_total').innerHTML = prodMem.length
+                ? '<b class="text-amber-200">' + toFa(prodMem.length) + ' کالا</b> • ارزش موجودی (خرده): <b class="text-emerald-300">' + fmtFA(total) + ' ریال</b>'
+                : 'هنوز محصولی ثبت نشده است. از گام ۵ «تأیید و ثبت نهایی» را بزنید.';
+            list.innerHTML = prodMem.map(p => {
+                const d = new Date(p.t);
+                const dt = d.toLocaleDateString('fa-IR', { day: 'numeric', month: 'numeric' }) + ' • ' + d.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+                return '<div class="hist-row flex items-center justify-between gap-2 border border-white/10 rounded-xl px-3 py-2.5 bg-white/[.03]">' +
+                    '<div class="min-w-0"><div class="text-[11px] font-bold text-slate-200 truncate">' + escapeHtml(p.title) + ' <span class="text-slate-500 font-normal">• ' + escapeHtml(p.brand) + '</span></div>' +
+                    '<div class="text-[10px] text-slate-500 mt-0.5" style="font-variant-numeric:tabular-nums">' + dt + ' • موجودی ' + toFa(p.stock) + ' • خرده ' + fmtCompact(p.retail) + '</div></div>' +
+                    '<button type="button" onclick="delProduct(' + p.t + ')" class="text-slate-600 hover:text-red-400 transition px-1 shrink-0" aria-label="حذف"><i class="fa-solid fa-trash-can text-xs"></i></button></div>';
+            }).join('');
+        }
+        function delProduct(ts) {
+            prodMem = prodMem.filter(p => p.t !== ts);
+            saveProducts(); renderProducts();
+            toast('محصول حذف شد.', 'info');
+        }
+        function clearProducts() {
+            if (!prodMem.length) return;
+            prodMem = [];
+            saveProducts(); renderProducts();
+            toast('همه محصولات پاک شدند.', 'info');
+        }
+        function downloadFile(name, content, mime) {
+            const blob = new Blob([content], { type: mime });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+        }
+        function exportProducts(kind) {
+            if (!prodMem.length) { toast('محصولی برای خروجی وجود ندارد.', 'error'); return; }
+            if (kind === 'json') {
+                downloadFile('meelano-products.json', JSON.stringify(prodMem, null, 2), 'application/json');
+            } else {
+                const rows = [['title', 'brand', 'stock', 'barcode', 'unit', 'category', 'color', 'buy', 'floor', 'retail', 'wholesale', 'weight', 'tax', 'date']];
+                prodMem.forEach(p => rows.push([p.title, p.brand, p.stock, p.barcode, p.unit, CAT_NAMES[p.cat] || p.cat, p.color, p.buy, p.floor, p.retail, p.whole, p.weight, p.tax, new Date(p.t).toLocaleString('fa-IR')]));
+                const csv = '﻿' + rows.map(r => r.map(c => '"' + String(c == null ? '' : c).replace(/"/g, '""') + '"').join(',')).join('\n');
+                downloadFile('meelano-products.csv', csv, 'text/csv;charset=utf-8');
+            }
+            toast('فایل خروجی دانلود شد.', 'success');
+        }
+        function closeSuccess() {
+            const m = $('success_modal');
+            m.classList.add('hidden'); m.classList.remove('flex');
+        }
+        function resetWizard() {
+            $('productForm').reset();
+            rawDigiPrice = 0; rawTorobPrice = 0; imgReady = false;
+            $('digikala_price_text').textContent = '۰ ریال';
+            $('torob_price_text').textContent = '۰ ریال';
+            $('selected_active_price_display').textContent = '۰ ریال';
+            $('product_image_preview').src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600';
+            $('product_image_webp').value = '';
+            $('card-digi').classList.remove('picked');
+            $('card-torob').classList.remove('picked');
+            ['ai_result_1', 'ai_result_2', 'ai_result_3', 'ai_result_4'].forEach(id => $(id).classList.add('hidden'));
+            const badge = $('market_status_badge');
+            badge.textContent = 'در انتظار تحلیل';
+            badge.className = 'chip bg-white/5 text-slate-300 border-white/15';
+            updateMargins();
+            showStep(0);
+        }
 
-        /* ---------- سرویس‌ورکر (آفلاین، نامرئی) ---------- */
+        /* ثبت نهایی — بدون سرور، داخل گوشی */
+        $('productForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!this.checkValidity()) {
+                const bad = this.querySelector(':invalid');
+                if (bad) {
+                    const panel = bad.closest('.wstep');
+                    const idx = panels.indexOf(panel);
+                    if (idx > -1 && idx !== curStep) showStep(idx);
+                    bad.classList.add('err');
+                    setTimeout(() => { try { this.reportValidity(); } catch (err) { /* ignore */ } }, 60);
+                    toast('یک فیلد اجباری ناقص است؛ به همان گام منتقل شدید.', 'error');
+                }
+                return;
+            }
+            const btn = $('submitBtn');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> در حال ذخیره‌سازی...'; }
+            setTimeout(() => {
+                const p = collectProduct();
+                prodMem.unshift(p);
+                saveProducts();
+                if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-lg"></i> تأیید و ثبت نهایی در میلانو'; }
+                $('success_text').textContent = '«' + p.title + '» برند ' + p.brand + ' با موجودی ' + toFa(p.stock) + ' عدد در گوشی ذخیره شد.';
+                const m = $('success_modal');
+                m.classList.remove('hidden'); m.classList.add('flex');
+            }, 700);
+        });
+
+        /* ═════════ ایمنی لود در اندروید ═════════ */
+        function ensureLayout() {
+            try {
+                const probe = document.createElement('div');
+                probe.className = 'flex';
+                probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;';
+                document.body.appendChild(probe);
+                const ok = getComputedStyle(probe).display === 'flex';
+                probe.remove();
+                if (!ok) {
+                    const st = document.createElement('style');
+                    st.textContent = '.max-w-3xl{max-width:48rem;margin-left:auto;margin-right:auto;}' +
+                        '.grid{display:block !important;}.grid>*{margin-bottom:.8rem;}' +
+                        '.flex{display:block !important;}.flex>*{margin-bottom:.5rem;}' +
+                        '#wizard_dots{display:flex !important;overflow-x:auto;}' +
+                        'header.flex{display:flex !important;}' +
+                        '.sm\\:flex-row,.md\\:flex-row{flex-direction:column;}';
+                    document.head.appendChild(st);
+                    toast('حالت سازگار فعال شد (اینترنت ضعیف است)؛ همه امکانات در دسترس است.', 'info');
+                }
+            } catch (e) { /* ignore */ }
+        }
+        window.addEventListener('load', () => { setTimeout(ensureLayout, 1500); });
+        window.addEventListener('offline', () => toast('اینترنت قطع شد؛ ثبت و تاریخچه آفلاین کار می‌کند.', 'error'));
+        window.addEventListener('online', () => toast('اینترنت وصل شد.', 'success'));
+
+        /* سرویس‌ورکر آفلاین (نامرئی) */
         if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('service-worker.js').catch(() => {});
