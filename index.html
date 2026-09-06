@@ -282,6 +282,59 @@
             .credit-3d{ filter:none; }
             .settings-crown .fa-gear{ animation:none; }
         }
+        /* ===== سیستم آیکن خلوت + فیت اندروید (بدون اسکرول اضافی) ===== */
+        .lbl i{ width:1.05rem; text-align:center; font-size:.78rem; opacity:.9; }
+        .chip i{ font-size:.62rem; }
+        .tile i{ line-height:1; }
+        .price-card{ background:rgba(255,255,255,.03); border:1px solid rgba(148,163,184,.16);
+            border-top:2px solid rgba(148,163,184,.5); border-radius:1rem; padding:.6rem .6rem .65rem; }
+        .pc-head{ display:flex; align-items:center; gap:.4rem; margin-bottom:.45rem; }
+        .pc-head .lbl{ margin:0; }
+        .pc-ic{ width:1.55rem; height:1.55rem; border-radius:.6rem; display:flex; align-items:center; justify-content:center;
+            font-size:.72rem; color:#fff; flex-shrink:0;
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 4px 10px -4px rgba(0,0,0,.7); }
+        .pc-ic i{ line-height:1; }
+        .pc-t{ font-size:.7rem !important; font-weight:800 !important; color:#e2e8f0 !important; }
+        .pc-u{ margin-inline-start:auto; font-size:.58rem; color:#64748b; font-weight:700; white-space:nowrap; }
+        .pc-inp{ text-align:center; font-size:.92rem !important; padding:.6rem .4rem !important; }
+        .pc-slate{ border-top-color:#94a3b8; } .pc-slate .pc-ic{ background:linear-gradient(145deg,#94a3b8,#475569); }
+        .pc-teal{ border-top-color:#2dd4bf; } .pc-teal .pc-ic{ background:linear-gradient(145deg,#5eead4,#0f766e); }
+        .pc-gold{ border-top-color:#f5c542; } .pc-gold .pc-ic{ background:linear-gradient(145deg,#fde68a,#d99a16); color:#3a2703; }
+        .pc-indigo{ border-top-color:#818cf8; } .pc-indigo .pc-ic{ background:linear-gradient(145deg,#a5b4fc,#6d28d9); }
+        @media (max-width:480px){
+            .wstep.card{ padding:.85rem .8rem !important; border-radius:1.1rem; }
+            .wstep.space-y-4 > :not([hidden]) ~ :not([hidden]){ margin-top:.65rem !important; }
+            .wstep .grid{ gap:.6rem !important; }
+            .tile{ width:2rem; height:2rem; border-radius:.8rem; font-size:.92rem; }
+            .tile::after{ border-radius:.8rem; }
+            .sec-num{ font-size:.62rem; padding:.35rem .5rem; border-radius:.55rem; }
+            .wstep h2{ font-size:.8rem !important; }
+            .lbl{ font-size:.7rem; margin-bottom:.3rem; }
+            .lbl i{ font-size:.68rem; width:.95rem; }
+            .pc-t{ font-size:.66rem !important; }
+            .pc-ic{ width:1.4rem; height:1.4rem; font-size:.66rem; }
+            .inp{ padding:.62rem .8rem; font-size:.79rem; border-radius:.75rem; }
+            header h1{ font-size:1.02rem !important; }
+            .settings-crown{ padding:.45rem .95rem; font-size:.7rem; }
+            #wizard_dots{ overflow-x:auto; scrollbar-width:none; padding-bottom:.15rem; }
+            #wizard_dots::-webkit-scrollbar{ display:none; }
+            #wizard_dots .wdot, #wizard_dots .wline{ flex-shrink:0; }
+            .wdot{ min-width:2.7rem; }
+            .wdot .bub{ width:1.9rem; height:1.9rem; border-radius:.75rem; font-size:.7rem; }
+            .wdot .cap{ font-size:.56rem; }
+            .wline{ margin-bottom:.95rem; min-width:1rem; }
+            .wstep .btn-gold, .wstep .btn-emerald, .wstep .btn-indigo, .wstep .btn-teal{
+                padding-top:.7rem !important; padding-bottom:.7rem !important;
+                font-size:.76rem !important; border-radius:.9rem; min-height:2.9rem; }
+            .wstep > .btn-gold, .wstep > .btn-emerald, .wstep > .btn-indigo{ position:sticky; bottom:.55rem; z-index:5; }
+            .chip{ font-size:.62rem; padding:.32rem .65rem; }
+            #dash_kpi > div, #hist_stats > div{ padding:.45rem .3rem !important; }
+            #dash_bars{ gap:.4rem !important; }
+            .market-card{ padding:.7rem !important; }
+            .stage{ font-size:.68rem; padding:.45rem .65rem; }
+            #profit_hint, #advisor_line{ padding:.6rem .8rem !important; font-size:.68rem !important; }
+            #toast_box{ bottom:5.2rem; }
+        }
         @media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation:none !important; transition:none !important; } }
     </style>
 </head>
@@ -509,22 +562,22 @@
                             </div>
                             <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25"><i class="fa-solid fa-robot text-[11px]"></i> محاسبه خودکار سود</span>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                            <div>
-                                <label class="lbl" for="purchase_price"><i class="fa-solid fa-cart-shopping text-slate-400 ml-1"></i>قیمت خرید پایه (ریال)</label>
-                                <input type="text" id="purchase_price" name="purchase_price_unit" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold" style="font-variant-numeric:tabular-nums">
+                        <div class="grid grid-cols-2 gap-2 md:gap-3.5">
+                            <div class="price-card pc-slate">
+                                <div class="pc-head"><span class="pc-ic"><i class="fa-solid fa-basket-shopping"></i></span><label class="lbl pc-t" for="purchase_price">قیمت خرید</label><span class="pc-u">ریال</span></div>
+                                <input type="text" id="purchase_price" name="purchase_price_unit" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold pc-inp" style="font-variant-numeric:tabular-nums">
                             </div>
-                            <div>
-                                <label class="lbl" for="min_sale_price"><i class="fa-solid fa-arrow-trend-down text-teal-300 ml-1"></i>کف قیمت بازار (ریال)</label>
-                                <input type="text" id="min_sale_price" name="min_sale_price" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-teal-200" style="font-variant-numeric:tabular-nums">
+                            <div class="price-card pc-teal">
+                                <div class="pc-head"><span class="pc-ic"><i class="fa-solid fa-arrow-trend-down"></i></span><label class="lbl pc-t" for="min_sale_price">کف بازار</label><span class="pc-u">ریال</span></div>
+                                <input type="text" id="min_sale_price" name="min_sale_price" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-teal-200 pc-inp" style="font-variant-numeric:tabular-nums">
                             </div>
-                            <div>
-                                <label class="lbl" for="sale_price_retail"><i class="fa-solid fa-store text-amber-300 ml-1"></i>خرده‌فروشی انبار (ریال)</label>
-                                <input type="text" id="sale_price_retail" name="sale_price_retail" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-amber-200" style="font-variant-numeric:tabular-nums">
+                            <div class="price-card pc-gold">
+                                <div class="pc-head"><span class="pc-ic"><i class="fa-solid fa-store"></i></span><label class="lbl pc-t" for="sale_price_retail">خرده‌فروشی</label><span class="pc-u">ریال</span></div>
+                                <input type="text" id="sale_price_retail" name="sale_price_retail" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-amber-200 pc-inp" style="font-variant-numeric:tabular-nums">
                             </div>
-                            <div>
-                                <label class="lbl" for="sale_price_wholesale"><i class="fa-solid fa-truck-fast text-indigo-300 ml-1"></i>عمده‌فروشی (ریال)</label>
-                                <input type="text" id="sale_price_wholesale" name="sale_price_wholesale" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-indigo-200" style="font-variant-numeric:tabular-nums">
+                            <div class="price-card pc-indigo">
+                                <div class="pc-head"><span class="pc-ic"><i class="fa-solid fa-truck-fast"></i></span><label class="lbl pc-t" for="sale_price_wholesale">عمده‌فروشی</label><span class="pc-u">ریال</span></div>
+                                <input type="text" id="sale_price_wholesale" name="sale_price_wholesale" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-indigo-200 pc-inp" style="font-variant-numeric:tabular-nums">
                             </div>
                         </div>
                         <div id="profit_hint" class="flex items-center gap-2 text-[11px] md:text-xs text-slate-300 bg-white/[.04] border border-white/10 rounded-xl px-4 py-3">
