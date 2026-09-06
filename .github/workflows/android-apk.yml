@@ -1,0 +1,78 @@
+name: Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - arena/01a073d5-panelhoshmand
+    paths:
+      - 'android/**'
+      - '.github/workflows/android-apk.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: ساخت APK قابل نصب
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: android
+
+    steps:
+      - name: دریافت کد
+        uses: actions/checkout@v4
+
+      - name: نصب JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: نصب Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: نصب پلتفرم و ابزار ساخت
+        run: |
+          sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      - name: نصب Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: ساخت APK دیباگ (قابل نصب)
+        run: gradle --no-daemon --stacktrace assembleDebug
+
+      - name: نام‌گذاری خروجی
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk dist/MeelanoPanel.apk
+          ls -lh dist
+
+      - name: بارگذاری به‌عنوان Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MeelanoPanel-apk
+          path: android/dist/MeelanoPanel.apk
+          if-no-files-found: error
+
+      - name: انتشار در Release (لینک مستقیم نصب)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-latest
+          name: پنل هوشمند میلانو — APK
+          body: |
+            نسخهٔ اندروید پنل هوشمند میلانو (پوشش WebView روی ainetmee.ir/trader).
+
+            **لینک مستقیم نصب:**
+            https://github.com/Companymeelano/panelhoshmand/releases/download/apk-latest/MeelanoPanel.apk
+
+            برای نصب: فایل را روی گوشی باز کنید و اجازهٔ «نصب از منابع ناشناس» را بدهید.
+            این APK با کلید دیباگ امضا شده و برای نصب مستقیم مناسب است.
+
+            Meelano Studio Design — Milad Yaghoobi
+          files: android/dist/MeelanoPanel.apk
+          fail_on_unmatched_files: true

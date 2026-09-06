@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">پنل هوشمند میلانو</string>
+    <string name="app_url" translatable="false">https://ainetmee.ir/trader/</string>
+    <string name="loading">در حال اتصال به پنل…</string>
+    <string name="err_title">اتصال برقرار نشد</string>
+    <string name="err_body">دسترسی به ainetmee.ir/trader ممکن نیست. اینترنت گوشی را بررسی کنید یا مطمئن شوید پنل روی هاست فعال است.</string>
+    <string name="err_retry">تلاش دوباره</string>
+</resources>

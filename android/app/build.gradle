@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'ir.meelano.panel'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "ir.meelano.panel"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+        resConfigs "fa", "en"
+    }
+
+    buildTypes {
+        debug {
+            // APK دیباگ با کلید دیباگ امضا می‌شود و مستقیم قابل نصب است
+            applicationIdSuffix ""
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            // برای انتشار رسمی یک signingConfig با keystore خودتان اضافه کنید:
+            // signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE*']
+        }
+    }
+}
+
+// بدون وابستگی خارجی — فقط WebView خودِ اندروید

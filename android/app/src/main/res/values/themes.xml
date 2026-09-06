@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Meelano" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/meelano_bg</item>
+        <item name="android:statusBarColor">@color/meelano_bg</item>
+        <item name="android:navigationBarColor">@color/meelano_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="Theme.Meelano.Splash" parent="Theme.Meelano" />
+</resources>
