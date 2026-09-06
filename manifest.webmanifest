@@ -1,0 +1,42 @@
+{
+  "name": "پنل هوشمند میلانو",
+  "short_name": "میلانو",
+  "description": "پنل هوشمند مدیریت و استعلام بازار میلانو — انبارداری، تحلیل قیمت ترب و دیجی‌کالا و استودیو تصویرسازی سه‌بعدی",
+  "id": "./index.html",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "dir": "rtl",
+  "lang": "fa",
+  "theme_color": "#021a33",
+  "background_color": "#010b18",
+  "categories": ["business", "shopping", "productivity"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "تحلیل هوشمند قیمت",
+      "url": "./index.html#market",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}

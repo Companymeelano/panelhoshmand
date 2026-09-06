@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>فروشگاه هوشمند میلانو</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root{ --gold-1:#fde68a; --gold-2:#f5c542; --gold-3:#b8860b; --ink:#021a33; --teal:#2dd4bf; }
+        *{ -webkit-tap-highlight-color:transparent; }
+        html{ scroll-behavior:smooth; }
+        body{ font-family:'Vazirmatn',system-ui,sans-serif; background:#010b18; color:#f8fafc; min-height:100vh; }
+        ::-webkit-scrollbar{ width:10px; height:10px; }
+        ::-webkit-scrollbar-track{ background:#03142a; }
+        ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,#b8860b,#f5c542); border-radius:99px; border:2px solid #03142a; }
+
+        .bg-stage{ position:fixed; inset:0; z-index:-2; overflow:hidden; background:
+            radial-gradient(1100px 500px at 85% -5%, rgba(245,197,66,.12), transparent 60%),
+            radial-gradient(900px 500px at 10% 110%, rgba(45,212,191,.10), transparent 60%),
+            linear-gradient(180deg,#021a33 0%, #010b18 70%); }
+        .card{ background:rgba(3,20,42,.6); backdrop-filter:blur(24px); border:1px solid rgba(245,197,66,.15); box-shadow:0 8px 32px rgba(0,0,0,.4); }
+        .product-card{ transition:transform 0.3s, box-shadow 0.3s; }
+        .product-card:hover{ transform:translateY(-5px); box-shadow:0 12px 40px rgba(0,0,0,.6); border-color:rgba(245,197,66,.4); }
+        .btn-gold{ background:linear-gradient(135deg,#b8860b,#f5c542); color:#000; font-weight:900; transition:all .2s; }
+        .btn-gold:hover{ filter:brightness(1.1); box-shadow:0 0 20px rgba(245,197,66,.4); }
+        .shimmer { animation: shimmer 2s infinite linear; background: linear-gradient(to right, #03142a 4%, #041c3a 25%, #03142a 36%); background-size: 1000px 100%; }
+        @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+    </style>
+</head>
+<body class="pb-24">
+    <div class="bg-stage"></div>
+    
+    <header class="sticky top-0 z-40 bg-[#010b18]/80 backdrop-blur-xl border-b border-gold-3/30 pt-4 md:pt-6 pb-4">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-600 to-amber-300 flex items-center justify-center text-black shadow-[0_0_15px_rgba(245,197,66,0.3)]">
+                    <i class="fa-solid fa-store text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-black bg-gradient-to-r from-amber-200 to-amber-500 bg-clip-text text-transparent" style="font-family:'Cinzel',sans-serif;">STORE</h1>
+                    <p class="text-xs text-amber-200/70 font-medium">فروشگاه هوشمند (همگام با پنل)</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="fetchProducts()" class="btn-gold px-4 py-2 rounded-xl text-xs flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> بروزرسانی
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 mt-8">
+        <div id="loading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="card rounded-2xl p-4 shimmer h-80"></div>
+            <div class="card rounded-2xl p-4 shimmer h-80"></div>
+            <div class="card rounded-2xl p-4 shimmer h-80 hidden sm:block"></div>
+            <div class="card rounded-2xl p-4 shimmer h-80 hidden md:block"></div>
+        </div>
+
+        <div id="products_grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+            <!-- Products will be injected here -->
+        </div>
+        
+        <div id="empty_state" class="hidden text-center py-20">
+            <i class="fa-solid fa-box-open text-6xl text-slate-600 mb-4"></i>
+            <p class="text-slate-400">هنوز محصولی در پنل ثبت نشده است.</p>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = 'api.php';
+        
+        function formatPrice(n) {
+            return Number(n).toLocaleString('fa-IR') + ' ریال';
+        }
+
+        async function fetchProducts() {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('products_grid').classList.add('hidden');
+            document.getElementById('empty_state').classList.add('hidden');
+            
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'store_products' })
+                });
+                const data = await res.json();
+                
+                document.getElementById('loading').classList.add('hidden');
+                
+                if (data.ok && data.rows && data.rows.length > 0) {
+                    document.getElementById('products_grid').classList.remove('hidden');
+                    renderProducts(data.rows);
+                } else {
+                    document.getElementById('empty_state').classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loading').classList.add('hidden');
+                alert('خطا در ارتباط با سرور. آیا db_config.php در هاست تنظیم شده است؟');
+            }
+        }
+
+        function renderProducts(rows) {
+            const grid = document.getElementById('products_grid');
+            grid.innerHTML = '';
+            
+            rows.forEach(p => {
+                let img = p.image_webp || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" fill="%2303142a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill="%23475569">No Image</text></svg>';
+                let brief = {};
+                try { brief = JSON.parse(p.brief_json || '{}'); } catch(e){}
+                
+                let tagsHtml = '';
+                if (brief.seo_hashtags) {
+                    const tags = brief.seo_hashtags.split(' ').filter(t => t.trim().startsWith('#'));
+                    tags.slice(0,3).forEach(t => {
+                        tagsHtml += `<span class="inline-block bg-teal-500/20 text-teal-300 text-[10px] px-2 py-1 rounded-md ml-1 mb-1">${t}</span>`;
+                    });
+                }
+
+                const card = document.createElement('div');
+                card.className = 'card product-card rounded-2xl overflow-hidden flex flex-col h-full';
+                card.innerHTML = `
+                    <div class="relative pt-[100%] bg-[#021024]">
+                        <img src="${img}" class="absolute inset-0 w-full h-full object-cover" alt="${p.title}" loading="lazy">
+                        ${p.stock > 0 ? 
+                            '<span class="absolute top-3 right-3 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-lg">موجود</span>' : 
+                            '<span class="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-lg">ناموجود</span>'}
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col">
+                        <div class="text-[10px] text-amber-400 font-bold mb-1">${p.brand || 'برند متفرقه'}</div>
+                        <h2 class="text-sm font-bold text-slate-100 mb-2 leading-snug line-clamp-2">${p.title}</h2>
+                        
+                        <p class="text-[11px] text-slate-400 mb-3 line-clamp-2 leading-relaxed flex-1">
+                            ${brief.seo_short || p.description || 'توضیحات محصول در این بخش قرار می‌گیرد.'}
+                        </p>
+                        
+                        <div class="mb-3">
+                            ${tagsHtml}
+                        </div>
+                        
+                        <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between">
+                            <div>
+                                <span class="block text-[10px] text-slate-500 mb-0.5">قیمت مصرف‌کننده</span>
+                                <span class="text-emerald-300 font-black text-sm md:text-base" style="font-variant-numeric:tabular-nums">${formatPrice(p.retail_price)}</span>
+                            </div>
+                            <button class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500 hover:text-white transition-colors flex items-center justify-center">
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Auto fetch on load, then poll every 30 seconds
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchProducts();
+            setInterval(fetchProducts, 30000);
+        });
+    </script>
+</body>
+</html>

@@ -34,7 +34,7 @@
         ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,#b8860b,#f5c542); border-radius:99px; border:2px solid #03142a; }
         ::selection{ background:rgba(245,197,66,.35); }
 
-        .bg-stage{ position:fixed; inset:0; z-index:-2; overflow:hidden; background:
+        .bg-stage{ position:fixed; inset:0; z-index:-2; overflow:hidden; transform:translateZ(0); background:
             radial-gradient(1100px 500px at 85% -5%, rgba(245,197,66,.12), transparent 60%),
             radial-gradient(900px 500px at 10% 110%, rgba(45,212,191,.10), transparent 60%),
             radial-gradient(700px 420px at 50% 45%, rgba(56,89,199,.14), transparent 65%),
@@ -200,6 +200,33 @@
         .chip{ display:inline-flex; align-items:center; gap:.4rem; padding:.4rem .8rem; border-radius:99px; font-size:.7rem; font-weight:700; border:1px solid; }
         .safe-bottom{ padding-bottom:calc(7rem + env(safe-area-inset-bottom)); }
         #wizard_nav{ transform:translateZ(0); }
+        #wizard_dots{ overflow-x:auto; scrollbar-width:none; padding-bottom:.2rem; }
+        #wizard_dots::-webkit-scrollbar{ display:none; }
+        .wdot{ flex-shrink:0; }
+        .settings-crown{ display:inline-flex; align-items:center; gap:.55rem; padding:.55rem 1.2rem; border-radius:99px;
+            font-size:.76rem; font-weight:800; color:#99f6e4; cursor:pointer;
+            background:linear-gradient(135deg,#134e4a,#0b2b33 60%,#3a2f06);
+            border:1px solid rgba(45,212,191,.55);
+            box-shadow:0 0 22px -4px rgba(45,212,191,.55), 0 0 26px -6px rgba(245,197,66,.4), inset 0 1px 0 rgba(255,255,255,.18);
+            transition:filter .25s, transform .2s; }
+        .settings-crown:hover{ filter:brightness(1.12); }
+        .settings-crown:active{ transform:scale(.96); }
+        .settings-crown .fa-gear{ color:#f5c542; font-size:.95rem; animation:gearspin 7s linear infinite;
+            filter:drop-shadow(0 0 6px rgba(245,197,66,.8)); }
+        @keyframes gearspin{ to{ transform:rotate(360deg); } }
+        .settings-crown{ position:relative; }
+        .db-dot-head{ position:absolute; top:.3rem; left:.8rem; width:.55rem; height:.55rem; border-radius:99px; background:#64748b; box-shadow:0 0 0 3px rgba(0,0,0,.35); }
+        .db-dot-head.on{ background:#34d399; box-shadow:0 0 10px 2px rgba(52,211,153,.85); }
+        .db-dot-head.off{ background:#f87171; box-shadow:0 0 10px 2px rgba(248,113,113,.7); }
+        .db-pct{ font-size:2.4rem; font-weight:900; line-height:1.2; color:transparent; background:linear-gradient(135deg,#5eead4,#f5c542); -webkit-background-clip:text; background-clip:text; }
+        .db-bar{ height:.85rem; border-radius:99px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); overflow:hidden; }
+        .db-bar > div{ height:100%; width:0%; border-radius:99px; background:linear-gradient(90deg,#2dd4bf,#f5c542); box-shadow:0 0 18px rgba(45,212,191,.7); transition:width .45s ease; }
+        .db-log{ max-height:11rem; overflow-y:auto; }
+        .db-log .ok{ color:#6ee7b7; }
+        .db-log .bad{ color:#fca5a5; }
+        .db-log .run{ color:#fcd34d; }
+        .settings-crown .crown-dot{ width:.45rem; height:.45rem; border-radius:99px; background:#f5c542;
+            box-shadow:0 0 8px 2px rgba(245,197,66,.7); }
 
         /* ===== امضای سه‌بعدی استودیو ===== */
         .credit-plaque{ position:relative; border-radius:1.2rem; padding:1.3rem 1rem 1rem; overflow:hidden;
@@ -252,6 +279,61 @@
             .market-card:hover{ transform:none; }
             .wstep.active{ animation:none; }
             .shine-wrap::after{ display:none; }
+            .credit-3d{ filter:none; }
+            .settings-crown .fa-gear{ animation:none; }
+        }
+        /* ===== سیستم آیکن خلوت + فیت اندروید (بدون اسکرول اضافی) ===== */
+        .lbl i{ width:1.05rem; text-align:center; font-size:.78rem; opacity:.9; }
+        .chip i{ font-size:.62rem; }
+        .tile i{ line-height:1; }
+        .price-card{ background:rgba(255,255,255,.03); border:1px solid rgba(148,163,184,.16);
+            border-top:2px solid rgba(148,163,184,.5); border-radius:1rem; padding:.6rem .6rem .65rem; }
+        .pc-head{ display:flex; align-items:center; gap:.4rem; margin-bottom:.45rem; }
+        .pc-head .lbl{ margin:0; }
+        .pc-ic{ width:1.55rem; height:1.55rem; border-radius:.6rem; display:flex; align-items:center; justify-content:center;
+            font-size:.72rem; color:#fff; flex-shrink:0;
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 4px 10px -4px rgba(0,0,0,.7); }
+        .pc-ic i{ line-height:1; }
+        .pc-t{ font-size:.7rem !important; font-weight:800 !important; color:#e2e8f0 !important; }
+        .pc-u{ margin-inline-start:auto; font-size:.58rem; color:#64748b; font-weight:700; white-space:nowrap; }
+        .pc-inp{ text-align:center; font-size:.92rem !important; padding:.6rem .4rem !important; }
+        .pc-slate{ border-top-color:#94a3b8; } .pc-slate .pc-ic{ background:linear-gradient(145deg,#94a3b8,#475569); }
+        .pc-teal{ border-top-color:#2dd4bf; } .pc-teal .pc-ic{ background:linear-gradient(145deg,#5eead4,#0f766e); }
+        .pc-gold{ border-top-color:#f5c542; } .pc-gold .pc-ic{ background:linear-gradient(145deg,#fde68a,#d99a16); color:#3a2703; }
+        .pc-indigo{ border-top-color:#818cf8; } .pc-indigo .pc-ic{ background:linear-gradient(145deg,#a5b4fc,#6d28d9); }
+        @media (max-width:480px){
+            .wstep.card{ padding:.85rem .8rem !important; border-radius:1.1rem; }
+            .wstep.space-y-4 > :not([hidden]) ~ :not([hidden]){ margin-top:.65rem !important; }
+            .wstep .grid{ gap:.6rem !important; }
+            .tile{ width:2rem; height:2rem; border-radius:.8rem; font-size:.92rem; }
+            .tile::after{ border-radius:.8rem; }
+            .sec-num{ font-size:.62rem; padding:.35rem .5rem; border-radius:.55rem; }
+            .wstep h2{ font-size:.8rem !important; }
+            .lbl{ font-size:.7rem; margin-bottom:.3rem; }
+            .lbl i{ font-size:.68rem; width:.95rem; }
+            .pc-t{ font-size:.66rem !important; }
+            .pc-ic{ width:1.4rem; height:1.4rem; font-size:.66rem; }
+            .inp{ padding:.62rem .8rem; font-size:.79rem; border-radius:.75rem; }
+            header h1{ font-size:1.02rem !important; }
+            .settings-crown{ padding:.45rem .95rem; font-size:.7rem; }
+            #wizard_dots{ overflow-x:auto; scrollbar-width:none; padding-bottom:.15rem; }
+            #wizard_dots::-webkit-scrollbar{ display:none; }
+            #wizard_dots .wdot, #wizard_dots .wline{ flex-shrink:0; }
+            .wdot{ min-width:2.7rem; }
+            .wdot .bub{ width:1.9rem; height:1.9rem; border-radius:.75rem; font-size:.7rem; }
+            .wdot .cap{ font-size:.56rem; }
+            .wline{ margin-bottom:.95rem; min-width:1rem; }
+            .wstep .btn-gold, .wstep .btn-emerald, .wstep .btn-indigo, .wstep .btn-teal{
+                padding-top:.7rem !important; padding-bottom:.7rem !important;
+                font-size:.76rem !important; border-radius:.9rem; min-height:2.9rem; }
+            .wstep > .btn-gold, .wstep > .btn-emerald, .wstep > .btn-indigo{ position:sticky; bottom:.55rem; z-index:5; }
+            .chip{ font-size:.62rem; padding:.32rem .65rem; }
+            #dash_kpi > div, #hist_stats > div{ padding:.45rem .3rem !important; }
+            #dash_bars{ gap:.4rem !important; }
+            .market-card{ padding:.7rem !important; }
+            .stage{ font-size:.68rem; padding:.45rem .65rem; }
+            #profit_hint, #advisor_line{ padding:.6rem .8rem !important; font-size:.68rem !important; }
+            #toast_box{ bottom:5.2rem; }
         }
         @media (prefers-reduced-motion:reduce){ *, *::before, *::after{ animation:none !important; transition:none !important; } }
     </style>
@@ -309,14 +391,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center justify-center gap-2 flex-wrap">
-                        <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25"><i class="fa-solid fa-database text-[11px]"></i> meelanoi_shops</span>
-                        <button type="button" onclick="openHistory()" class="chip bg-indigo-500/10 text-indigo-300 border-indigo-500/30 hover:bg-indigo-500/20 transition relative">
-                            <i class="fa-solid fa-chart-line text-[11px]"></i> تاریخچه قیمت
-                            <span id="hist_count" class="absolute -top-1.5 -left-1.5 min-w-5 h-5 px-1 rounded-full bg-gradient-to-l from-amber-300 to-amber-500 text-[#03142a] text-[10px] font-black items-center justify-center" style="display:none;font-variant-numeric:tabular-nums">۰</span>
-                        </button>
-                        <button type="button" onclick="openSettings()" class="chip bg-teal-500/10 text-teal-300 border-teal-500/30 hover:bg-teal-500/20 transition" aria-label="تنظیمات">
-                            <i class="fa-solid fa-gear text-[11px]"></i> تنظیمات
+                    <div class="flex items-center justify-center">
+                        <button type="button" onclick="openSettings()" class="btn settings-crown" aria-label="تنظیمات هوشمند"><span id="db_dot_head" class="db-dot-head"></span>
+                            <span class="crown-dot"></span>
+                            <i class="fa-solid fa-gear"></i>
+                            <span>تنظیمات هوشمند</span>
+                            <span class="crown-dot"></span>
                         </button>
                     </div>
                 </header>
@@ -383,6 +463,32 @@
                                 <label class="lbl" for="color"><i class="fa-solid fa-palette text-amber-400 ml-1"></i>پالت رنگ‌بندی (شناسایی دقیق AI)</label>
                                 <input type="text" id="color" name="color" class="inp font-bold !text-amber-200 !text-xs" placeholder="پس از تحلیل هوشمند پر می‌شود...">
                             </div>
+                            
+                            <div class="col-span-2 mt-4 p-4 border border-indigo-500/30 bg-indigo-500/10 rounded-xl space-y-3">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fa-solid fa-magnifying-glass-chart text-indigo-300"></i>
+                                    <h3 class="text-sm font-bold text-indigo-200">سئو و محتوای هوشمند</h3>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                                    <div class="col-span-1 md:col-span-2">
+                                        <label class="lbl" for="seo_short"><i class="fa-solid fa-align-left text-indigo-400 ml-1"></i>توضیح کوتاه (جذاب و کلیکی)</label>
+                                        <input type="text" id="seo_short" name="seo_short" class="inp !text-xs" placeholder="توسط هوش مصنوعی نوشته می‌شود...">
+                                    </div>
+                                    <div class="col-span-1 md:col-span-2">
+                                        <label class="lbl" for="seo_full"><i class="fa-solid fa-align-justify text-indigo-400 ml-1"></i>توضیحات کامل و سئوشده</label>
+                                        <textarea id="seo_full" name="seo_full" class="inp !text-xs h-20 resize-none py-2" placeholder="توسط هوش مصنوعی نوشته می‌شود..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="lbl" for="seo_keywords"><i class="fa-solid fa-key text-amber-400 ml-1"></i>کلمات کلیدی (با کاما)</label>
+                                        <input type="text" id="seo_keywords" name="seo_keywords" class="inp !text-xs font-bold !text-amber-200" placeholder="مثلاً: خرید گوشی, قیمت موبایل">
+                                    </div>
+                                    <div>
+                                        <label class="lbl" for="seo_hashtags"><i class="fa-solid fa-hashtag text-teal-400 ml-1"></i>هشتگ‌ها (با فاصله)</label>
+                                        <input type="text" id="seo_hashtags" name="seo_hashtags" class="inp !text-xs font-bold !text-teal-200" placeholder="#گوشی #موبایل" style="direction:ltr;text-align:right">
+                                    </div>
+                                </div>
+                            </div>
+
                             <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
                                 تأیید و ادامه به استعلام بازار <i class="fa-solid fa-arrow-left"></i>
                             </button>
@@ -445,8 +551,15 @@
                         <div class="rounded-2xl border border-amber-500/25 bg-[#010b18]/60 p-4 space-y-3">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-xs font-extrabold text-amber-200"><i class="fa-solid fa-gauge-high ml-1.5"></i>داشبورد قیمت محصول</h3>
-                                <span id="dash_count" class="text-[10px] text-slate-500"></span>
+                                <div class="flex items-center gap-2">
+                                    <span id="dash_count" class="text-[10px] text-slate-500"></span>
+                                    <button type="button" onclick="openHistory()" class="btn btn-ghost text-[10px] px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 relative">
+                                        <i class="fa-solid fa-clock-rotate-left"></i> تاریخچه
+                                        <span id="hist_count" class="absolute -top-1.5 -left-1.5 min-w-5 h-5 px-1 rounded-full bg-gradient-to-l from-amber-300 to-amber-500 text-[#03142a] text-[10px] font-black items-center justify-center" style="display:none;font-variant-numeric:tabular-nums">۰</span>
+                                    </button>
+                                </div>
                             </div>
+                            <div id="dash_kpi" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
                             <div id="dash_bars" class="flex items-end justify-around gap-2 pt-1"></div>
                             <div>
                                 <div class="text-[10px] text-slate-500 mb-1 font-bold">روند کف بازار (ترب)</div>
@@ -475,43 +588,144 @@
                             </div>
                             <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25"><i class="fa-solid fa-robot text-[11px]"></i> محاسبه خودکار سود</span>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                            <div>
-                                <label class="lbl" for="purchase_price"><i class="fa-solid fa-cart-shopping text-slate-400 ml-1"></i>قیمت خرید پایه (ریال)</label>
-                                <input type="text" id="purchase_price" name="purchase_price_unit" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold" style="font-variant-numeric:tabular-nums">
+                        <div class="grid grid-cols-2 gap-2 md:gap-3.5">
+                            <div class="price-card pc-slate">
+                                <div class="pc-head"><span class="pc-ic"><i class="fa-solid fa-basket-shopping"></i></span><label class="lbl pc-t" for="purchase_price">قیمت خرید</label><span class="pc-u">ریال</span></div>
+                                <input type="text" id="purchase_price" name="purchase_price_unit" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold pc-inp" style="font-variant-numeric:tabular-nums">
                             </div>
-                            <div>
-                                <label class="lbl" for="min_sale_price"><i class="fa-solid fa-arrow-trend-down text-teal-300 ml-1"></i>کف قیمت بازار (ریال)</label>
-                                <input type="text" id="min_sale_price" name="min_sale_price" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-teal-200" style="font-variant-numeric:tabular-nums">
+                            <div class="price-card pc-teal">
+                                <div class="pc-head"><span class="pc-ic"><i class="fa-solid fa-arrow-trend-down"></i></span><label class="lbl pc-t" for="min_sale_price">کف بازار</label><span class="pc-u">ریال</span></div>
+                                <input type="text" id="min_sale_price" name="min_sale_price" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-teal-200 pc-inp" style="font-variant-numeric:tabular-nums">
                             </div>
-                            <div>
-                                <label class="lbl" for="sale_price_retail"><i class="fa-solid fa-store text-amber-300 ml-1"></i>خرده‌فروشی انبار (ریال)</label>
-                                <input type="text" id="sale_price_retail" name="sale_price_retail" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-amber-200" style="font-variant-numeric:tabular-nums">
+                            <div class="price-card pc-gold">
+                                <div class="pc-head"><span class="pc-ic"><i class="fa-solid fa-store"></i></span><label class="lbl pc-t" for="sale_price_retail">خرده‌فروشی</label><span class="pc-u">ریال</span></div>
+                                <input type="text" id="sale_price_retail" name="sale_price_retail" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-amber-200 pc-inp" style="font-variant-numeric:tabular-nums">
                             </div>
-                            <div>
-                                <label class="lbl" for="sale_price_wholesale"><i class="fa-solid fa-truck-fast text-indigo-300 ml-1"></i>عمده‌فروشی (ریال)</label>
-                                <input type="text" id="sale_price_wholesale" name="sale_price_wholesale" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-indigo-200" style="font-variant-numeric:tabular-nums">
+                            <div class="price-card pc-indigo">
+                                <div class="pc-head"><span class="pc-ic"><i class="fa-solid fa-truck-fast"></i></span><label class="lbl pc-t" for="sale_price_wholesale">عمده‌فروشی</label><span class="pc-u">ریال</span></div>
+                                <input type="text" id="sale_price_wholesale" name="sale_price_wholesale" value="0" onkeyup="formatPrice(this);updateMargins()" inputmode="numeric" class="inp font-bold !text-indigo-200 pc-inp" style="font-variant-numeric:tabular-nums">
                             </div>
                         </div>
                         <div id="profit_hint" class="flex items-center gap-2 text-[11px] md:text-xs text-slate-300 bg-white/[.04] border border-white/10 rounded-xl px-4 py-3">
                             <i class="fa-solid fa-chart-line text-teal-300"></i><span>حاشیه سود پس از ورود قیمت‌ها محاسبه می‌شود.</span>
                         </div>
+                        <button type="button" onclick="advisePrice()" class="btn btn-teal w-full py-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-user-tie"></i> پیشنهاد مشاور قیمت
+                        </button>
+                        <div id="advisor_line" class="hidden text-[11px] md:text-xs text-slate-300 bg-teal-500/[.07] border border-teal-500/25 rounded-xl px-4 py-3 leading-relaxed"></div>
                         <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
                             تأیید قیمت‌ها و ادامه به استودیو تصویر <i class="fa-solid fa-arrow-left"></i>
                         </button>
                         <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
-                    <!-- گام ۴ -->
+                    <!-- گام ۴: ابعاد و مالیات -->
                     <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="3">
+                        <div class="flex items-center gap-3">
+                            <span class="tile tile-teal"><i class="fa-solid fa-ruler-combined"></i></span>
+                            <div><span class="sec-num">گام ۴</span>
+                            <h2 class="font-extrabold text-sm md:text-base text-slate-100 mt-1">ابعاد، وزن و مالیات هوشمند</h2></div>
+                        </div>
+                        <div class="flex items-start gap-2 text-[11px] md:text-xs text-slate-300 bg-teal-500/[.07] border border-teal-500/25 rounded-xl px-3.5 py-3 leading-relaxed">
+                            <i class="fa-solid fa-brain mt-0.5 text-teal-300 shrink-0"></i>
+                            <span>هوش مصنوعی با تحلیل گام‌های ۱ تا ۳ (کالا، بازار و قیمت) وزن و ابعاد دقیق را تخمین می‌زند.</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+                            <div><label class="lbl" for="weight"><i class="fa-solid fa-weight-hanging text-slate-400 ml-1"></i>وزن (kg)</label><input type="number" step="0.01" id="weight" name="weight" value="0.85" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                            <div><label class="lbl" for="length"><i class="fa-solid fa-ruler-horizontal text-slate-400 ml-1"></i>طول (cm)</label><input type="number" step="0.1" id="length" name="length" value="28.7" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                            <div><label class="lbl" for="width"><i class="fa-solid fa-ruler-horizontal text-slate-400 ml-1"></i>عرض (cm)</label><input type="number" step="0.1" id="width" name="width" value="20.8" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                            <div><label class="lbl" for="height"><i class="fa-solid fa-ruler-vertical text-slate-400 ml-1"></i>ارتفاع (cm)</label><input type="number" step="0.1" id="height" name="height" value="0.9" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                            <div><label class="lbl" for="tax_percent"><i class="fa-solid fa-percent text-slate-400 ml-1"></i>مالیات (٪)</label><input type="number" step="0.1" id="tax_percent" name="tax_percent" value="9.0" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
+                        </div>
+                        <div id="dims_source_note" class="text-[10px] text-slate-500">منبع ابعاد پس از تخمین هوشمند نمایش داده می‌شود.</div>
+                        <button type="button" onclick="analyzeDimensions()" class="btn btn-indigo w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-ruler-combined"></i> تخمین هوشمند ابعاد و مالیات
+                        </button>
+                        <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                            تأیید و ادامه به استودیو تصویر <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
+                    </section>
+
+                    <!-- گام ۵: ترکیب نهایی و بریف تبلیغاتی -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="4">
                         <div class="flex items-center justify-between flex-wrap gap-2">
                             <div class="flex items-center gap-3">
-                                <span class="tile tile-violet"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
-                                <div><span class="sec-num">گام ۴</span>
-                                <h2 class="font-extrabold text-sm md:text-base text-amber-300 mt-1">استودیو تصویر تبلیغاتی</h2></div>
+                                <span class="tile tile-violet"><i class="fa-solid fa-puzzle-piece"></i></span>
+                                <div><span class="sec-num">گام ۵</span>
+                                <h2 class="font-extrabold text-sm md:text-base text-amber-300 mt-1">ترکیب نهایی و بریف تبلیغاتی</h2></div>
                             </div>
-                            <span class="chip bg-amber-500/10 text-amber-300 border-amber-500/25">AI واقعی • WebP • 768×768</span>
+                            <span class="chip bg-violet-500/10 text-violet-300 border-violet-500/25">قابل ویرایش ✓</span>
                         </div>
+                        <div class="flex items-start gap-2 text-[11px] md:text-xs text-slate-300 bg-violet-500/[.07] border border-violet-500/25 rounded-xl px-3.5 py-3 leading-relaxed">
+                            <i class="fa-solid fa-wand-magic-sparkles mt-0.5 text-violet-300 shrink-0"></i>
+                            <span>هوش مصنوعی هر ۴ گام را کنار هم می‌گذارد و نام دقیق محصول را حدس می‌زند. همه فیلدها را بازبینی کنید؛ هر اشتباهی را ویرایش یا پاک کنید تا تصویر نهایی بی‌نقص شود.</span>
+                        </div>
+                        <button type="button" onclick="fuseProduct()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-puzzle-piece"></i> ترکیب نهایی ۴ گام و حدس نام دقیق محصول
+                        </button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div class="sm:col-span-2">
+                                <label class="lbl" for="brief_product"><i class="fa-solid fa-circle-check text-emerald-400 ml-1"></i>نام نهایی حدس‌زده‌شده محصول</label>
+                                <input type="text" id="brief_product" class="inp font-bold !text-amber-200 !text-xs" placeholder="پس از ترکیب نهایی پر می‌شود...">
+                            </div>
+                            <div>
+                                <label class="lbl" for="brief_group"><i class="fa-solid fa-layer-group text-teal-300 ml-1"></i>گروه محصول</label>
+                                <input type="text" id="brief_group" list="dl_groups" class="inp !text-xs" placeholder="گروه...">
+                                <datalist id="dl_groups"><option value="کالای دیجیتال"></option><option value="موبایل و لوازم جانبی"></option><option value="لپ‌تاپ"></option><option value="لوازم جانبی کامپیوتر"></option><option value="مواد غذایی"></option><option value="خوراکی"></option><option value="آرایشی و بهداشتی"></option><option value="محصول ارگانیک"></option><option value="پوشاک"></option><option value="خانه و آشپزخانه"></option><option value="ورزشی"></option><option value="سایر"></option></datalist>
+                            </div>
+                            <div>
+                                <label class="lbl" for="brief_profession"><i class="fa-solid fa-briefcase text-indigo-300 ml-1"></i>شغل / کاربرد حدس‌زده‌شده</label>
+                                <input type="text" id="brief_profession" list="dl_profs" class="inp !text-xs" placeholder="مثلاً گیمینگ...">
+                                <datalist id="dl_profs"><option value="گیمینگ"></option><option value="عکاسی"></option><option value="آشپزی و پذیرایی"></option><option value="زیبایی و مراقبت"></option><option value="ورزش و تناسب"></option><option value="استفاده روزمره و کاری"></option><option value="مصرف عمومی"></option><option value="سفر"></option></datalist>
+                            </div>
+                            <div>
+                                <label class="lbl" for="brief_mockup"><i class="fa-solid fa-image text-violet-300 ml-1"></i>انتخاب موکاپ (متناسب با محصول و شغل)</label>
+                                <select id="brief_mockup" class="inp !text-xs">
+                                    <option value="studio-lux">استودیو لوکس تیره-طلایی</option>
+                                    <option value="lifestyle">فضای واقعی سبک زندگی</option>
+                                    <option value="minimal">مینیمال سفید</option>
+                                    <option value="organic">طبیعت ارگانیک</option>
+                                    <option value="neon">نئون گیمینگ</option>
+                                    <option value="kitchen">آشپزخانه مدرن</option>
+                                    <option value="beauty">سالن زیبایی</option>
+                                    <option value="sport">ورزشی پرانرژی</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="lbl" for="brief_lighting"><i class="fa-solid fa-lightbulb text-amber-300 ml-1"></i>سبک نورپردازی</label>
+                                <select id="brief_lighting" class="inp !text-xs">
+                                    <option value="dramatic">دراماتیک استودیویی</option>
+                                    <option value="soft">نرم طبیعی</option>
+                                    <option value="neon">نئون رنگی</option>
+                                    <option value="gold">طلایی لوکس</option>
+                                    <option value="minimal">مینیمال یکدست</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="lbl" for="brief_palette"><i class="fa-solid fa-palette text-amber-400 ml-1"></i>پالت رنگ صحنه</label>
+                                <input type="text" id="brief_palette" class="inp !text-xs" placeholder="رنگ‌های صحنه...">
+                            </div>
+                            <div>
+                                <label class="lbl" for="brief_angle"><i class="fa-solid fa-camera text-teal-300 ml-1"></i>زاویه دوربین</label>
+                                <select id="brief_angle" class="inp !text-xs">
+                                    <option value="three-quarter">سه‌ربع (پیشنهادی)</option>
+                                    <option value="front">روبرو</option>
+                                    <option value="top">از بالا (فلت‌لی)</option>
+                                    <option value="macro">ماکرو جزئیات</option>
+                                    <option value="lifestyle-angle">در حال استفاده</option>
+                                </select>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="lbl" for="brief_extra"><i class="fa-solid fa-pen-ruler text-violet-300 ml-1"></i>دستور ویژه (اختیاری)</label>
+                                <input type="text" id="brief_extra" class="inp !text-xs" placeholder="جزئیات اضافه برای صحنه...">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="lbl" for="brief_style_lock"><i class="fa-solid fa-lock text-amber-300 ml-1"></i>قفل سبک فروشگاه (همیشه به تصویر اضافه می‌شود)</label>
+                                <input type="text" id="brief_style_lock" class="inp !text-xs" placeholder="مثلاً: تم طلایی و سرمه‌ای، ذرات نور شناور">
+                            </div>
+                        </div>
+                        <button type="button" onclick="resetFusion()" class="w-full text-center text-[11px] text-slate-500 hover:text-amber-300 transition py-1"><i class="fa-solid fa-rotate-left ml-1"></i>بازگردانی حدس‌های هوش مصنوعی</button>
                         <div class="flex flex-col items-center border-2 border-dashed border-white/15 rounded-2xl p-5 bg-[#010b18]/60">
                             <div class="w-48 h-48 md:w-56 md:h-56 flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900 border border-white/10 relative logo-glow">
                                 <img id="product_image_preview" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600" class="object-cover h-full w-full" alt="پیش‌نمایش موکاپ تبلیغاتی محصول" loading="lazy" decoding="async">
@@ -523,46 +737,32 @@
                                 <input type="file" name="product_image_file" accept=".webp,.jpg,.jpeg,.png" capture="environment" class="hidden" onchange="previewLocalImage(this)">
                             </label>
                         </div>
-                        <div class="space-y-3.5">
-                            <div>
-                                <label class="lbl" for="ai_image_provider"><i class="fa-solid fa-microchip text-violet-300 ml-1"></i>موتور تولید تصویر (با جایگزین خودکار)</label>
-                                <select id="ai_image_provider" class="inp !text-xs">
-                                    <option value="auto">✨ هوشمند: Stability ← بعد Pollinations (پیشنهادی)</option>
-                                    <option value="stability">Stability AI (نیازمند کلید در تنظیمات)</option>
-                                    <option value="flux">Pollinations Flux • کیفیت استودیویی (رایگان)</option>
-                                    <option value="turbo">Pollinations Turbo • سرعت بالا (رایگان)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="lbl" for="custom_image_prompt_text"><i class="fa-solid fa-pen-ruler text-violet-300 ml-1"></i>توصیف صحنه تبلیغاتی (اختیاری)</label>
-                                <input type="text" id="custom_image_prompt_text" class="inp !text-xs" placeholder="خالی باشد: بر اساس نام و برند، صحنه لوکس ساخته می‌شود">
-                            </div>
-                            <button type="button" onclick="generateWebpAiImage()" class="btn btn-indigo w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> ساخت موکاپ تبلیغاتی با AI و تبدیل WebP
-                            </button>
-                            <p class="text-[11px] text-slate-500 leading-relaxed flex items-start gap-1.5"><i class="fa-solid fa-circle-info mt-0.5 text-indigo-400"></i>هوش مصنوعی ابتدا با ترکیب نام، برند، رنگ و قیمت‌های بازار، نام واقعی محصول را حدس می‌زند و سپس موکاپ تبلیغاتی اختصاصی همان محصول را می‌سازد.</p>
+                        <div>
+                            <label class="lbl" for="ai_image_provider"><i class="fa-solid fa-microchip text-violet-300 ml-1"></i>موتور تولید تصویر (با جایگزین خودکار)</label>
+                            <select id="ai_image_provider" class="inp !text-xs">
+                                <option value="auto">✨ هوشمند: Stability ← بعد Pollinations (پیشنهادی)</option>
+                                <option value="stability">Stability AI (نیازمند کلید در تنظیمات)</option>
+                                <option value="flux">Pollinations Flux • کیفیت استودیویی (رایگان)</option>
+                                <option value="turbo">Pollinations Turbo • سرعت بالا (رایگان)</option>
+                            </select>
                         </div>
+                        <button type="button" onclick="generateWebpAiImage()" class="btn btn-indigo w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> ساخت تصویر نهایی از روی بریف تأییدشده
+                        </button>
                         <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
                             تأیید تصویر و ادامه به ثبت نهایی <i class="fa-solid fa-arrow-left"></i>
                         </button>
                         <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
 
-                    <!-- گام ۵ -->
-                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="4">
+                    <!-- گام ۶: بازبینی و ثبت -->
+                    <section class="wstep card p-5 md:p-6 rounded-2xl space-y-4" data-step="5">
                         <div class="flex items-center gap-3">
                             <span class="tile tile-emerald"><i class="fa-solid fa-clipboard-check"></i></span>
-                            <div><span class="sec-num">گام ۵</span>
-                            <h2 class="font-extrabold text-sm md:text-base text-slate-100 mt-1">مشخصات و ثبت نهایی</h2></div>
+                            <div><span class="sec-num">گام ۶</span>
+                            <h2 class="font-extrabold text-sm md:text-base text-slate-100 mt-1">بازبینی و ثبت نهایی</h2></div>
                         </div>
                         <div id="order_summary" class="text-[11px] md:text-xs leading-loose bg-amber-500/[.06] border border-amber-500/25 rounded-xl px-4 py-3 text-slate-300"></div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-                            <div><label class="lbl" for="weight"><i class="fa-solid fa-weight-hanging text-slate-400 ml-1"></i>وزن (kg)</label><input type="number" step="0.01" id="weight" name="weight" value="0.85" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                            <div><label class="lbl" for="length"><i class="fa-solid fa-ruler-horizontal text-slate-400 ml-1"></i>طول (cm)</label><input type="number" step="0.1" id="length" name="length" value="28.7" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                            <div><label class="lbl" for="width"><i class="fa-solid fa-ruler-horizontal text-slate-400 ml-1"></i>عرض (cm)</label><input type="number" step="0.1" id="width" name="width" value="20.8" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                            <div><label class="lbl" for="height"><i class="fa-solid fa-ruler-vertical text-slate-400 ml-1"></i>ارتفاع (cm)</label><input type="number" step="0.1" id="height" name="height" value="0.9" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                            <div><label class="lbl" for="tax_percent"><i class="fa-solid fa-percent text-slate-400 ml-1"></i>مالیات (٪)</label><input type="number" step="0.1" id="tax_percent" name="tax_percent" value="9.0" inputmode="decimal" class="inp" style="font-variant-numeric:tabular-nums"></div>
-                        </div>
                         <div>
                             <label class="lbl" for="short_description"><i class="fa-solid fa-pen-nib text-amber-400 ml-1"></i>توضیحات کوتاه سئو</label>
                             <textarea id="short_description" name="short_description" rows="2" class="inp resize-none !text-xs" placeholder="توضیح کوتاه فارسی برای موتورهای جستجو..."></textarea>
@@ -572,7 +772,8 @@
                         </button>
                         <button type="button" onclick="prevStep()" class="w-full text-center text-[11px] text-slate-500 hover:text-slate-300 transition py-1">بازگشت به گام قبل</button>
                     </section>
-                </form>
+
+</form>
 
                 <footer class="text-center pt-5 pb-1">
                     <div class="credit-plaque">
@@ -605,6 +806,19 @@
     </div>
 
     <!-- مودال تاریخچه -->
+    <div id="db_init_modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80"></div>
+        <div class="relative w-full max-w-md bg-[#04122a] border border-teal-500/30 rounded-3xl p-6 text-center" style="box-shadow:0 0 60px -12px rgba(45,212,191,.45)">
+            <div class="w-14 h-14 mx-auto mb-2 rounded-2xl flex items-center justify-center bg-gradient-to-br from-teal-500/25 to-amber-500/20 border border-teal-500/40">
+                <i class="fa-solid fa-database text-2xl text-teal-300"></i>
+            </div>
+            <h3 class="font-extrabold text-sm text-slate-100 mb-1">ساخت جداول دیتابیس</h3>
+            <div id="db_init_pct" class="db-pct" style="font-variant-numeric:tabular-nums">۰٪</div>
+            <div class="db-bar my-3"><div id="db_init_bar"></div></div>
+            <div id="db_init_log" class="db-log text-right text-[11px] leading-loose bg-black/30 border border-white/10 rounded-2xl px-3.5 py-3 space-y-1"></div>
+            <button type="button" id="db_init_close" onclick="closeDbInit()" class="hidden btn btn-emerald w-full py-3 rounded-xl text-xs mt-4"><i class="fa-solid fa-check ml-1"></i> تمام شد — بستن</button>
+        </div>
+    </div>
     <div id="history_modal" class="fixed inset-0 z-[70] hidden items-end md:items-center justify-center">
         <div class="absolute inset-0 bg-black/70" onclick="closeHistory()"></div>
         <div class="sheet-anim relative w-full md:max-w-lg bg-[#04122a] border border-white/15 rounded-t-3xl md:rounded-3xl p-5 max-h-[88vh] overflow-y-auto">
@@ -613,14 +827,23 @@
                 <button type="button" onclick="closeHistory()" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white transition" aria-label="بستن"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="hist_summary" class="flex items-center gap-2 text-[11px] text-slate-300 bg-white/[.04] border border-white/10 rounded-xl px-3.5 py-2.5 mb-3 leading-relaxed"></div>
+            <div class="flex gap-2 mb-2.5">
+                <button type="button" data-d="7" onclick="setHistDays(7)" class="hist-day-btn btn btn-ghost flex-1 py-2 rounded-xl text-[11px]">۷ روزه</button>
+                <button type="button" data-d="30" onclick="setHistDays(30)" class="hist-day-btn btn btn-ghost flex-1 py-2 rounded-xl text-[11px]">۳۰ روزه</button>
+                <button type="button" data-d="0" onclick="setHistDays(0)" class="hist-day-btn btn btn-ghost flex-1 py-2 rounded-xl text-[11px]">همه</button>
+            </div>
             <div class="flex items-center gap-4 text-[10px] text-slate-400 mb-1.5 px-1">
                 <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#f87171"></span>دیجی‌کالا</span>
                 <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#fb923c"></span>ترب (کف بازار)</span>
             </div>
+            <div id="hist_stats" class="grid grid-cols-3 gap-2 mb-3"></div>
             <div class="bg-[#010b18]/70 border border-white/10 rounded-2xl p-2 mb-3"><canvas id="hist_chart"></canvas></div>
             <div class="flex gap-2 mb-3">
                 <button type="button" id="hist_filter_btn" onclick="histFilterMine=!histFilterMine;renderHistory()" class="btn btn-ghost flex-1 py-2.5 rounded-xl text-[11px]"></button>
                 <button type="button" onclick="clearHist()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-[11px] !text-red-300">پاک‌سازی</button>
+                <button type="button" onclick="exportHistCSV()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-[11px] !text-emerald-300"><i class="fa-solid fa-file-excel ml-1"></i>اکسل</button>
+                <button type="button" onclick="syncMysql()" class="btn btn-ghost px-4 py-2.5 rounded-xl text-[11px] !text-teal-300"><i class="fa-solid fa-cloud-arrow-down ml-1"></i>همگام‌سازی</button>
+
             </div>
             <div id="hist_list" class="space-y-2"></div>
         </div>
@@ -656,6 +879,40 @@
                 </div>
             </div>
 
+            <div class="card rounded-2xl p-4 mb-3">
+                <div class="flex items-center justify-between mb-1 flex-wrap gap-2">
+                    <h4 class="font-extrabold text-xs text-slate-200"><i class="fa-solid fa-database text-amber-300 ml-1.5"></i>دیتابیس MySQL هاست</h4>
+                    <span class="flex items-center gap-1.5 text-[10px] text-slate-400"><span id="dot_mysql" class="sdot"></span><span id="dot_mysql_txt">تست نشده</span></span>
+                </div>
+                <p class="text-[10px] text-slate-500 mb-3 leading-relaxed">فایل <span dir="ltr" class="text-teal-300">api.php</span> را کنار همین پنل روی هاست آپلود کنید؛ بعد مشخصات زیر را وارد و «ساخت جداول» را بزنید. رمز فقط در همین دستگاه می‌ماند.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="sm:col-span-2">
+                        <label class="lbl" for="my_api">آدرس فایل api.php روی هاست</label>
+                        <input type="url" id="my_api" dir="ltr" class="inp !text-xs text-left" placeholder="https://ainetmee.ir/universal/api.php">
+                    </div>
+                    <div>
+                        <label class="lbl" for="my_host">هاست دیتابیس</label>
+                        <input type="text" id="my_host" dir="ltr" class="inp !text-xs text-left" placeholder="localhost">
+                    </div>
+                    <div>
+                        <label class="lbl" for="my_name">نام دیتابیس</label>
+                        <input type="text" id="my_name" dir="ltr" class="inp !text-xs text-left" placeholder="dbname">
+                    </div>
+                    <div>
+                        <label class="lbl" for="my_user">نام کاربری</label>
+                        <input type="text" id="my_user" dir="ltr" class="inp !text-xs text-left" placeholder="dbuser">
+                    </div>
+                    <div>
+                        <label class="lbl" for="my_pass">رمز دیتابیس</label>
+                        <input type="password" id="my_pass" dir="ltr" class="inp !text-xs text-left" placeholder="••••••••" autocomplete="off">
+                    </div>
+                </div>
+                <div id="mysql_status_line" class="text-[10px] text-slate-500 mt-2.5 leading-relaxed">وضعیت: هنوز بررسی نشده است.</div>
+                <div class="flex gap-2 mt-3">
+                    <button type="button" onclick="testMysql()" class="btn btn-ghost flex-1 py-3 rounded-xl text-xs flex items-center justify-center gap-1.5"><i class="fa-solid fa-stethoscope"></i> تست اتصال</button>
+                    <button type="button" onclick="buildMysqlTables()" class="btn btn-emerald flex-[1.4] py-3 rounded-xl text-xs flex items-center justify-center gap-1.5"><i class="fa-solid fa-table-columns"></i> ساخت جداول</button>
+                </div>
+            </div>
             <div class="card rounded-2xl p-4 mb-3">
                 <h4 class="font-extrabold text-xs text-slate-200 mb-1"><i class="fa-solid fa-brain text-amber-300 ml-1.5"></i>کلیدهای هوش مصنوعی + تست سلامت</h4>
                 <p class="text-[10px] text-slate-500 mb-3">هر کدام را دارید وارد کنید؛ در صورت توقف یکی، جایگزین خودکار فعال می‌شود.</p>
@@ -744,7 +1001,8 @@
                 <p class="text-[10px] text-slate-500 mt-2.5 leading-relaxed">حالت خودکار: قوی‌ترین کلید موجود انتخاب می‌شود و در صورت خطا، جایگزین بعدی خودکار وارد می‌شود.</p>
             </div>
 
-            <div class="flex gap-2">
+                        <div class="text-center text-[10px] text-slate-600 mb-2" style="font-variant-numeric:tabular-nums">Meelano Panel v2.2.0 • MySQL ready</div>
+<div class="flex gap-2">
                 <button type="button" onclick="resetSettings()" class="btn btn-ghost flex-1 py-3 rounded-xl text-xs"><i class="fa-solid fa-trash-can ml-1"></i> بازنشانی تنظیمات</button>
                 <button type="button" onclick="closeSettings()" class="btn btn-emerald flex-[1.6] py-3 rounded-xl text-xs"><i class="fa-solid fa-check ml-1"></i> ذخیره و بستن</button>
             </div>
@@ -781,8 +1039,8 @@
         updateClock(); setInterval(updateClock, 30000);
 
         /* ═════════ ویزارد ═════════ */
-        const STEP_NAMES = ['اطلاعات پایه کالا', 'استعلام هوشمند بازار', 'قیمت‌گذاری انبار', 'استودیو تصویر تبلیغاتی', 'مشخصات و ثبت نهایی'];
-        const STEP_SHORT = ['اطلاعات', 'بازار', 'قیمت', 'تصویر', 'ثبت'];
+        const STEP_NAMES = ['اطلاعات پایه کالا', 'استعلام هوشمند بازار', 'قیمت‌گذاری انبار', 'ابعاد و مالیات هوشمند', 'ترکیب نهایی و بریف تبلیغاتی', 'بازبینی و ثبت نهایی'];
+        const STEP_SHORT = ['اطلاعات', 'بازار', 'قیمت', 'ابعاد', 'تصویر', 'ثبت'];
         const panels = Array.from(document.querySelectorAll('.wstep'));
         let curStep = 0, maxStep = 0;
         function buildDots() {
@@ -847,7 +1105,7 @@
             const b = $('brand_name').value.trim() || '—';
             const p = $('selected_active_price_display').textContent || '—';
             const s = $('stock_quantity').value || '۰';
-            $('order_summary').innerHTML = '<b class="text-amber-200">خلاصه ثبت:</b> ' + escapeHtml(t) + ' • برند ' + escapeHtml(b) + ' • موجودی <b>' + toFa(s) + '</b> عدد • قیمت منتخب بازار <b class="text-emerald-300">' + escapeHtml(p) + '</b>';
+             $('order_summary').innerHTML = '<b class="text-amber-200">خلاصه ثبت:</b> ' + escapeHtml(t) + ' • برند ' + escapeHtml(b) + ' • موجودی <b>' + toFa(s) + '</b> عدد • وزن <b>' + toFa($("weight").value || '—') + '</b> • ابعاد <b dir="ltr">' + ($("length").value || '?') + "×" + ($("width").value || '?') + "×" + ($("height").value || '?') + '</b> • قیمت منتخب بازار <b class="text-emerald-300">' + escapeHtml(p) + '</b>';
         }
         buildDots(); showStep(0);
 
@@ -932,9 +1190,9 @@
             SET.routing.analysis = $('routing_analysis').value; SET.routing.image = $('routing_image').value;
             saveSet();
         }
-        function openSettings() { renderSettings(); const m = $('settings_modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden'; }
-        function closeSettings() { readSettings(); const m = $('settings_modal'); m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = ''; toast('تنظیمات ذخیره شد.', 'success'); }
-        function resetSettings() { try { localStorage.removeItem(SET_KEY); } catch (e) {} location.reload(); }
+        function openSettings() { renderSettings(); renderMysqlForm(); const m = $('settings_modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+        function closeSettings() { readSettings(); readMysqlForm(); const m = $('settings_modal'); m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = ''; toast('تنظیمات ذخیره شد.', 'success'); }
+        function resetSettings() { try { localStorage.removeItem(SET_KEY); try { localStorage.removeItem(MYSQL_KEY); } catch (e) {} } catch (e) {} location.reload(); }
         function setDot(id, state, txt) {
             const d = $(id); if (!d) return;
             d.classList.remove('ok', 'bad', 'wait');
@@ -983,7 +1241,7 @@
         /* ═════════ زیرساخت AI: مراحل، انصراف، جایگزین خودکار ═════════ */
         const AIC = { cancelled: false, done: false, applying: false, ctrls: new Set(), timers: new Set(), watchdog: null };
         const STAGES_ANALYSIS = ['ترکیب ۴ سیگنال و شناسایی دقیق محصول', 'استعلام قیمت دیجی‌کالا', 'استعلام کف بازار ترب', 'نهایی‌سازی رنگ، بارکد و جدول قیمت'];
-        const STAGES_IMAGE = ['ترکیب اطلاعات و حدس نام نهایی محصول', 'طراحی صحنه تبلیغاتی اختصاصی', 'تولید تصویر با موتور AI', 'برش 768 و تبدیل WebP'];
+        const STAGES_IMAGE = ["بازخوانی بریف تأییدشده", "تولید تصویر با موتور AI", "برش 768 و تبدیل WebP"];
         function aiReset() {
             AIC.cancelled = false; AIC.done = false; AIC.applying = false;
             AIC.ctrls.forEach(c => { try { c.abort(); } catch (e) {} }); AIC.ctrls.clear();
@@ -1037,7 +1295,7 @@
         }
 
         /* ═════════ فراخوانی موتورهای متنی ═════════ */
-        const SYS_ANALYSIS = 'You are a precise Iranian e-commerce product analyst. Respond with ONLY a JSON object, no markdown, no explanation. Schema: {"product_fa":"exact full product name in Persian","brand_fa":"brand in Persian and English","colors_fa":"common market colors in Persian, comma separated","barcode":"real GTIN barcode ONLY if you are sure, otherwise empty string","category":1,"unit":"string","digikala_price":0,"torob_price":0,"purchase_price":0,"retail_price":0,"wholesale_price":0,"confidence":0}. Rules: category 1=digital,2=food,3=beauty-health,4=organic. All prices are integers in Iranian Rial (Toman x 10). torob_price<=digikala_price. purchase_price<torob_price. retail_price slightly above digikala_price. wholesale between purchase and torob. confidence 0-100. Use all provided signals: title, brand, barcode hint, color hint. Keep a valid-looking barcode hint, never invent a random one.';
+        const SYS_ANALYSIS = 'You are a precise Iranian e-commerce product analyst and expert SEO master. Respond with ONLY a JSON object, no markdown. Schema: {"product_fa":"exact name","brand_fa":"brand","colors_fa":"colors","barcode":"GTIN","category":1,"unit":"string","digikala_price":0,"torob_price":0,"purchase_price":0,"retail_price":0,"wholesale_price":0,"seo_short":"short click-worthy description in Persian for social media and google","seo_full":"detailed SEO-optimized description in Persian","seo_keywords":"comma-separated keywords","seo_hashtags":"space-separated hashtags like #tag","confidence":0}. Rules: category 1=digital, 2=food, 3=beauty-health, 4=organic. Ensure SEO data follows latest Google & Social Media algorithms, highly engaging and relevant to the exact product and brand.';
         async function callOpenAI(prompt, sys) {
             const r = await aiFetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + SET.keys.openai }, body: JSON.stringify({ model: SET.models.openai || 'gpt-4o-mini', messages: [{ role: 'system', content: (sys || SYS_ANALYSIS) }, { role: 'user', content: prompt }], temperature: 0.2, max_tokens: 900, response_format: { type: 'json_object' } }) });
             if (!r.ok) throw new Error('openai ' + r.status);
@@ -1220,38 +1478,42 @@
             const buf = await r.arrayBuffer();
             return URL.createObjectURL(new Blob([buf], { type: 'image/jpeg' }));
         }
+        const FA2EN_COLORS = [['مشکی','black'],['سفید','white'],['نقره‌ای','silver'],['نقره ای','silver'],['طلایی مات','matte gold'],['طلایی','gold'],['سرمه‌ای','navy blue'],['آبی','blue'],['قرمز','red'],['قهوه‌ای','brown'],['سبز','green'],['نعنایی','mint'],['بنفش','purple'],['صورتی','pink'],['خاکستری','gray'],['گرافیتی','graphite'],['پلاتینیوم','platinum'],['زرد','yellow'],['نارنجی','orange'],['بژ','beige'],['کرم','cream'],['متالیک','metallic'],['تیره','dark'],['روشن','light']];
+        function colorsToEN(fa) { let s = ' ' + (fa || '') + ' '; FA2EN_COLORS.forEach(([f, e]) => { s = s.split(f).join(' ' + e + ' '); }); return s.replace(/\s+/g, ' ').trim() || 'elegant neutral tones'; }
         async function generateWebpAiImage() {
-            const productTitle = $('product_title').value.trim(), brandName = $('brand_name').value.trim();
-            const customPrompt = $('custom_image_prompt_text').value.trim();
-            if (!productTitle || !brandName) { toast('لطفاً ابتدا در گام ۱ نام محصول و برند را وارد کنید.', 'error'); return; }
+            const bp = $('brief_product').value.trim();
+            if (!bp) { toast('اول «ترکیب نهایی» را اجرا کنید یا نام محصول را بنویسید.', 'error'); return; }
             readSettingsSilent();
             aiReset();
             showAiModal('استودیو تصویر تبلیغاتی', STAGES_IMAGE);
             try {
-                aiStage(0, 'active'); setProgress(8, 'ترکیب نام، برند، رنگ و قیمت‌ها برای حدس نام نهایی محصول...');
-                const brief = await craftImageBrief(productTitle, brandName, $('color').value.trim(), rawDigiPrice, rawTorobPrice, (m) => setProgress(16, m));
-                aiThrowIfCancelled(); aiStage(0, 'done');
-                aiStage(1, 'active'); setProgress(32, 'طراحی صحنه تبلیغاتی اختصاصی...');
-                const styleEN = 'ultra detailed advertising photograph, luxurious 3D product render, dramatic studio lighting, floating golden particles, centered composition, no text, no watermark';
-                const subjectEN = customPrompt ? `advertising scene: ${customPrompt}, featuring "${brief.product_en}"` : brief.scene_en + `, featuring "${brief.product_en}"`;
-                const promptEN = subjectEN + ', ' + styleEN;
+                aiStage(0, 'active'); setProgress(10, 'بازخوانی بریف تأییدشده شما...');
+                const group = $('brief_group').value.trim() || 'محصول فروشگاهی';
+                const prof = $('brief_profession').value.trim() || 'مصرف عمومی';
+                const mockKey = $('brief_mockup').value, lightKey = $('brief_lighting').value, angleKey = $('brief_angle').value;
+                const palette = $('brief_palette').value.trim(), extra = $('brief_extra').value.trim();
+                let stylock = '';
+                try { const sli = $('brief_style_lock'); stylock = (sli.value || '').trim(); localStorage.setItem('meelano_stylelock', stylock); } catch (e) {}
+                const tier = Math.max(rawDigiPrice, rawTorobPrice);
+                const tierEN = tier >= 100000000 ? 'ultra-premium flagship luxury' : tier >= 10000000 ? 'premium high-end' : 'clean modern affordable';
+                const seoTags = ($('seo_keywords').value || '') + ' ' + ($('seo_hashtags').value || '');
+                const promptEN = '"' + bp + '" — ' + group + ' for ' + prof + ', ' + (MOCKUP_EN[mockKey] || MOCKUP_EN['studio-lux']) + ', ' + (LIGHTING_EN[lightKey] || LIGHTING_EN.dramatic) + ', palette of ' + (colorsToEN(palette) || 'gold and navy') + ', ' + (ANGLE_EN[angleKey] || ANGLE_EN['three-quarter']) + (extra ? ', ' + extra : '') + (stylock ? ', signature style: ' + stylock : '') + ', keywords: ' + seoTags + ', featuring the exact product "' + bp + '", ultra detailed advertising photograph, luxurious 3D render, floating golden particles, centered composition, no text, no watermark, ' + tierEN;
                 await new Promise(r => setTimeout(r, 250)); aiThrowIfCancelled();
-                aiStage(1, 'done');
-                aiStage(2, 'active');
+                aiStage(0, 'done');
+                aiStage(1, 'active');
                 const pref = ($('ai_image_provider').value === 'flux' || $('ai_image_provider').value === 'turbo') ? $('ai_image_provider').value : SET.routing.image;
-                const attempts = pref === 'stability' ? ['stability'] : pref === 'flux' || pref === 'turbo' ? ['poll:' + pref] : ['stability', 'poll:flux'];
-                let objUrl = null, usedPoll = null, ok = false;
+                const attempts = pref === 'stability' ? ['stability'] : (pref === 'flux' || pref === 'turbo') ? ['poll:' + pref] : ['stability', 'poll:flux'];
+                let objUrl = null, ok = false;
                 for (const a of attempts) {
                     aiThrowIfCancelled();
                     try {
                         if (a === 'stability') {
-                            setProgress(38, 'تولید تصویر با Stability AI...');
+                            setProgress(42, 'تولید تصویر نهایی با Stability AI...');
                             objUrl = await callStability(promptEN);
-                            const img = await loadImageAsync(objUrl, 90000, false);
-                            objUrl = { img, blob: true };
+                            objUrl = await loadImageAsync(objUrl, 90000, false);
                         } else {
-                            usedPoll = a.split(':')[1] || 'flux';
-                            setProgress(38, 'تولید تصویر با Pollinations ' + (usedPoll === 'turbo' ? 'Turbo' : 'Flux') + '...');
+                            const usedPoll = a.split(':')[1] || 'flux';
+                            setProgress(42, 'تولید تصویر نهایی با Pollinations ' + (usedPoll === 'turbo' ? 'Turbo' : 'Flux') + '...');
                             const seed = Math.floor(Math.random() * 999999);
                             const url = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(promptEN) + '?width=768&height=768&seed=' + seed + '&nologo=true&model=' + usedPoll;
                             objUrl = await loadImageAsync(url, 90000, true);
@@ -1259,25 +1521,25 @@
                         ok = true; break;
                     } catch (e) {
                         if (e.isCancel) throw e;
-                        setProgress(45, 'این موتور پاسخ نداد؛ جایگزین خودکار...');
+                        setProgress(48, 'این موتور پاسخ نداد؛ جایگزین خودکار...');
                     }
                 }
                 if (!ok) throw new Error('img-failed');
                 aiThrowIfCancelled();
-                aiStage(2, 'done');
-                aiStage(3, 'active'); setProgress(82, 'برش به 768×768 و تبدیل به WebP...');
+                aiStage(1, 'done');
+                aiStage(2, 'active'); setProgress(82, 'برش به 768×768 و تبدیل به WebP...');
                 await new Promise(r => setTimeout(r, 150)); aiThrowIfCancelled();
                 try {
-                    const webp = imageToWebP(objUrl.img || objUrl, 768, 0.9);
+                    const webp = imageToWebP(objUrl, 768, 0.9);
                     $('product_image_preview').src = webp;
                     $('product_image_webp').value = webp;
                 } catch (convErr) {
                     $('product_image_preview').src = objUrl.src || objUrl;
                     $('product_image_webp').value = '';
                 }
-                aiStage(3, 'done'); setProgress(100, 'تکمیل شد.');
+                aiStage(2, 'done'); setProgress(100, 'تکمیل شد.');
                 aiFinish();
-                setTimeout(() => { hideAiModal(); toast('موکاپ تبلیغاتی ساخته و به WebP تبدیل شد.', 'success'); }, 400);
+                setTimeout(() => { hideAiModal(); toast('تصویر نهایی از روی بریف تأییدشده ساخته شد.', 'success'); }, 400);
             } catch (e) {
                 aiFinish(); hideAiModal();
                 if (e.isCancel) return;
@@ -1285,39 +1547,6 @@
             }
         }
 
-        /* ═════════ حدس نام نهایی + داشبورد قیمت ═════════ */
-        const FA2EN_COLORS = [['مشکی','black'],['سفید','white'],['نقره‌ای','silver'],['نقره ای','silver'],['طلایی مات','matte gold'],['طلایی','gold'],['سرمه‌ای','navy blue'],['آبی','blue'],['قرمز','red'],['قهوه‌ای','brown'],['سبز','green'],['نعنایی','mint'],['بنفش','purple'],['صورتی','pink'],['خاکستری','gray'],['گرافیتی','graphite'],['پلاتینیوم','platinum'],['زرد','yellow'],['نارنجی','orange'],['بژ','beige'],['کرم','cream'],['متالیک','metallic'],['تیره','dark'],['روشن','light']];
-        function colorsToEN(fa) { let s = ' ' + (fa || '') + ' '; FA2EN_COLORS.forEach(([f, e]) => { s = s.split(f).join(' ' + e + ' '); }); return s.replace(/\s+/g, ' ').trim() || 'elegant neutral tones'; }
-        const SYS_BRIEF = 'You are an expert advertising art director for e-commerce. Respond with ONLY a JSON object, no markdown: {"product_en":"exact product name in English","scene_en":"one rich English sentence describing a luxurious advertising hero scene for this product, including its colors and setting, no text in image"}.';
-        function parseBriefJSON(txt) {
-            const s = String(txt).trim().replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
-            const j = JSON.parse(s);
-            return { product_en: String(j.product_en || '').trim(), scene_en: String(j.scene_en || '').trim() };
-        }
-        async function craftImageBrief(title, brand, colors, digi, torob, log) {
-            const tier = Math.max(digi || 0, torob || 0);
-            const tierEN = tier >= 100000000 ? 'ultra-premium flagship luxury' : tier >= 10000000 ? 'premium high-end' : 'clean modern affordable';
-            const up = 'Product title: ' + title + '\nBrand: ' + brand + '\nColors: ' + (colors || 'unknown') + '\nMarket prices IRR - digikala: ' + (digi || '?') + ', torob: ' + (torob || '?') + '.\nFirst infer the EXACT real product name, then design its advertising scene.';
-            const chain = analysisChain().filter(id => id !== 'local');
-            for (const id of chain) {
-                aiThrowIfCancelled();
-                if (log) log('طراحی صحنه با ' + PROV_LABEL[id] + '...');
-                try {
-                    let raw;
-                    if (id === 'openai') raw = await callOpenAI(up, SYS_BRIEF);
-                    else if (id === 'gemini') raw = await callGemini(up, SYS_BRIEF);
-                    else if (id === 'groq') raw = await callOpenAICompat('https://api.groq.com/openai/v1', SET.keys.groq, SET.models.groq || 'llama-3.3-70b-versatile', up, SYS_BRIEF);
-                    else if (id === 'gapgpt') raw = await callOpenAICompat(SET.keys.gapgpt_base || 'https://api.gapgpt.app/v1', SET.keys.gapgpt, SET.models.gapgpt || 'gpt-4o-mini', up, SYS_BRIEF);
-                    else if (id === 'cloudflare') raw = await callCloudflare(up, SYS_BRIEF);
-                    else continue;
-                    const b = parseBriefJSON(raw);
-                    if (b.product_en && b.scene_en) return b;
-                    throw new Error('bad-brief');
-                } catch (e) { if (e.isCancel) throw e; }
-            }
-            let brandEn = brand; const m = /\(([^)]+)\)/.exec(brand); if (m) brandEn = m[1];
-            return { product_en: (title + ' ' + brandEn).trim(), scene_en: tierEN + ' e-commerce hero shot of ' + title + ' (' + brandEn + ') in ' + colorsToEN(colors) + ', dramatic studio lighting, dark navy and gold premium background' };
-        }
         function renderDashboard() {
             const bars = $('dash_bars'); if (!bars) return;
             const buy = parseNum($('purchase_price').value), floorV = parseNum($('min_sale_price').value);
@@ -1338,6 +1567,22 @@
                 const last = pts.split(' ').pop().split(',');
                 svg.innerHTML = `<defs><linearGradient id="dsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f5c542" stop-opacity=".55"/><stop offset="1" stop-color="#f5c542" stop-opacity="0"/></linearGradient></defs><polygon points="2,62 ${pts} 298,62" fill="url(#dsg)"/><polyline points="${pts}" fill="none" stroke="#f5c542" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${last[0]}" cy="${last[1]}" r="3.5" fill="#2dd4bf"/>`;
             } else svg.innerHTML = '';
+            (function () {
+                const kpi = $('dash_kpi'); if (!kpi) return;
+                const buy = parseNum($('purchase_price').value), ret = parseNum($('sale_price_retail').value);
+                const dg = rawDigiPrice || 0, tb = rawTorobPrice || 0;
+                const mine = t ? histMem.filter(e => e.title === t) : [];
+                const f0 = mine.length ? (mine[0].torob || mine[0].digi || 0) : (tb || dg || 0);
+                const f1 = mine.length > 1 ? (mine[1].torob || mine[1].digi || 0) : 0;
+                const card = (l, v, c) => '<div class="bg-white/[.03] border border-white/10 rounded-xl px-2 py-2 text-center min-w-0"><div class="text-[9px] text-slate-500 font-bold truncate">' + l + '</div><div class="text-[11px] font-black ' + c + ' mt-0.5" style="font-variant-numeric:tabular-nums">' + v + '</div></div>';
+                const cFloor = f0 ? card('کف بازار', fmtCompact(f0), 'text-teal-300') : card('کف بازار', '—', 'text-slate-500');
+                let cProfit = card('سود خرده', '—', 'text-slate-500'), cSpread = card('اختلاف دیجی/ترب', '—', 'text-slate-500'), cTrend = card('روند بازار', '—', 'text-slate-500');
+                if (ret && buy) { const p = ret - buy, pc = (p / buy * 100); cProfit = card('سود خرده', fmtCompact(p) + ' • ' + toFa(Math.abs(pc).toFixed(1)) + '٪', p >= 0 ? 'text-emerald-300' : 'text-red-300'); }
+                if (dg && tb) { const sp = (dg - tb) / tb * 100; cSpread = card('اختلاف دیجی/ترب', toFa(Math.abs(sp).toFixed(1)) + '٪', 'text-amber-200'); }
+                if (f0 && f1) { const tr = (f0 - f1) / f1 * 100, up = tr >= 0; cTrend = card('روند بازار', '<i class="fa-solid ' + (up ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down') + '"></i> ' + toFa(Math.abs(tr).toFixed(1)) + '٪', up ? 'text-emerald-300' : 'text-red-300'); }
+                kpi.innerHTML = cFloor + cProfit + cSpread + cTrend;
+            })();
+
             $('dash_count').textContent = recs.length ? toFa(recs.length) + ' رکورد' : '';
             const rows = (t ? histMem.filter(e => e.title === t) : histMem).slice(0, 3);
             $('dash_latest').innerHTML = rows.length ? rows.map(e => {
@@ -1346,7 +1591,324 @@
             }).join('') : '<p class="text-[10px] text-slate-600 text-center py-1">با اولین تحلیل، داشبورد جان می‌گیرد ✨</p>';
         }
 
+                /* ═════════ تخمین ابعاد + ترکیب نهایی بریف ═════════ */
+        const SYS_DIMS = 'You are a packaging expert for Iranian e-commerce. Combine title, brand, category and market prices, and respond with ONLY a JSON object: {"weight_kg":0,"length_cm":0,"width_cm":0,"height_cm":0,"tax_percent":9,"confidence":0}. weight in kg, dimensions in cm, realistic for the exact product. Iran VAT is usually 9.';
+        const SYS_FUSION = 'You are a precise Iranian e-commerce analyst. Combine ALL signals (title, brand, barcode, colors, market prices, weight, dimensions, tax, category) and respond with ONLY a JSON object: {"product_final":"exact full product name in Persian","group_fa":"product group in Persian","profession_fa":"target usage or profession in Persian","mockup_key":"one of studio-lux|lifestyle|minimal|organic|neon|kitchen|beauty|sport","lighting_key":"one of dramatic|soft|neon|gold|minimal","palette_fa":"scene color palette in Persian","angle_key":"one of three-quarter|front|top|macro|lifestyle-angle","confidence":0}. confidence 0-100.';
+        const MOCK_KEYS = ['studio-lux','lifestyle','minimal','organic','neon','kitchen','beauty','sport'];
+        const LIGHT_KEYS = ['dramatic','soft','neon','gold','minimal'];
+        const ANGLE_KEYS = ['three-quarter','front','top','macro','lifestyle-angle'];
+        const MOCKUP_EN = {'studio-lux':'luxurious dark studio with gold accents, reflective black surface','lifestyle':'real-life lifestyle setting, cozy modern interior','minimal':'clean minimal white studio, soft shadows','organic':'natural organic setting with green leaves and wood','neon':'futuristic neon gaming setup with RGB lights','kitchen':'modern kitchen counter scene, warm homely light','beauty':'elegant beauty salon vanity scene, soft glow','sport':'dynamic sporty scene full of energy'};
+        const LIGHTING_EN = {'dramatic':'dramatic studio lighting','soft':'soft natural daylight','neon':'colorful neon lighting','gold':'luxurious golden hour glow','minimal':'clean even softbox lighting'};
+        const ANGLE_EN = {'three-quarter':'three-quarter view','front':'front view','top':'top-down flat lay','macro':'macro close-up of details','lifestyle-angle':'lifestyle in-use angle'};
+        function localDims(title, catIdx) {
+            const h = (title || '').toLowerCase();
+            const lap = /laptop|لپ‌تاپ|سرفیس|surface|pavilion|پاویلیون/.test(h);
+            const pho = /phone|گوشی|موبایل|آیفون|iphone|گلکسی|galaxy|ردمی|redmi|شیائومی/.test(h);
+            const mou = /mouse|موس|logitech|لاجیتک/.test(h);
+            const hea = /headphone|هدفون|sony|سونی|xm5|airpod|ایرپاد/.test(h);
+            if (lap) return { w: 1.9, l: 36, wi: 24, h: 2.5 };
+            if (pho) return { w: 0.2, l: 16.5, wi: 8, h: 1 };
+            if (mou) return { w: 0.12, l: 12, wi: 7, h: 4 };
+            if (hea) return { w: 0.35, l: 22, wi: 18, h: 9 };
+            if (String(catIdx) === '2') return { w: 0.5, l: 20, wi: 14, h: 8 };
+            return { w: 0.6, l: 25, wi: 18, h: 10 };
+        }
+        async function analyzeDimensions() {
+            const title = $('product_title').value.trim(), brand = $('brand_name').value.trim();
+            if (!title || !brand) { toast('اول گام ۱ را تکمیل کنید.', 'error'); return; }
+            readSettingsSilent(); aiReset();
+            showAiModal('تخمین هوشمند ابعاد', ['تحلیل گام‌های ۱ تا ۳', 'تخمین وزن و ابعاد دقیق', 'ثبت در فرم']);
+            try {
+                aiStage(0, 'active'); setProgress(12, 'خواندن کالا، قیمت‌های بازار و دسته‌بندی...');
+                const up = 'Title: ' + title + '\nBrand: ' + brand + '\nCategory: ' + $('category_id').selectedOptions[0].textContent + '\nMarket IRR - digikala: ' + (rawDigiPrice || '?') + ', torob: ' + (rawTorobPrice || '?');
+                await new Promise(r => setTimeout(r, 250)); aiThrowIfCancelled(); aiStage(0, 'done');
+                aiStage(1, 'active'); setProgress(45, 'تخمین وزن، ابعاد و مالیات...');
+                let res = null, via = 'local';
+                const chain = analysisChain().filter(id => id !== 'local');
+                for (const id of chain) {
+                    aiThrowIfCancelled();
+                    setProgress(50, 'تخمین با ' + PROV_LABEL[id] + '...');
+                    try {
+                        let raw;
+                        if (id === 'openai') raw = await callOpenAI(up, SYS_DIMS);
+                        else if (id === 'gemini') raw = await callGemini(up, SYS_DIMS);
+                        else if (id === 'groq') raw = await callOpenAICompat('https://api.groq.com/openai/v1', SET.keys.groq, SET.models.groq || 'llama-3.3-70b-versatile', up, SYS_DIMS);
+                        else if (id === 'gapgpt') raw = await callOpenAICompat(SET.keys.gapgpt_base || 'https://api.gapgpt.app/v1', SET.keys.gapgpt, SET.models.gapgpt || 'gpt-4o-mini', up, SYS_DIMS);
+                        else if (id === 'cloudflare') raw = await callCloudflare(up, SYS_DIMS);
+                        else continue;
+                        const j = JSON.parse(String(raw).trim().replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, ''));
+                        res = { w: +j.weight_kg || 0, l: +j.length_cm || 0, wi: +j.width_cm || 0, h: +j.height_cm || 0, tax: +j.tax_percent || 9, conf: +j.confidence || 60 };
+                        if (!res.w || !res.l) throw new Error('bad-dims');
+                        via = id; break;
+                    } catch (e) { if (e.isCancel) throw e; }
+                }
+                if (!res) { const d = localDims(title, $('category_id').value); res = { w: d.w, l: d.l, wi: d.wi, h: d.h, tax: 9, conf: 55 }; }
+                aiThrowIfCancelled(); aiStage(1, 'done');
+                aiStage(2, 'active'); setProgress(82, 'ثبت در فرم...');
+                $('weight').value = res.w; $('length').value = res.l; $('width').value = res.wi; $('height').value = res.h; $('tax_percent').value = res.tax;
+                $('dims_source_note').innerHTML = 'منبع: <b class="text-teal-300">' + PROV_LABEL[via] + '</b> • اطمینان ' + toFa(res.conf) + '٪ — قابل ویرایش دستی.';
+                await new Promise(r => setTimeout(r, 250)); aiStage(2, 'done'); setProgress(100, 'تکمیل شد.');
+                aiFinish(); setTimeout(() => { hideAiModal(); toast('ابعاد و مالیات با ' + PROV_LABEL[via] + ' تخمین زده شد.', 'success'); }, 400);
+            } catch (e) { aiFinish(); hideAiModal(); if (e.isCancel) return; toast('تخمین ناموفق بود؛ دستی وارد کنید.', 'error'); }
+        }
+        function localFuse(title, brand, catIdx, colors) {
+            const h = (title + ' ' + brand).toLowerCase();
+            let group = String(catIdx) === '2' ? 'مواد غذایی' : String(catIdx) === '3' ? 'آرایشی و بهداشتی' : String(catIdx) === '4' ? 'محصول ارگانیک' : 'کالای دیجیتال';
+            let prof = 'مصرف عمومی', mock = 'studio-lux', light = 'dramatic';
+            if (/موس|mouse|کیبورد|keyboard|گیم|gaming/.test(h)) { group = 'لوازم جانبی کامپیوتر'; prof = 'گیمینگ'; mock = 'neon'; light = 'neon'; }
+            else if (/لپ‌تاپ|laptop|سرفیس|surface|پاویلیون/.test(h)) { group = 'لپ‌تاپ'; prof = 'استفاده روزمره و کاری'; }
+            else if (/گوشی|موبایل|آیفون|iphone|گلکسی|galaxy|ردمی|redmi|شیائومی/.test(h)) { group = 'موبایل و لوازم جانبی'; prof = 'استفاده روزمره و کاری'; }
+            else if (/دوربین|camera|لنز/.test(h)) { group = 'کالای دیجیتال'; prof = 'عکاسی'; mock = 'minimal'; light = 'soft'; }
+            else if (/شکلات|چای|خوراکی|food|tea/.test(h)) { group = 'خوراکی'; prof = 'آشپزی و پذیرایی'; mock = 'kitchen'; light = 'soft'; }
+            else if (/کرم|شامپو|آرایش|beauty/.test(h)) { group = 'آرایشی و بهداشتی'; prof = 'زیبایی و مراقبت'; mock = 'beauty'; light = 'soft'; }
+            else if (/ورزش|sport|باشگاه/.test(h)) { group = 'ورزشی'; prof = 'ورزش و تناسب'; mock = 'sport'; }
+            else if (String(catIdx) === '4') { mock = 'organic'; light = 'soft'; }
+            return { product_final: title, group_fa: group, profession_fa: prof, mockup_key: mock, lighting_key: light, palette_fa: (colors ? colors + '، طلایی و سرمه‌ای' : 'طلایی و سرمه‌ای'), angle_key: 'three-quarter', confidence: 55 };
+        }
+        function parseFusionJSON(txt) {
+            const j = JSON.parse(String(txt).trim().replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, ''));
+            return {
+                product_final: String(j.product_final || '').trim(),
+                group_fa: String(j.group_fa || '').trim(),
+                profession_fa: String(j.profession_fa || '').trim(),
+                mockup_key: MOCK_KEYS.includes(j.mockup_key) ? j.mockup_key : 'studio-lux',
+                lighting_key: LIGHT_KEYS.includes(j.lighting_key) ? j.lighting_key : 'dramatic',
+                palette_fa: String(j.palette_fa || '').trim(),
+                angle_key: ANGLE_KEYS.includes(j.angle_key) ? j.angle_key : 'three-quarter',
+                confidence: parseInt(j.confidence, 10) || 60
+            };
+        }
+        let lastFusion = null;
+        async function fuseProduct() {
+            const title = $('product_title').value.trim(), brand = $('brand_name').value.trim();
+            if (!title || !brand) { toast('اول گام ۱ را تکمیل کنید.', 'error'); return; }
+            readSettingsSilent(); aiReset();
+            showAiModal('ترکیب نهایی هوش مصنوعی', ['گردآوری سیگنال‌های ۴ گام', 'حدس نام دقیق و طراحی بریف', 'ثبت بریف قابل ویرایش']);
+            try {
+                aiStage(0, 'active'); setProgress(10, 'خواندن کالا، بازار، قیمت، ابعاد و مالیات...');
+                const up = 'Title: ' + title + '\nBrand: ' + brand + '\nBarcode: ' + ($('barcode').value.trim() || 'none') + '\nColors: ' + ($('color').value.trim() || 'none')
+                    + '\nPrices IRR - digikala: ' + (rawDigiPrice || '?') + ', torob: ' + (rawTorobPrice || '?') + ', purchase: ' + ($('purchase_price').value || '?')
+                    + '\nWeight kg: ' + ($('weight').value || '?') + ', Dims cm: ' + ($('length').value || '?') + 'x' + ($('width').value || '?') + 'x' + ($('height').value || '?')
+                    + '\nTax: ' + ($('tax_percent').value || '?') + ', Category: ' + $('category_id').selectedOptions[0].textContent; + \'
+SEO Short: ' + ($('seo_short').value || 'none') + '
+SEO Full: ' + ($('seo_full').value || 'none') + '
+SEO Keywords: ' + ($('seo_keywords').value || 'none')\';
+                await new Promise(r => setTimeout(r, 250)); aiThrowIfCancelled(); aiStage(0, 'done');
+                aiStage(1, 'active'); setProgress(42, 'تحلیل ترکیبی هر ۴ گام و حدس نام نهایی...');
+                let fused = null, via = 'local';
+                const chain = analysisChain().filter(id => id !== 'local');
+                for (const id of chain) {
+                    aiThrowIfCancelled();
+                    setProgress(48, 'ترکیب با ' + PROV_LABEL[id] + '...');
+                    try {
+                        let raw;
+                        if (id === 'openai') raw = await callOpenAI(up, SYS_FUSION);
+                        else if (id === 'gemini') raw = await callGemini(up, SYS_FUSION);
+                        else if (id === 'groq') raw = await callOpenAICompat('https://api.groq.com/openai/v1', SET.keys.groq, SET.models.groq || 'llama-3.3-70b-versatile', up, SYS_FUSION);
+                        else if (id === 'gapgpt') raw = await callOpenAICompat(SET.keys.gapgpt_base || 'https://api.gapgpt.app/v1', SET.keys.gapgpt, SET.models.gapgpt || 'gpt-4o-mini', up, SYS_FUSION);
+                        else if (id === 'cloudflare') raw = await callCloudflare(up, SYS_FUSION);
+                        else continue;
+                        const b = parseFusionJSON(raw);
+                        if (!b.product_final) throw new Error('bad-fusion');
+                        fused = b; via = id; break;
+                    } catch (e) { if (e.isCancel) throw e; }
+                }
+                if (!fused) fused = localFuse(title, brand, $('category_id').value, $('color').value.trim());
+                aiThrowIfCancelled(); aiStage(1, 'done');
+                aiStage(2, 'active'); setProgress(80, 'تکمیل فرم بریف...');
+                applyFusion(fused);
+                await new Promise(r => setTimeout(r, 250)); aiStage(2, 'done'); setProgress(100, 'تکمیل شد.');
+                aiFinish();
+                setTimeout(() => { hideAiModal(); toast('بریف آماده شد (' + PROV_LABEL[via] + ')؛ بازبینی و ویرایش کنید.', 'success'); }, 400);
+            } catch (e) { aiFinish(); hideAiModal(); if (e.isCancel) return; toast('ترکیب ناموفق بود؛ دوباره تلاش کنید.', 'error'); }
+        }
+        function applyFusion(f) {
+            lastFusion = Object.assign({}, f);
+            $('brief_product').value = f.product_final || '';
+            $('brief_group').value = f.group_fa || '';
+            $('brief_profession').value = f.profession_fa || '';
+            $('brief_mockup').value = f.mockup_key || 'studio-lux';
+            $('brief_lighting').value = f.lighting_key || 'dramatic';
+            $('brief_palette').value = f.palette_fa || '';
+            $('brief_angle').value = f.angle_key || 'three-quarter';
+        }
+        function resetFusion() {
+            if (!lastFusion) { toast('هنوز حدسی ثبت نشده است.', 'info'); return; }
+            applyFusion(lastFusion);
+            toast('به حدس هوش مصنوعی برگردانده شد.', 'success');
+        }
+
         /* ═════════ تاریخچه روند قیمت ═════════ */
+        /* ═════════ دیتابیس MySQL هاست (api.php) ═════════ */
+        const MYSQL_KEY = 'meelano_mysql_v1';
+        let MYSQL = { api: 'https://ainetmee.ir/universal/api.php', host: 'localhost', name: 'ainetmee_univer', user: 'ainetmee_univeruser', pass: '', ready: false, lastSync: 0 };
+        function loadMysql() { try { const s = JSON.parse(localStorage.getItem(MYSQL_KEY)); if (s) MYSQL = Object.assign(MYSQL, s); } catch (e) {} }
+        function saveMysql() { try { const c = Object.assign({}, MYSQL); localStorage.setItem(MYSQL_KEY, JSON.stringify(c)); } catch (e) {} }
+        function readMysqlForm() {
+            const g = (id) => { const el = $(id); return el ? el.value.trim() : ''; };
+            MYSQL.api = g('my_api') || MYSQL.api; MYSQL.host = g('my_host') || 'localhost';
+            MYSQL.name = g('my_name'); MYSQL.user = g('my_user'); MYSQL.pass = g('my_pass');
+            saveMysql();
+        }
+        function renderMysqlForm() {
+            const s = (id, v) => { const el = $(id); if (el) el.value = v || ''; };
+            s('my_api', MYSQL.api); s('my_host', MYSQL.host); s('my_name', MYSQL.name); s('my_user', MYSQL.user); s('my_pass', MYSQL.pass);
+        }
+        async function mysqlPost(action, extra, ms) {
+            const payload = Object.assign({ action: action, host: MYSQL.host, name: MYSQL.name, user: MYSQL.user, pass: MYSQL.pass }, extra || {});
+            const r = await fetchTimeout(MYSQL.api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }, ms || 15000);
+            return await r.json();
+        }
+        function setHeadDot(st) {
+            const d = $('db_dot_head'); if (!d) return;
+            d.classList.remove('on', 'off');
+            if (st === 'on' || st === 'off') d.classList.add(st);
+        }
+        async function testMysql(silent) {
+            readMysqlForm();
+            if (!MYSQL.api) { if (!silent) toast('اول آدرس api.php را وارد کنید.', 'error'); return false; }
+            setDot('dot_mysql', 'wait', 'در حال تست...');
+            const t0 = Date.now();
+            try {
+                const j = await mysqlPost('status', {}, 12000);
+                if (j && j.ok) {
+                    MYSQL.ready = true; saveMysql();
+                    const ms = Date.now() - t0;
+                    setDot('dot_mysql', 'ok', 'متصل ✓');
+                    const sl = $('mysql_status_line');
+                    if (sl) sl.innerHTML = 'وضعیت: <b class="text-emerald-300">متصل و سالم ✓</b> • MySQL <span dir="ltr">' + escapeHtml(String(j.mysql || '?')).split('-')[0] + '</span> • ' + toFa((j.tables || []).length) + ' جدول • ' + toFa(ms) + 'ms' + (j.source === 'server' ? ' • کانفیگ سرور' : '');
+                    setHeadDot('on');
+                    if (!silent) toast('اتصال به دیتابیس برقرار و سالم است.', 'success');
+                    return j;
+                }
+                throw new Error((j && j.error) || 'bad');
+            } catch (e) {
+                MYSQL.ready = false;
+                setDot('dot_mysql', 'bad', 'ناموفق');
+                const sl = $('mysql_status_line');
+                if (sl) sl.innerHTML = 'وضعیت: <b class="text-red-300">ناموفق ✗</b> • ' + escapeHtml(e && e.message && e.message !== 'bad' ? e.message : 'آدرس api.php یا مشخصات دیتابیس را بررسی کنید.');
+                setHeadDot('off');
+                if (!silent) toast('اتصال به دیتابیس ناموفق بود.', 'error');
+                return false;
+            }
+        }
+        const MYSQL_TABLES = [{ k: 'products', label: 'محصولات' }, { k: 'price_history', label: 'تاریخچه قیمت' }, { k: 'app_meta', label: 'تنظیمات ابری' }];
+        function dbLog(html, cls) {
+            const box = $('db_init_log'); if (!box) return;
+            const d = document.createElement('div');
+            if (cls) d.className = cls;
+            d.innerHTML = html;
+            box.appendChild(d); box.scrollTop = box.scrollHeight;
+        }
+        function dbBar(pct) {
+            const b = $('db_init_bar'), p = $('db_init_pct');
+            if (b) b.style.width = Math.round(pct * 100) + '%';
+            if (p) p.textContent = toFa(Math.round(pct * 100)) + '٪';
+        }
+        function openDbInit() {
+            const m = $('db_init_modal'); if (!m) return;
+            $('db_init_log').innerHTML = ''; dbBar(0);
+            $('db_init_close').classList.add('hidden');
+            m.classList.remove('hidden'); m.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeDbInit() {
+            const m = $('db_init_modal'); if (!m) return;
+            m.classList.add('hidden'); m.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+        async function buildMysqlTables() {
+            readMysqlForm();
+            if (!MYSQL.api) { toast('اول آدرس api.php را وارد کنید.', 'error'); return; }
+            openDbInit();
+            dbLog('... شروع بررسی اتصال به هاست', 'run');
+            const st = await testMysql(true);
+            if (!st) { dbBar(0.05); dbLog('✗ اتصال برقرار نشد؛ مشخصات را اصلاح و دوباره تلاش کنید.', 'bad'); $('db_init_close').classList.remove('hidden'); return; }
+            dbLog('✓ اتصال به MySQL برقرار شد', 'ok'); dbBar(0.12);
+            let okCount = 0;
+            for (let i = 0; i < MYSQL_TABLES.length; i++) {
+                const tb = MYSQL_TABLES[i];
+                dbLog('... ساخت جدول «' + tb.label + '»', 'run');
+                try {
+                    const j = await mysqlPost('init', { table: tb.k }, 20000);
+                    if (j && j.ok) { okCount++; dbLog('✓ جدول «' + tb.label + '» آماده شد', 'ok'); }
+                    else dbLog('✗ خطا در ساخت «' + tb.label + '»', 'bad');
+                } catch (e) { dbLog('✗ خطا در ساخت «' + tb.label + '»', 'bad'); }
+                dbBar(0.12 + 0.76 * (i + 1) / MYSQL_TABLES.length);
+                await new Promise(r => setTimeout(r, 200));
+            }
+            try {
+                const v = await mysqlPost('status', {}, 12000);
+                if (v && v.ok) dbLog('راستی‌آزمایی: ' + toFa(v.tables.length) + ' جدول روی سرور فعال است', 'ok');
+            } catch (e) {}
+            dbBar(1);
+            if (okCount === MYSQL_TABLES.length) {
+                MYSQL.ready = true; saveMysql();
+                dbLog('🎉 همه جداول بدون خطا ساخته شدند؛ برنامه آماده ذخیره ابری است', 'ok');
+                toast('جداول دیتابیس با موفقیت ساخته شدند.', 'success');
+            } else {
+                dbLog('⚠ برخی جداول ساخته نشدند؛ لاگ هاست را بررسی کنید', 'bad');
+                toast('ساخت کامل نشد؛ دوباره تلاش کنید.', 'error');
+            }
+            $('db_init_close').classList.remove('hidden');
+        }
+        async function syncMysql() {
+            readMysqlForm();
+            if (!MYSQL.ready) { const ok = await testMysql(true); if (!ok) { toast('اول اتصال دیتابیس را برقرار کنید.', 'error'); return; } }
+            toast('در حال همگام‌سازی ابری...', 'info');
+            try {
+                const unsynced = histMem.filter(e => e.t > (MYSQL.lastSync || 0)).slice(0, 200);
+                if (unsynced.length) await mysqlPost('push_history', { rows: unsynced }, 20000);
+                const j = await mysqlPost('pull_history', { since: 0 }, 20000);
+                if (j && j.ok && Array.isArray(j.rows)) {
+                    const map = {};
+                    histMem.concat(j.rows).forEach(e => { if (e && e.t && e.title) map[e.t + '|' + e.title] = e; });
+                    histMem = Object.values(map).sort((a, b) => b.t - a.t).slice(0, 200);
+                    saveHist(); renderDashboard();
+                    if (!$('history_modal').classList.contains('hidden')) renderHistory();
+                }
+                MYSQL.lastSync = Date.now(); saveMysql();
+                toast('همگام‌سازی ابری انجام شد.', 'success');
+            } catch (e) { toast('همگام‌سازی ناموفق بود؛ اینترنت و api را بررسی کنید.', 'error'); }
+        }
+        function saveProductRemote() {
+            try {
+                if (!MYSQL.ready || !MYSQL.api) return;
+                const v = (id) => { const el = $(id); return el ? el.value : ''; };
+                const brief = { product: v('brief_product'), group: v('brief_group'), profession: v('brief_profession'), mockup: v('brief_mockup'), lighting: v('brief_lighting'), palette: v('brief_palette'), angle: v('brief_angle'), extra: v('brief_extra'), seo_short: v('seo_short'), seo_full: v('seo_full'), seo_keywords: v('seo_keywords'), seo_hashtags: v('seo_hashtags') };
+                mysqlPost('save_product', { product: {
+                    title: v('product_title'), brand: v('brand_name'), barcode: v('barcode'), color: v('color'),
+                    category: ($('category_id') && $('category_id').selectedOptions[0].textContent) || '',
+                    purchase: parseNum(v('purchase_price')), floor: parseNum(v('min_sale_price')),
+                    retail: parseNum(v('sale_price_retail')), whole: parseNum(v('sale_price_wholesale')),
+                    stock: parseInt(v('stock_quantity'), 10) || 0, weight: v('weight'), length: v('length'),
+                    width: v('width'), height: v('height'), tax: v('tax_percent'),
+                    desc: v('seo_full'), brief: JSON.stringify(brief), image_webp: v('product_image_webp')
+                } }, 20000).catch(() => {});
+            } catch (e) {}
+        }
+        async function autoMysqlCheck() {
+            renderMysqlForm();
+            if (!MYSQL.api) { setHeadDot(''); return; }
+            try {
+                const j = await mysqlPost('status', {}, 9000);
+                if (j && j.ok) {
+                    MYSQL.ready = true; setHeadDot('on');
+                    setDot('dot_mysql', 'ok', 'متصل ✓ (خودکار)');
+                    try {
+                        const p = await mysqlPost('pull_history', { since: MYSQL.lastSync || 0 }, 15000);
+                        if (p && p.ok && Array.isArray(p.rows) && p.rows.length) {
+                            const map = {};
+                            histMem.concat(p.rows).forEach(e => { if (e && e.t && e.title) map[e.t + '|' + e.title] = e; });
+                            histMem = Object.values(map).sort((a, b) => b.t - a.t).slice(0, 200);
+                            saveHist(); renderDashboard();
+                        }
+                        MYSQL.lastSync = Date.now();
+                    } catch (e) {}
+                } else setHeadDot('off');
+            } catch (e) { setHeadDot('off'); }
+            saveMysql();
+        }
         const HIST_KEY = 'meelano_price_history_v1';
         let histMem = [];
         let histFilterMine = false;
@@ -1378,7 +1940,7 @@
             if (n >= 1e3) return toFa(Math.round(n / 1e3)) + ' هـ';
             return toFa(n);
         }
-        function filteredHist() { const t = currentTitle(); let l = histMem.slice(); if (histFilterMine && t) l = l.filter(e => e.title === t); return l; }
+        function filteredHist() { const t = currentTitle(); let l = histMem.slice(); if (histFilterMine && t) l = l.filter(e => e.title === t); if (histDays) { const cut = Date.now() - histDays * 864e5; l = l.filter(e => e.t >= cut); } return l; }
         function drawHistChart(list) {
             const cv = $('hist_chart'), dpr = window.devicePixelRatio || 1;
             const W = cv.clientWidth || 300, H = 230;
@@ -1398,14 +1960,44 @@
             for (let g = 0; g <= 3; g++) { const v = mn + (mx - mn) * g / 3, y = Y(v); x.beginPath(); x.moveTo(padL, y); x.lineTo(W - padR + 6, y); x.stroke(); x.textAlign = 'left'; x.fillText(fmtCompact(v), W - padR + 10, y + 3); }
             [{ k: 'digi', c: '#f87171' }, { k: 'torob', c: '#fb923c' }].forEach(s => {
                 x.strokeStyle = s.c; x.lineWidth = 2.5; x.lineJoin = 'round'; x.beginPath();
-                let started = false;
-                list.forEach((e, i) => { const v = e[s.k]; if (!v) return; const px = X(i), py = Y(v); if (!started) { x.moveTo(px, py); started = true; } else x.lineTo(px, py); });
+                let started = false; const pts = [];
+                list.forEach((e, i) => { const v = e[s.k]; if (!v) return; const px = X(i), py = Y(v); pts.push([px, py]); if (!started) { x.moveTo(px, py); started = true; } else x.lineTo(px, py); });
                 x.stroke();
-                list.forEach((e, i) => { const v = e[s.k]; if (!v) return; x.fillStyle = s.c; x.beginPath(); x.arc(X(i), Y(v), 3.2, 0, 7); x.fill(); });
+                if (s.k === 'torob' && pts.length > 1) { const g = x.createLinearGradient(0, padT, 0, padT + plotH); g.addColorStop(0, 'rgba(251,146,60,.30)'); g.addColorStop(1, 'rgba(251,146,60,0)'); x.beginPath(); x.moveTo(pts[0][0], padT + plotH); pts.forEach(p => x.lineTo(p[0], p[1])); x.lineTo(pts[pts.length - 1][0], padT + plotH); x.closePath(); x.fillStyle = g; x.fill(); }
+                pts.forEach(p => { x.fillStyle = s.c; x.beginPath(); x.arc(p[0], p[1], 3.2, 0, 7); x.fill(); });
             });
             x.fillStyle = '#7d8aa0'; x.textAlign = 'center';
             const step = Math.max(1, Math.ceil(n / 5));
             list.forEach((e, i) => { if (i % step !== 0 && i !== n - 1) return; x.fillText(new Date(e.t).toLocaleDateString('fa-IR', { day: 'numeric', month: 'numeric' }), X(i), H - 8); });
+        }
+        let histDays = 0;
+        function setHistDays(d) { histDays = d; renderHistory(); }
+        function renderHistStats(all) {
+            const box = $('hist_stats'); if (!box) return;
+            const fl = all.map(e => e.torob || e.digi || 0).filter(v => v > 0);
+            if (!fl.length) { box.innerHTML = ''; return; }
+            const mn = Math.min.apply(null, fl), mx = Math.max.apply(null, fl);
+            const avg = Math.round(fl.reduce((a, b) => a + b, 0) / fl.length);
+            const card = (l, v, c) => '<div class="bg-white/[.03] border border-white/10 rounded-xl px-2 py-2 text-center"><div class="text-[9px] text-slate-500 font-bold">' + l + '</div><div class="text-[11px] font-black ' + c + ' mt-0.5" style="font-variant-numeric:tabular-nums">' + v + '</div></div>';
+            box.innerHTML = card('کمترین کف', fmtCompact(mn), 'text-emerald-300') + card('میانگین کف', fmtCompact(avg), 'text-amber-200') + card('بیشترین کف', fmtCompact(mx), 'text-red-300');
+        }
+        function exportHistCSV() {
+            const list = filteredHist();
+            if (!list.length) { toast('رکوردی برای خروجی وجود ندارد.', 'error'); return; }
+            const q = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+            const lines = [['تاریخ', 'ساعت', 'کالا', 'برند', 'دیجی‌کالا (ریال)', 'ترب (ریال)', 'منتخب', 'خرده', 'عمده'].map(q).join(',')];
+            list.slice().reverse().forEach(e => {
+                const d = new Date(e.t);
+                lines.push([d.toLocaleDateString('fa-IR'), d.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }), e.title || '', e.brand || '', e.digi || '', e.torob || '', e.chosen || '', e.retail || '', e.whole || ''].map(q).join(','));
+            });
+            const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+            const a = document.createElement('a');
+            const d0 = new Date(), st = d0.getFullYear() + ('0' + (d0.getMonth() + 1)).slice(-2) + ('0' + d0.getDate()).slice(-2);
+            a.href = URL.createObjectURL(blob);
+            a.download = 'meelano-prices-' + st + '.csv';
+            document.body.appendChild(a); a.click();
+            setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+            toast('فایل اکسل تاریخچه دانلود شد.', 'success');
         }
         function renderHistory() {
             updateHistBadge();
@@ -1421,6 +2013,8 @@
             } else if (all.length === 1) box.innerHTML = '<i class="fa-solid fa-chart-line text-teal-300"></i><span>اولین رکورد ثبت شد؛ با تحلیل‌های بعدی نمودار کامل می‌شود.</span>';
             else box.innerHTML = '<i class="fa-solid fa-circle-info text-amber-300"></i><span>هنوز رکوردی نیست — از گام ۱ «تحلیل هوشمند» بگیرید تا تاریخچه ساخته شود.</span>';
             drawHistChart(all.slice(0, 20).reverse());
+            renderHistStats(all);
+            document.querySelectorAll('.hist-day-btn').forEach(b => { const on = +b.dataset.d === histDays; b.classList.toggle('!text-amber-300', on); b.classList.toggle('!border-amber-500/40', on); b.classList.toggle('!bg-amber-500/10', on); });
             $('hist_filter_btn').innerHTML = histFilterMine ? '<i class="fa-solid fa-filter"></i> فقط همین کالا ✓' : '<i class="fa-solid fa-filter"></i> فقط همین کالا';
             const list = $('hist_list');
             if (!all.length) { list.innerHTML = '<p class="text-center text-[11px] text-slate-500 py-4">رکوردی برای نمایش وجود ندارد.</p>'; return; }
@@ -1457,7 +2051,33 @@
         function closeHistory() { const m = $('history_modal'); m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = ''; }
 
         /* ═════════ ثبت فرم ═════════ */
+        /* ═════════ مشاور قیمت (قانون حاشیه + مالیات) ═════════ */
+        function advisePrice() {
+            const buy = parseNum($('purchase_price').value) || 0;
+            let floor = parseNum($('min_sale_price').value) || rawTorobPrice || rawDigiPrice || 0;
+            const taxEl = $('tax_percent');
+            const tax = taxEl ? (parseFloat(taxEl.value) || 0) : 0;
+            if (!floor && !buy) { toast('اول کف بازار یا قیمت خرید را وارد کنید.', 'error'); return; }
+            if (!floor) floor = Math.round(buy * (1 + tax / 100) * 1.12);
+            const withTax = Math.round(floor * (1 + tax / 100));
+            let retail = Math.round(withTax * 1.18 / 1000) * 1000;
+            const minRetail = Math.round(buy * (1 + tax / 100) * 1.10);
+            if (buy && retail < minRetail) retail = Math.round(minRetail / 1000) * 1000;
+            const whole = Math.round(floor * 1.04 / 1000) * 1000;
+            if (!parseNum($('min_sale_price').value)) $('min_sale_price').value = fmtEN(floor);
+            $('sale_price_retail').value = fmtEN(retail);
+            $('sale_price_wholesale').value = fmtEN(whole);
+            updateMargins(); renderDashboard();
+            const box = $('advisor_line');
+            if (box) {
+                box.classList.remove('hidden');
+                const pc = buy ? toFa(Math.abs(Math.round((retail - buy) / buy * 100))) + '٪' : '—';
+                box.innerHTML = '<i class="fa-solid fa-lightbulb text-amber-300 ml-1"></i>منطق مشاور: کف ' + fmtCompact(floor) + ' + مالیات ' + toFa(tax) + '٪ + حاشیه امن ۱۸٪ → خرده <b class="text-amber-200">' + fmtCompact(retail) + '</b> (سود ' + pc + ') • عمده <b class="text-indigo-200">' + fmtCompact(whole) + '</b>';
+            }
+            toast('پیشنهاد مشاور قیمت اعمال شد.', 'success');
+        }
         $('productForm').addEventListener('submit', function (e) {
+            saveProductRemote();
             if (!this.checkValidity()) {
                 e.preventDefault();
                 const bad = this.querySelector(':invalid');
@@ -1477,6 +2097,8 @@
         });
 
         loadSet(); loadHist(); updateHistBadge(); renderDashboard();
+        loadMysql(); renderMysqlForm(); autoMysqlCheck();
+        try { const sl2 = localStorage.getItem('meelano_stylelock'); if (sl2 && $('brief_style_lock')) $('brief_style_lock').value = sl2; } catch (e) {}
         document.querySelectorAll('#settings_modal input, #settings_modal select').forEach(el => {
             el.addEventListener('input', readSettings);
             el.addEventListener('change', readSettings);
