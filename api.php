@@ -156,6 +156,17 @@ if ($action === 'save_product') {
     out(['ok' => true, 'id' => $m->insert_id]);
 }
 
+/* ── store_products: فهرست برای فروشگاه ────────────────────────── */
+if ($action === 'store_products') {
+    $m = db();
+    $st = $m->prepare('SELECT `id`,`title`,`brand`,`retail_price`,`stock`,`description`,`brief_json`,`image_webp` FROM `products` ORDER BY `id` DESC LIMIT 50');
+    $st->execute();
+    $rs = $st->get_result();
+    $rows = [];
+    while ($r = $rs->fetch_assoc()) $rows[] = $r;
+    out(['ok' => true, 'rows' => $rows, 'count' => count($rows)]);
+}
+
 /* ── list_products: فهرست سبک ────────────────────────── */
 if ($action === 'list_products') {
     $q = trim($body['q'] ?? '');

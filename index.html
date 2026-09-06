@@ -463,6 +463,32 @@
                                 <label class="lbl" for="color"><i class="fa-solid fa-palette text-amber-400 ml-1"></i>پالت رنگ‌بندی (شناسایی دقیق AI)</label>
                                 <input type="text" id="color" name="color" class="inp font-bold !text-amber-200 !text-xs" placeholder="پس از تحلیل هوشمند پر می‌شود...">
                             </div>
+                            
+                            <div class="col-span-2 mt-4 p-4 border border-indigo-500/30 bg-indigo-500/10 rounded-xl space-y-3">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fa-solid fa-magnifying-glass-chart text-indigo-300"></i>
+                                    <h3 class="text-sm font-bold text-indigo-200">سئو و محتوای هوشمند</h3>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                                    <div class="col-span-1 md:col-span-2">
+                                        <label class="lbl" for="seo_short"><i class="fa-solid fa-align-left text-indigo-400 ml-1"></i>توضیح کوتاه (جذاب و کلیکی)</label>
+                                        <input type="text" id="seo_short" name="seo_short" class="inp !text-xs" placeholder="توسط هوش مصنوعی نوشته می‌شود...">
+                                    </div>
+                                    <div class="col-span-1 md:col-span-2">
+                                        <label class="lbl" for="seo_full"><i class="fa-solid fa-align-justify text-indigo-400 ml-1"></i>توضیحات کامل و سئوشده</label>
+                                        <textarea id="seo_full" name="seo_full" class="inp !text-xs h-20 resize-none py-2" placeholder="توسط هوش مصنوعی نوشته می‌شود..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="lbl" for="seo_keywords"><i class="fa-solid fa-key text-amber-400 ml-1"></i>کلمات کلیدی (با کاما)</label>
+                                        <input type="text" id="seo_keywords" name="seo_keywords" class="inp !text-xs font-bold !text-amber-200" placeholder="مثلاً: خرید گوشی, قیمت موبایل">
+                                    </div>
+                                    <div>
+                                        <label class="lbl" for="seo_hashtags"><i class="fa-solid fa-hashtag text-teal-400 ml-1"></i>هشتگ‌ها (با فاصله)</label>
+                                        <input type="text" id="seo_hashtags" name="seo_hashtags" class="inp !text-xs font-bold !text-teal-200" placeholder="#گوشی #موبایل" style="direction:ltr;text-align:right">
+                                    </div>
+                                </div>
+                            </div>
+
                             <button type="button" onclick="nextStep()" class="btn btn-gold w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2">
                                 تأیید و ادامه به استعلام بازار <i class="fa-solid fa-arrow-left"></i>
                             </button>
@@ -1269,7 +1295,7 @@
         }
 
         /* ═════════ فراخوانی موتورهای متنی ═════════ */
-        const SYS_ANALYSIS = 'You are a precise Iranian e-commerce product analyst. Respond with ONLY a JSON object, no markdown, no explanation. Schema: {"product_fa":"exact full product name in Persian","brand_fa":"brand in Persian and English","colors_fa":"common market colors in Persian, comma separated","barcode":"real GTIN barcode ONLY if you are sure, otherwise empty string","category":1,"unit":"string","digikala_price":0,"torob_price":0,"purchase_price":0,"retail_price":0,"wholesale_price":0,"confidence":0}. Rules: category 1=digital,2=food,3=beauty-health,4=organic. All prices are integers in Iranian Rial (Toman x 10). torob_price<=digikala_price. purchase_price<torob_price. retail_price slightly above digikala_price. wholesale between purchase and torob. confidence 0-100. Use all provided signals: title, brand, barcode hint, color hint. Keep a valid-looking barcode hint, never invent a random one.';
+        const SYS_ANALYSIS = 'You are a precise Iranian e-commerce product analyst and expert SEO master. Respond with ONLY a JSON object, no markdown. Schema: {"product_fa":"exact name","brand_fa":"brand","colors_fa":"colors","barcode":"GTIN","category":1,"unit":"string","digikala_price":0,"torob_price":0,"purchase_price":0,"retail_price":0,"wholesale_price":0,"seo_short":"short click-worthy description in Persian for social media and google","seo_full":"detailed SEO-optimized description in Persian","seo_keywords":"comma-separated keywords","seo_hashtags":"space-separated hashtags like #tag","confidence":0}. Rules: category 1=digital, 2=food, 3=beauty-health, 4=organic. Ensure SEO data follows latest Google & Social Media algorithms, highly engaging and relevant to the exact product and brand.';
         async function callOpenAI(prompt, sys) {
             const r = await aiFetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + SET.keys.openai }, body: JSON.stringify({ model: SET.models.openai || 'gpt-4o-mini', messages: [{ role: 'system', content: (sys || SYS_ANALYSIS) }, { role: 'user', content: prompt }], temperature: 0.2, max_tokens: 900, response_format: { type: 'json_object' } }) });
             if (!r.ok) throw new Error('openai ' + r.status);
@@ -1470,7 +1496,8 @@
                 try { const sli = $('brief_style_lock'); stylock = (sli.value || '').trim(); localStorage.setItem('meelano_stylelock', stylock); } catch (e) {}
                 const tier = Math.max(rawDigiPrice, rawTorobPrice);
                 const tierEN = tier >= 100000000 ? 'ultra-premium flagship luxury' : tier >= 10000000 ? 'premium high-end' : 'clean modern affordable';
-                const promptEN = '"' + bp + '" — ' + group + ' for ' + prof + ', ' + (MOCKUP_EN[mockKey] || MOCKUP_EN['studio-lux']) + ', ' + (LIGHTING_EN[lightKey] || LIGHTING_EN.dramatic) + ', palette of ' + (colorsToEN(palette) || 'gold and navy') + ', ' + (ANGLE_EN[angleKey] || ANGLE_EN['three-quarter']) + (extra ? ', ' + extra : '') + (stylock ? ', signature style: ' + stylock : '') + ', featuring the exact product "' + bp + '", ultra detailed advertising photograph, luxurious 3D render, floating golden particles, centered composition, no text, no watermark, ' + tierEN;
+                const seoTags = ($('seo_keywords').value || '') + ' ' + ($('seo_hashtags').value || '');
+                const promptEN = '"' + bp + '" — ' + group + ' for ' + prof + ', ' + (MOCKUP_EN[mockKey] || MOCKUP_EN['studio-lux']) + ', ' + (LIGHTING_EN[lightKey] || LIGHTING_EN.dramatic) + ', palette of ' + (colorsToEN(palette) || 'gold and navy') + ', ' + (ANGLE_EN[angleKey] || ANGLE_EN['three-quarter']) + (extra ? ', ' + extra : '') + (stylock ? ', signature style: ' + stylock : '') + ', keywords: ' + seoTags + ', featuring the exact product "' + bp + '", ultra detailed advertising photograph, luxurious 3D render, floating golden particles, centered composition, no text, no watermark, ' + tierEN;
                 await new Promise(r => setTimeout(r, 250)); aiThrowIfCancelled();
                 aiStage(0, 'done');
                 aiStage(1, 'active');
@@ -1662,7 +1689,10 @@
                 const up = 'Title: ' + title + '\nBrand: ' + brand + '\nBarcode: ' + ($('barcode').value.trim() || 'none') + '\nColors: ' + ($('color').value.trim() || 'none')
                     + '\nPrices IRR - digikala: ' + (rawDigiPrice || '?') + ', torob: ' + (rawTorobPrice || '?') + ', purchase: ' + ($('purchase_price').value || '?')
                     + '\nWeight kg: ' + ($('weight').value || '?') + ', Dims cm: ' + ($('length').value || '?') + 'x' + ($('width').value || '?') + 'x' + ($('height').value || '?')
-                    + '\nTax: ' + ($('tax_percent').value || '?') + ', Category: ' + $('category_id').selectedOptions[0].textContent;
+                    + '\nTax: ' + ($('tax_percent').value || '?') + ', Category: ' + $('category_id').selectedOptions[0].textContent; + \'
+SEO Short: ' + ($('seo_short').value || 'none') + '
+SEO Full: ' + ($('seo_full').value || 'none') + '
+SEO Keywords: ' + ($('seo_keywords').value || 'none')\';
                 await new Promise(r => setTimeout(r, 250)); aiThrowIfCancelled(); aiStage(0, 'done');
                 aiStage(1, 'active'); setProgress(42, 'تحلیل ترکیبی هر ۴ گام و حدس نام نهایی...');
                 let fused = null, via = 'local';
@@ -1845,7 +1875,7 @@
             try {
                 if (!MYSQL.ready || !MYSQL.api) return;
                 const v = (id) => { const el = $(id); return el ? el.value : ''; };
-                const brief = { product: v('brief_product'), group: v('brief_group'), profession: v('brief_profession'), mockup: v('brief_mockup'), lighting: v('brief_lighting'), palette: v('brief_palette'), angle: v('brief_angle'), extra: v('brief_extra') };
+                const brief = { product: v('brief_product'), group: v('brief_group'), profession: v('brief_profession'), mockup: v('brief_mockup'), lighting: v('brief_lighting'), palette: v('brief_palette'), angle: v('brief_angle'), extra: v('brief_extra'), seo_short: v('seo_short'), seo_full: v('seo_full'), seo_keywords: v('seo_keywords'), seo_hashtags: v('seo_hashtags') };
                 mysqlPost('save_product', { product: {
                     title: v('product_title'), brand: v('brand_name'), barcode: v('barcode'), color: v('color'),
                     category: ($('category_id') && $('category_id').selectedOptions[0].textContent) || '',
@@ -1853,7 +1883,7 @@
                     retail: parseNum(v('sale_price_retail')), whole: parseNum(v('sale_price_wholesale')),
                     stock: parseInt(v('stock_quantity'), 10) || 0, weight: v('weight'), length: v('length'),
                     width: v('width'), height: v('height'), tax: v('tax_percent'),
-                    desc: v('short_description'), brief: JSON.stringify(brief), image_webp: v('product_image_webp')
+                    desc: v('seo_full'), brief: JSON.stringify(brief), image_webp: v('product_image_webp')
                 } }, 20000).catch(() => {});
             } catch (e) {}
         }
